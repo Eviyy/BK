@@ -271,8 +271,19 @@
                                     <i class="fa-solid fa-pen-to-square"></i> Edit Catatan
                                 </button>
                             </div>
-                            <div class="bg-white/60 p-5 rounded-2xl border border-white/50 shadow-inner">
+                            <div class="bg-white/60 p-5 rounded-2xl border border-white/50 shadow-inner mb-4">
                                 <p id="savedComplaintText" class="text-sm text-slate-700 font-medium leading-relaxed italic whitespace-pre-wrap"></p>
+                            </div>
+
+                            <!-- RANDOM ENCOURAGEMENT BOX -->
+                            <div id="randomEncouragementContainer" class="hidden p-4 rounded-2xl bg-white/80 border border-emerald-200 text-xs text-emerald-900 font-medium flex items-start gap-3 shadow-sm">
+                                <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5">
+                                    <i class="fa-solid fa-seedling text-xs"></i>
+                                </div>
+                                <div>
+                                    <span class="font-extrabold block text-emerald-700 mb-0.5">Pesan Penyemangat untukmu:</span>
+                                    <p id="randomEncouragementText" class="italic leading-relaxed text-slate-700"></p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -749,9 +760,23 @@
     const savedComplaintCard = document.getElementById("savedComplaintCard");
     const savedComplaintText = document.getElementById("savedComplaintText");
     const editComplaintButton = document.getElementById("editComplaintButton");
+    
+    const randomEncouragementContainer = document.getElementById("randomEncouragementContainer");
+    const randomEncouragementText = document.getElementById("randomEncouragementText");
 
     const COMPLAINT_KEY = "clover_daily_complaint";
     const COMPLAINT_DATE_KEY = "clover_daily_complaint_date";
+    const ENCOURAGEMENT_KEY = "clover_daily_encouragement";
+
+    const encouragingQuotes = [
+        "Hebat sudah jujur pada perasaanmu hari ini. Tarik napas dalam-dalam, kamu sudah melakukan yang terbaik. 🍀",
+        "Perasaan berat ini valid, tapi itu tidak mendefinisikan seluruh hidupmu. Peluk jauh untukmu!",
+        "Terima kasih sudah bertahan sampai detik ini. Besok adalah lembaran baru yang segar.",
+        "Tidak apa-apa merasa lelah. Yang penting kamu tidak menyerah pada dirimu sendiri.",
+        "Kamu berharga, dan kehadiranmu di dunia ini berarti. Istirahatlah dengan tenang malam ini.",
+        "Setiap badai pasti berlalu, dan kamu semakin tangguh dari yang kamu sadari.",
+        "Beri dirimu apresiasi kecil karena telah berjuang melewati hari ini. Semangat! ✨"
+    ];
 
     function getTodayKey() {
         const now = new Date();
@@ -767,20 +792,29 @@
 
         if (savedDate !== today) {
             localStorage.removeItem(COMPLAINT_KEY);
+            localStorage.removeItem(ENCOURAGEMENT_KEY);
             localStorage.setItem(COMPLAINT_DATE_KEY, today);
             complaintInput.value = "";
             complaintStatus.innerHTML = "<i class='fa-regular fa-clock mr-1'></i> Belum ada catatan hari ini.";
             complaintStatus.className = "text-xs font-bold text-slate-400";
             complaintCount.textContent = "0/1000";
             savedComplaintCard.classList.add("hidden");
+            randomEncouragementContainer.classList.add("hidden");
             return;
         }
 
         const saved = localStorage.getItem(COMPLAINT_KEY);
+        const savedEncouragement = localStorage.getItem(ENCOURAGEMENT_KEY);
+
         if (saved) {
             savedComplaintText.textContent = saved;
             savedComplaintCard.classList.remove("hidden");
             
+            if (savedEncouragement) {
+                randomEncouragementText.textContent = savedEncouragement;
+                randomEncouragementContainer.classList.remove("hidden");
+            }
+
             complaintInput.value = "";
             complaintCount.textContent = "0/1000";
             
@@ -790,6 +824,7 @@
             complaintStatus.innerHTML = "<i class='fa-regular fa-clock mr-1'></i> Belum ada catatan hari ini.";
             complaintStatus.className = "text-xs font-bold text-slate-400";
             savedComplaintCard.classList.add("hidden");
+            randomEncouragementContainer.classList.add("hidden");
         }
     }
 
@@ -804,7 +839,12 @@
             complaintStatus.className = "text-xs font-bold text-orange-600";
             return;
         }
+        
+        // Pilih kalimat penyemangat acak
+        const randomQuote = encouragingQuotes[Math.floor(Math.random() * encouragingQuotes.length)];
+        
         localStorage.setItem(COMPLAINT_KEY, value);
+        localStorage.setItem(ENCOURAGEMENT_KEY, randomQuote);
         localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
         
         loadComplaint(); 
@@ -816,6 +856,7 @@
         complaintCount.textContent = `${currentText.length}/1000`;
         
         savedComplaintCard.classList.add("hidden");
+        randomEncouragementContainer.classList.add("hidden");
         
         complaintStatus.innerHTML = "<i class='fa-solid fa-pen-to-square mr-1 text-teal-600'></i> Sedang mengedit catatan...";
         complaintStatus.className = "text-xs font-bold text-teal-600";
@@ -825,13 +866,15 @@
 
     clearComplaintButton.addEventListener("click", () => {
         localStorage.removeItem(COMPLAINT_KEY);
+        localStorage.removeItem(ENCOURAGEMENT_KEY);
         localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
         complaintInput.value = "";
         complaintCount.textContent = "0/1000";
         complaintStatus.innerHTML = "<i class='fa-regular fa-trash-can mr-1'></i> Catatan dihapus.";
         complaintStatus.className = "text-xs font-bold text-rose-500";
         
-        savedComplaintCard.classList.add("hidden"); 
+        savedComplaintCard.classList.add("hidden");
+        randomEncouragementContainer.classList.add("hidden");
     });
 
     loadComplaint();
