@@ -578,7 +578,7 @@
 <script type="module">
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getDatabase, ref, push, set, onValue, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, push, set, onValue, query, orderByChild, equalTo, runTransaction, onDisconnect } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
@@ -593,6 +593,33 @@
 
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
+
+    // =====================================================
+    // 1. TRACKING: Total Kunjungan & Pengunjung Aktif (Online)
+    // =====================================================
+    
+    // Total Kunjungan (Visitor Counter)
+    if (!sessionStorage.getItem("clover_visited")) {
+        sessionStorage.setItem("clover_visited", "true");
+        const visitRef = ref(database, "clover/stats/totalVisits");
+        runTransaction(visitRef, (currentVisits) => {
+            return (currentVisits || 0) + 1;
+        }).catch((error) => {
+            console.error("Gagal memperbarui jumlah kunjungan:", error);
+        });
+    }
+
+    // Pengunjung Aktif (Online Presence)
+    const activeUsersRef = ref(database, "clover/active_users");
+    const userSessionRef = push(activeUsersRef);
+    set(userSessionRef, {
+        joinedAt: Date.now()
+    });
+    onDisconnect(userSessionRef).remove();
+
+    // =====================================================
+    // 2. FITUR UTAMA WEBSITE (Papan Pesan & Keluhan)
+    // =====================================================
 
     const messageForm = document.getElementById("message-form");
     const messageInput = document.getElementById("message-input");
@@ -843,7 +870,6 @@
             return;
         }
         
-        // Pilih kalimat penyemangat acak
         const randomQuote = encouragingQuotes[Math.floor(Math.random() * encouragingQuotes.length)];
         
         localStorage.setItem(COMPLAINT_KEY, value);
@@ -1015,11 +1041,10 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
-  });
-}
-
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW error:', err));
+        });
+    }
 
 </script>
 </body>
