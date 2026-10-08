@@ -127,28 +127,40 @@
     </header>
 
     <!-- CONTENT -->
-    <main class="max-w-5xl mx-auto px-4 py-12 flex-1 space-y-10 w-full relative z-10">
+    <main class="max-w-6xl mx-auto px-4 py-12 flex-1 space-y-10 w-full relative z-10">
 
         <div class="welcome">
             <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Dashboard Admin</h1>
-            <p class="text-sm font-medium text-slate-500">Pantau dan moderasi pesan kehangatan yang dikirim oleh pengguna Clover.</p>
+            <p class="text-sm font-medium text-slate-500">Pantau statistik pengguna secara *real-time* dan moderasi pesan kehangatan Clover.</p>
         </div>
 
         <!-- STATISTICS -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm">
-                <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Total Pesan</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2 flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Sedang Online
+                </p>
+                <h2 id="activeUsers" class="text-3xl font-extrabold text-amber-500">0</h2>
+            </div>
+
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">Total Kunjungan</p>
+                <h2 id="totalVisits" class="text-3xl font-extrabold text-blue-600">0</h2>
+            </div>
+
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">Total Pesan</p>
                 <h2 id="totalMessages" class="text-3xl font-extrabold text-emerald-600">0</h2>
             </div>
 
-            <div class="bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm">
-                <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Pesan Hari Ini</p>
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">Pesan Hari Ini</p>
                 <h2 id="todayMessages" class="text-3xl font-extrabold text-teal-600">0</h2>
             </div>
 
-            <div class="bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm">
-                <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Status Database</p>
-                <h2 id="databaseStatus" class="text-xl font-extrabold text-slate-700">Menunggu...</h2>
+            <div class="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">Status Database</p>
+                <h2 id="databaseStatus" class="text-lg font-extrabold text-slate-700">Menunggu...</h2>
             </div>
         </div>
 
@@ -206,6 +218,10 @@
     const passwordInput = document.getElementById("password");
     const loginError = document.getElementById("loginError");
     const logoutButton = document.getElementById("logoutButton");
+    
+    // Elemen Statistik & Konten
+    const activeUsers = document.getElementById("activeUsers");
+    const totalVisits = document.getElementById("totalVisits");
     const messageList = document.getElementById("messageList");
     const totalMessages = document.getElementById("totalMessages");
     const todayMessages = document.getElementById("todayMessages");
@@ -259,7 +275,7 @@
             loginPage.classList.add("hidden");
             dashboard.classList.remove("hidden");
             loginError.textContent = "";
-            loadMessages();
+            loadDashboardData();
         } else {
             loginPage.classList.remove("hidden");
             dashboard.classList.add("hidden");
@@ -277,13 +293,29 @@
         }
     });
 
-    function loadMessages() {
+    function loadDashboardData() {
+        // 1. Pantau Pengunjung Aktif (Online Saat Ini)
+        const activeRef = ref(database, "clover/active_users");
+        onValue(activeRef, function(snapshot) {
+            const data = snapshot.val();
+            const count = data ? Object.keys(data).length : 0;
+            activeUsers.textContent = count;
+        });
+
+        // 2. Pantau Total Kunjungan (Visitor Counter)
+        const visitsRef = ref(database, "clover/stats/totalVisits");
+        onValue(visitsRef, function(snapshot) {
+            const count = snapshot.val() || 0;
+            totalVisits.textContent = count;
+        });
+
+        // 3. Pantau Pesan Kehangatan Masuk
         const messagesRef = ref(database, "clover/messages");
 
         onValue(messagesRef, function(snapshot) {
             const data = snapshot.val();
             databaseStatus.textContent = "Online";
-            databaseStatus.className = "text-xl font-extrabold text-emerald-600";
+            databaseStatus.className = "text-lg font-extrabold text-emerald-600";
             messageList.innerHTML = "";
 
             if (!data) {
@@ -316,7 +348,7 @@
         }, function(error) {
             console.error(error);
             databaseStatus.textContent = "Error";
-            databaseStatus.className = "text-xl font-extrabold text-rose-500";
+            databaseStatus.className = "text-lg font-extrabold text-rose-500";
             messageList.innerHTML = `
                 <div class="py-16 text-center text-rose-400">
                     <div class="text-4xl mb-3"><i class="fa-solid fa-triangle-exclamation"></i></div>
