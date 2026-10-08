@@ -29,15 +29,15 @@
 
         /* Task Done Styling */
         .task-done {
-            background: #ecfdf5 !important; /* emerald-50 */
-            border-color: #6ee7b7 !important; /* emerald-300 */
+            background: #ecfdf5 !important;
+            border-color: #6ee7b7 !important;
         }
         .task-done .task-title {
             text-decoration: line-through;
             color: #94a3b8;
         }
         .task-done .clover-bullet {
-            color: #10b981; /* emerald-500 */
+            color: #10b981;
             transform: scale(1.1) rotate(15deg);
         }
 
@@ -72,7 +72,7 @@
         }
         .bg-clover {
             position: fixed;
-            color: #10b981; /* emerald-500 */
+            color: #10b981;
             animation: float-up linear infinite;
             z-index: -1;
             pointer-events: none;
@@ -102,40 +102,36 @@
 </div>
 
 <!-- =====================================================
-     NAVBAR
+     NAVBAR (Seragam & Konsisten)
 ===================================================== -->
-<header class="bg-white/80 backdrop-blur-lg border-b border-slate-100/50 sticky top-0 z-50 transition-all">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+<header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50 transition-all">
+    <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
         
         <!-- Logo -->
         <a href="#hero" class="flex items-center gap-3 shrink-0 group">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-xl shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition-transform">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-lg shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
                 <i class="fa-solid fa-clover"></i>
             </div>
             <div>
-                <h1 class="font-extrabold text-lg text-slate-800 leading-tight tracking-tight">
+                <h1 class="font-extrabold text-base text-slate-900 leading-tight tracking-tight">
                     Clover
                 </h1>
-                <p class="text-[10px] font-medium text-emerald-600">
+                <p class="text-[10px] font-semibold text-emerald-600">
                     Kamu tidak sendirian
                 </p>
             </div>
         </a>
 
-        <!-- Links -->
-        <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-500">
+        <!-- Uniform Links -->
+        <nav class="hidden md:flex items-center gap-7 text-sm font-bold text-slate-600">
             <a href="#tentang" class="hover:text-emerald-600 transition-colors">Tentang</a>
+            <a href="#keluhan" class="hover:text-emerald-600 transition-colors">Ruang Keluh</a>
             <a href="#tantangan" class="hover:text-emerald-600 transition-colors">Tantangan</a>
             <a href="#papan" class="hover:text-emerald-600 transition-colors">Papan Kehangatan</a>
-            
-            <!-- Emphasized 'Keluhan' Link -->
-            <a href="#keluhan" class="bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300 px-4 py-1.5 rounded-full transition-all flex items-center gap-2 shadow-sm">
-                <i class="fa-solid fa-feather-pointed"></i> Ruang Keluh
-            </a>
         </nav>
 
         <!-- Bantuan Button -->
-        <a href="#bantuan" class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold text-xs px-4 py-2.5 rounded-full transition-colors flex items-center gap-2 border border-rose-100">
+        <a href="#bantuan" class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-bold text-xs px-4 py-2.5 rounded-2xl transition-colors flex items-center gap-2 border border-rose-100 shadow-sm">
             <i class="fa-solid fa-phone"></i>
             <span class="hidden sm:inline">Bantuan Darurat</span>
         </a>
@@ -143,7 +139,7 @@
 </header>
 
 <!-- =====================================================
-     HERO
+     HERO (Seragam dengan Tombol Aksi yang Selaras)
 ===================================================== -->
 <section id="hero" class="relative overflow-hidden px-4 py-20 md:py-28">
     <!-- Decorative background elements -->
@@ -168,15 +164,16 @@
             Clover adalah ruang kecil dan hangat untuk berbagi, mencoba langkah sederhana melawan kesepian, dan saling memberikan dukungan.
         </p>
 
-        <div class="flex flex-wrap justify-center gap-4">
-            <a href="#keluhan" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-sm px-7 py-3.5 rounded-2xl shadow-lg shadow-slate-800/25 hover:-translate-y-0.5 transition-all">
-                <i class="fa-solid fa-feather mr-2"></i> Ruang Keluh
+        <!-- Uniform CTA Buttons -->
+        <div class="flex flex-wrap justify-center gap-3.5">
+            <a href="#keluhan" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-6 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/25 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-feather"></i> Ruang Keluh
             </a>
-            <a href="#tantangan" class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold text-sm px-7 py-3.5 rounded-2xl shadow-lg shadow-emerald-500/25 hover:-translate-y-0.5 transition-all">
-                <i class="fa-solid fa-leaf mr-2"></i> Mulai Tantangan
+            <a href="#tantangan" class="bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm px-6 py-3.5 rounded-2xl shadow-lg shadow-slate-900/15 hover:-translate-y-0.5 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-leaf"></i> Mulai Tantangan
             </a>
-            <a href="#papan" class="bg-white hover:bg-slate-50 text-slate-700 font-bold text-sm px-7 py-3.5 rounded-2xl border border-slate-200 shadow-sm hover:shadow transition-all">
-                Bagikan Kehangatan
+            <a href="#papan" class="bg-white hover:bg-slate-100 text-slate-700 font-bold text-sm px-6 py-3.5 rounded-2xl border border-slate-200 shadow-sm hover:shadow transition-all flex items-center gap-2">
+                <i class="fa-solid fa-heart"></i> Bagikan Kehangatan
             </a>
         </div>
     </div>
@@ -199,7 +196,7 @@
                 Langkah kecil bisa berarti besar
             </h3>
             <p class="text-slate-500 leading-relaxed font-medium">
-                Kesepian bukan berarti kamu lemah. Setiap orang membutuhkan koneksi, perhatian, dan tempat untuk merasa didengar dengan aman.
+                Kesepian bukan berarti kamu lemah[span_2](start_span)[span_2](end_span). Setiap orang membutuhkan koneksi, perhatian, dan tempat untuk merasa didengar dengan aman[span_3](start_span)[span_3](end_span).
             </p>
         </div>
 
@@ -209,7 +206,7 @@
                     <i class="fa-solid fa-hand-holding-heart"></i>
                 </div>
                 <h4 class="font-extrabold text-lg text-slate-900 mb-2">Saling Menguatkan</h4>
-                <p class="text-sm text-slate-500 leading-relaxed font-medium">Satu kalimat baik dapat membuat seseorang merasa tidak sendirian lagi.</p>
+                <p class="text-sm text-slate-500 leading-relaxed font-medium">Satu kalimat baik dapat membuat seseorang merasa tidak sendirian lagi[span_4](start_span)[span_4](end_span).</p>
             </div>
 
             <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
@@ -218,7 +215,7 @@
                     <i class="fa-solid fa-seedling"></i>
                 </div>
                 <h4 class="font-extrabold text-lg text-slate-900 mb-2">Mulai Hal Kecil</h4>
-                <p class="text-sm text-slate-500 leading-relaxed font-medium">Tidak perlu langsung melakukan hal besar. Satu langkah kecil sudah sangat berarti.</p>
+                <p class="text-sm text-slate-500 leading-relaxed font-medium">Tidak perlu langsung melakukan hal besar[span_5](start_span)[span_5](end_span). Satu langkah kecil sudah sangat berarti[span_6](start_span)[span_6](end_span).</p>
             </div>
 
             <div class="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
@@ -226,17 +223,16 @@
                     <i class="fa-solid fa-people-arrows"></i>
                 </div>
                 <h4 class="font-extrabold text-lg text-slate-900 mb-2">Bangun Koneksi</h4>
-                <p class="text-sm text-slate-500 leading-relaxed font-medium">Hubungan yang hangat dan suportif dapat dimulai dari sapaan sederhana.</p>
+                <p class="text-sm text-slate-500 leading-relaxed font-medium">Hubungan yang hangat dan suportif dapat dimulai dari sapaan sederhana[span_7](start_span)[span_7](end_span).</p>
             </div>
         </div>
     </section>
 
     <!-- =================================================
-         KELUHAN HARI INI (Beautiful Glass Card)
+         KELUHAN HARI INI (Glass Card & Edit Feature)
     ================================================== -->
     <section id="keluhan" class="relative rounded-[2.5rem] p-6 md:p-10 lg:p-14 shadow-2xl border border-white overflow-hidden">
         
-        <!-- Decorative Background inside section -->
         <div class="absolute inset-0 bg-gradient-to-br from-teal-50 via-emerald-100/50 to-emerald-50 z-0"></div>
         <div class="absolute -top-32 -right-32 w-[30rem] h-[30rem] bg-emerald-300/30 rounded-full mix-blend-multiply blur-3xl z-0"></div>
         <div class="absolute -bottom-32 -left-32 w-[30rem] h-[30rem] bg-teal-300/30 rounded-full mix-blend-multiply blur-3xl z-0"></div>
@@ -244,7 +240,6 @@
         <div class="relative z-10 glass-card rounded-[2rem] p-8 md:p-10">
             <div class="flex flex-col md:flex-row gap-8 items-start">
                 
-                <!-- Header part -->
                 <div class="flex-1">
                     <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white shadow-md text-emerald-500 text-xl mb-6">
                         <i class="fa-solid fa-feather"></i>
@@ -256,15 +251,14 @@
                         Ceritakan apa yang kamu rasakan hari ini
                     </h3>
                     <p class="text-sm text-slate-600 leading-relaxed font-medium">
-                        Tuliskan keluhan, beban pikiran, atau rasa sepi yang mengganggu. 
-                        <strong>Catatan ini 100% rahasia</strong> dan hanya tersimpan di perangkatmu sendiri.
+                        Tuliskan keluhan, beban pikiran, atau rasa sepi yang mengganggu[span_8](start_span)[span_8](end_span). 
+                        <strong>Catatan ini 100% rahasia</strong> dan hanya tersimpan di perangkatmu sendiri[span_9](start_span)[span_9](end_span).
                     </p>
                 </div>
 
-                <!-- Input & Display part -->
                 <div class="flex-[1.5] w-full">
 
-                    <!-- SAVED COMPLAINT CARD (Dilengkapi tombol Edit) -->
+                    <!-- SAVED COMPLAINT CARD (Dengan Tombol Edit) -->
                     <div id="savedComplaintCard" class="hidden mb-6 bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 rounded-3xl border border-emerald-200 shadow-sm relative overflow-hidden">
                         <div class="absolute -top-6 -right-6 text-emerald-500/10 text-8xl pointer-events-none">
                             <i class="fa-solid fa-book-open"></i>
@@ -275,7 +269,6 @@
                                 <h4 class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
                                     <i class="fa-solid fa-lock"></i> Tersimpan Aman di Perangkat
                                 </h4>
-                                <!-- Tombol Edit Catatan -->
                                 <button id="editComplaintButton" type="button" class="bg-white hover:bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-200 shadow-sm transition-all flex items-center gap-1.5">
                                     <i class="fa-solid fa-pen-to-square"></i> Edit Catatan
                                 </button>
@@ -316,7 +309,7 @@
     </section>
 
     <!-- =================================================
-         TANTANGAN (Clover Progress & 5 Loneliness Tasks)
+         TANTANGAN
     ================================================== -->
     <section id="tantangan">
         <div class="text-center max-w-2xl mx-auto mb-10">
@@ -333,22 +326,15 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <!-- Left Side: Progress & Streak -->
             <div class="lg:col-span-4 space-y-6">
-                <!-- CLOVER PROGRESS BAR -->
                 <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm text-center relative overflow-hidden">
                     <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-6">Progres Hari Ini</p>
                     
                     <div class="relative inline-flex items-center justify-center mb-2">
-                        <!-- Background empty clover -->
                         <i class="fa-solid fa-clover text-[8rem] text-slate-100 drop-shadow-sm"></i>
-                        
-                        <!-- Foreground filled clover (Masked with clip-path) -->
                         <div id="challengeProgressBar" class="absolute inset-0 text-emerald-500 transition-all duration-700 ease-out" style="clip-path: inset(100% 0 0 0);">
                             <i class="fa-solid fa-clover text-[8rem]"></i>
                         </div>
-                        
-                        <!-- Percentage text overlaid -->
                         <div class="absolute inset-0 flex items-center justify-center pb-2">
                             <span id="challengeProgressText" class="text-xl font-black text-white bg-emerald-900/30 backdrop-blur-md px-3 py-1 rounded-2xl shadow-sm">0%</span>
                         </div>
@@ -359,7 +345,6 @@
                     </p>
                 </div>
 
-                <!-- Streaks -->
                 <div class="grid grid-cols-2 gap-4">
                     <div class="bg-white rounded-3xl p-5 border border-slate-100 shadow-sm text-center">
                         <p class="text-[10px] font-black uppercase tracking-wider text-slate-400 mb-1">Streak Saat Ini</p>
@@ -374,11 +359,9 @@
                 </div>
             </div>
 
-            <!-- Right Side: 5 Challenges List -->
             <div class="lg:col-span-8">
                 <div id="challenge-list" class="space-y-4">
                     
-                    <!-- Task 1 -->
                     <label class="challenge-item group flex items-start gap-4 p-5 md:p-6 rounded-3xl border-2 border-slate-100 bg-white hover:border-emerald-200 transition-all cursor-pointer shadow-sm hover:shadow-md">
                         <div class="mt-1 relative flex items-center justify-center">
                             <input type="checkbox" class="challenge-checkbox peer appearance-none w-6 h-6 rounded-full border-2 border-slate-300 checked:bg-emerald-500 checked:border-emerald-500 transition-all cursor-pointer shrink-0">
@@ -395,7 +378,6 @@
                         </div>
                     </label>
 
-                    <!-- Task 2 -->
                     <label class="challenge-item group flex items-start gap-4 p-5 md:p-6 rounded-3xl border-2 border-slate-100 bg-white hover:border-emerald-200 transition-all cursor-pointer shadow-sm hover:shadow-md">
                         <div class="mt-1 relative flex items-center justify-center">
                             <input type="checkbox" class="challenge-checkbox peer appearance-none w-6 h-6 rounded-full border-2 border-slate-300 checked:bg-emerald-500 checked:border-emerald-500 transition-all cursor-pointer shrink-0">
@@ -412,7 +394,6 @@
                         </div>
                     </label>
 
-                    <!-- Task 3 -->
                     <label class="challenge-item group flex items-start gap-4 p-5 md:p-6 rounded-3xl border-2 border-slate-100 bg-white hover:border-emerald-200 transition-all cursor-pointer shadow-sm hover:shadow-md">
                         <div class="mt-1 relative flex items-center justify-center">
                             <input type="checkbox" class="challenge-checkbox peer appearance-none w-6 h-6 rounded-full border-2 border-slate-300 checked:bg-emerald-500 checked:border-emerald-500 transition-all cursor-pointer shrink-0">
@@ -429,7 +410,6 @@
                         </div>
                     </label>
 
-                    <!-- Task 4 -->
                     <label class="challenge-item group flex items-start gap-4 p-5 md:p-6 rounded-3xl border-2 border-slate-100 bg-white hover:border-emerald-200 transition-all cursor-pointer shadow-sm hover:shadow-md">
                         <div class="mt-1 relative flex items-center justify-center">
                             <input type="checkbox" class="challenge-checkbox peer appearance-none w-6 h-6 rounded-full border-2 border-slate-300 checked:bg-emerald-500 checked:border-emerald-500 transition-all cursor-pointer shrink-0">
@@ -446,7 +426,6 @@
                         </div>
                     </label>
 
-                    <!-- Task 5 -->
                     <label class="challenge-item group flex items-start gap-4 p-5 md:p-6 rounded-3xl border-2 border-slate-100 bg-white hover:border-emerald-200 transition-all cursor-pointer shadow-sm hover:shadow-md">
                         <div class="mt-1 relative flex items-center justify-center">
                             <input type="checkbox" class="challenge-checkbox peer appearance-none w-6 h-6 rounded-full border-2 border-slate-300 checked:bg-emerald-500 checked:border-emerald-500 transition-all cursor-pointer shrink-0">
@@ -485,28 +464,26 @@
                 Tinggalkan Sedikit Kehangatan
             </h3>
             <p class="text-slate-500 leading-relaxed font-medium">
-                Tulis pesan positif untuk seseorang yang mungkin sedang merasa sendirian dan membutuhkan semangat darimu.
+                Tulis pesan positif untuk seseorang yang mungkin sedang merasa sendirian dan membutuhkan semangat darimu[span_10](start_span)[span_10](end_span).
             </p>
         </div>
 
-        <!-- Firebase error/status -->
         <div id="firebase-status" class="hidden rounded-2xl px-5 py-4 text-sm font-bold text-center mx-auto max-w-2xl shadow-sm"></div>
 
-        <!-- FORM -->
         <form id="message-form" class="bg-white p-6 md:p-10 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 max-w-2xl mx-auto space-y-5">
             <div>
                 <label for="message-input" class="block text-sm font-extrabold text-slate-700 mb-2">Pesan Kehangatan <span class="text-rose-500">*</span></label>
                 <textarea id="message-input" rows="4" maxlength="300" required placeholder="Contoh: Kamu sudah melakukan yang terbaik hari ini. Mari istirahat. 🍀" 
                           class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 focus:outline-none focus:border-emerald-400 focus:bg-white text-slate-800 text-sm font-medium resize-none transition-all shadow-inner"></textarea>
                 <div class="flex justify-between mt-2 px-1">
-                    <span class="text-[10px] font-bold text-slate-400">Maksimal 300 karakter</span>
+                    <span class="text-[10px] font-bold text-slate-400">Maksimal 300 karakter[span_11](start_span)[span_11](end_span)</span>
                     <span id="char-count" class="text-[10px] font-bold text-slate-400">0/300</span>
                 </div>
             </div>
 
             <div>
                 <label for="sender-input" class="block text-sm font-extrabold text-slate-700 mb-2">
-                    Nama <span class="font-medium text-slate-400">(opsional)</span>
+                    Nama <span class="font-medium text-slate-400">(opsional)[span_12](start_span)[span_12](end_span)</span>
                 </label>
                 <input type="text" id="sender-input" maxlength="40" placeholder="Sahabat Anonim" 
                        class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 focus:outline-none focus:border-emerald-400 focus:bg-white text-slate-800 text-sm font-medium transition-all shadow-inner">
@@ -517,13 +494,11 @@
             </button>
             
             <p class="text-xs text-center font-medium text-slate-400 pt-2">
-                Pesan akan diperiksa (dimoderasi) sebelum tampil di papan.
+                Pesan akan diperiksa (dimoderasi) sebelum tampil di papan[span_13](start_span)[span_13](end_span).
             </p>
         </form>
 
-        <!-- APPROVED MESSAGES -->
         <div id="messages-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
-            <!-- Loading state -->
             <div class="md:col-span-2 lg:col-span-3 bg-white rounded-[2rem] p-12 border border-slate-100 shadow-sm flex flex-col items-center justify-center">
                 <div class="loading-spinner mb-4"></div>
                 <p class="text-sm font-bold text-slate-400">Memuat pesan kehangatan...</p>
@@ -561,7 +536,7 @@
             <div class="bg-white p-6 rounded-3xl border border-orange-100 shadow-sm hover:-translate-y-1 transition-transform">
                 <h4 class="font-extrabold text-slate-800">Ceritakan Pada Seseorang</h4>
                 <p class="text-xs font-medium text-slate-500 mt-2 leading-relaxed">
-                    Keluarga, teman, guru, atau konselor bisa menjadi tempat untuk sekadar didengar tanpa dihakimi.
+                    Keluarga, teman, guru, atau konselor bisa menjadi tempat untuk sekadar didengar tanpa dihakimi[span_14](start_span)[span_14](end_span).
                 </p>
             </div>
         </div>
@@ -580,7 +555,7 @@
             Kamu tidak sendirian. Terima kasih sudah menjadi bagian dari Clover.
         </p>
         <p class="text-xs font-medium text-slate-400">
-            &copy; <span id="year"></span> Clover. Semua hak dilindungi.
+            &copy; <span id="year"></span> Clover. Semua hak dilindungi[span_15](start_span)[span_15](end_span).
         </p>
     </div>
 </footer>
@@ -590,15 +565,9 @@
 ===================================================== -->
 <script type="module">
 
-    /* =====================================================
-       FIREBASE IMPORT (Original Configuration)
-    ===================================================== */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getDatabase, ref, push, set, onValue, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    /* =====================================================
-       FIREBASE CONFIG
-    ===================================================== */
     const firebaseConfig = {
         apiKey: "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
         authDomain: "aplikasi-d862d.firebaseapp.com",
@@ -610,15 +579,9 @@
         measurementId: "G-3TK6ZQGMDP"
     };
 
-    /* =====================================================
-       INITIALIZE
-    ===================================================== */
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    /* =====================================================
-       DOM ELEMENTS - PAPAN KEHANGATAN
-    ===================================================== */
     const messageForm = document.getElementById("message-form");
     const messageInput = document.getElementById("message-input");
     const senderInput = document.getElementById("sender-input");
@@ -627,9 +590,6 @@
     const submitButton = document.getElementById("submit-message-button");
     const charCount = document.getElementById("char-count");
 
-    /* =====================================================
-       STATUS MESSAGE
-    ===================================================== */
     function showFirebaseStatus(message, type = "info") {
         firebaseStatus.classList.remove("hidden", "bg-rose-50", "text-rose-700", "border-rose-200", "bg-emerald-50", "text-emerald-700", "border-emerald-200", "bg-amber-50", "text-amber-700", "border-amber-200");
         firebaseStatus.classList.add("border-2");
@@ -648,9 +608,6 @@
         firebaseStatus.classList.add("hidden");
     }
 
-    /* =====================================================
-       UTILITIES
-    ===================================================== */
     function escapeHTML(value) {
         const div = document.createElement("div");
         div.textContent = String(value ?? "");
@@ -666,9 +623,6 @@
         });
     }
 
-    /* =====================================================
-       LOAD ONLY APPROVED MESSAGES
-    ===================================================== */
     const approvedMessagesQuery = query(ref(database, "clover/messages"), orderByChild("status"), equalTo("approved"));
 
     onValue(approvedMessagesQuery, (snapshot) => {
@@ -704,9 +658,6 @@
         showFirebaseStatus("Koneksi ke database gagal. Tidak dapat memuat pesan.", "error");
     });
 
-    /* =====================================================
-       RENDER MESSAGE CARD
-    ===================================================== */
     function renderMessage(message) {
         const card = document.createElement("article");
         card.className = "message-card bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col h-full";
@@ -741,9 +692,6 @@
         messagesContainer.appendChild(card);
     }
 
-    /* =====================================================
-       SEND MESSAGE
-    ===================================================== */
     messageForm.addEventListener("submit", async (event) => {
         event.preventDefault();
 
@@ -756,7 +704,7 @@
         }
 
         if (text.length > 300) {
-            showFirebaseStatus("Pesan maksimal 300 karakter.", "error");
+            showFirebaseStatus("Pesan maksimal 300 karakter[span_16](start_span)[span_16](end_span).", "error");
             return;
         }
 
@@ -789,24 +737,17 @@
         }
     });
 
-    /* =====================================================
-       CHARACTER COUNTER
-    ===================================================== */
     messageInput.addEventListener("input", () => {
         const length = messageInput.value.length;
         charCount.textContent = `${length}/300`;
     });
 
-    /* =====================================================
-       KELUHAN HARI INI - LOCAL STORAGE & EDIT FEATURE
-    ===================================================== */
     const complaintInput = document.getElementById("complaintInput");
     const complaintStatus = document.getElementById("complaintStatus");
     const complaintCount = document.getElementById("complaintCount");
     const saveComplaintButton = document.getElementById("saveComplaintButton");
     const clearComplaintButton = document.getElementById("clearComplaintButton");
     
-    // Elemen DOM untuk Card Curhatan Tersimpan & Tombol Edit
     const savedComplaintCard = document.getElementById("savedComplaintCard");
     const savedComplaintText = document.getElementById("savedComplaintText");
     const editComplaintButton = document.getElementById("editComplaintButton");
@@ -871,19 +812,16 @@
         loadComplaint(); 
     });
 
-    // Fitur Edit: Mengembalikan teks dari card ke textarea untuk diubah
     editComplaintButton.addEventListener("click", () => {
         const currentText = savedComplaintText.textContent;
         complaintInput.value = currentText;
         complaintCount.textContent = `${currentText.length}/1000`;
         
-        // Sembunyikan card sementara user mengedit
         savedComplaintCard.classList.add("hidden");
         
         complaintStatus.innerHTML = "<i class='fa-solid fa-pen-to-square mr-1 text-teal-600'></i> Sedang mengedit catatan...";
         complaintStatus.className = "text-xs font-bold text-teal-600";
         
-        // Fokuskan kursor ke textarea
         complaintInput.focus();
     });
 
@@ -900,9 +838,6 @@
 
     loadComplaint();
 
-    /* =====================================================
-       TANTANGAN (5 TASKS) & STREAK (CLOVER PROGRESS)
-    ===================================================== */
     const STORAGE_TASKS = "clover_challenges_v2";
     const STREAK_KEY = "clover_challenge_streak_v2";
     const BEST_STREAK_KEY = "clover_best_streak_v2";
@@ -1033,9 +968,6 @@
 
     updateChallengeUI();
 
-    /* =====================================================
-       FOOTER YEAR
-    ===================================================== */
     document.getElementById("year").textContent = new Date().getFullYear();
 
 </script>
