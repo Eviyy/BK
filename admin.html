@@ -8,26 +8,23 @@
         content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-        content="Dashboard Admin Clover untuk memonitor pesan kehangatan.">
+        content="Clover Admin Dashboard">
 
-    <title>Clover Admin — Monitoring Pesan</title>
-
+    <title>Clover — Admin</title>
 
     <style>
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
         }
-
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f7f5;
-            color: #263b35;
+            background: #f5f7f2;
+            color: #26352d;
+            min-height: 100vh;
         }
-
 
         /* =========================
            LOGIN
@@ -35,143 +32,110 @@
 
         #loginPage {
             min-height: 100vh;
-
             display: flex;
-            align-items: center;
             justify-content: center;
-
+            align-items: center;
             padding: 20px;
+            background: linear-gradient(135deg, #e7f1e8, #f7f2e7);
         }
-
 
         .login-box {
             width: 100%;
-            max-width: 420px;
-
+            max-width: 400px;
             background: white;
-
             padding: 35px;
-
-            border-radius: 20px;
-
-            box-shadow:
-                0 10px 35px rgba(0, 0, 0, 0.08);
+            border-radius: 22px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, .10);
         }
-
 
         .logo {
             text-align: center;
             margin-bottom: 28px;
         }
 
-
         .logo-icon {
-            font-size: 42px;
-            margin-bottom: 8px;
-        }
+            width: 70px;
+            height: 70px;
+            margin: auto;
+            margin-bottom: 12px;
 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #5f8f68;
+            border-radius: 50%;
+
+            color: white;
+            font-size: 34px;
+        }
 
         .logo h1 {
-            color: #198754;
-            margin-bottom: 7px;
+            color: #477453;
+            margin-bottom: 5px;
         }
-
 
         .logo p {
             color: #777;
             font-size: 14px;
         }
 
-
         .form-group {
             margin-bottom: 18px;
         }
 
-
         .form-group label {
             display: block;
-
             margin-bottom: 7px;
-
             font-size: 14px;
-
             font-weight: bold;
         }
 
-
         .form-group input {
             width: 100%;
+            padding: 13px 14px;
 
-            padding: 13px 15px;
-
-            border: 1px solid #ddd;
-
+            border: 1px solid #d5ddd5;
             border-radius: 10px;
 
             outline: none;
-
             font-size: 15px;
         }
-
 
         .form-group input:focus {
-            border-color: #198754;
-
-            box-shadow:
-                0 0 0 3px rgba(25, 135, 84, 0.1);
+            border-color: #5f8f68;
+            box-shadow: 0 0 0 3px rgba(95, 143, 104, .12);
         }
 
-
-        .login-btn {
+        .login-button {
             width: 100%;
-
-            border: none;
-
             padding: 13px;
 
+            border: none;
             border-radius: 10px;
 
-            background: #198754;
-
+            background: #5f8f68;
             color: white;
 
-            font-size: 15px;
-
+            font-size: 16px;
             font-weight: bold;
 
             cursor: pointer;
         }
 
-
-        .login-btn:hover {
-            background: #157347;
+        .login-button:hover {
+            background: #4d7c57;
         }
 
+        .login-error {
+            min-height: 20px;
+            margin-top: 12px;
 
-        .login-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+            text-align: center;
 
-
-        .error {
-            display: none;
-
-            margin-top: 15px;
-
-            padding: 12px;
-
-            border-radius: 8px;
-
-            background: #f8d7da;
-
-            color: #842029;
-
+            color: #d9534f;
             font-size: 14px;
-
-            line-height: 1.5;
         }
-
 
         /* =========================
            DASHBOARD
@@ -179,476 +143,334 @@
 
         #dashboard {
             display: none;
-
             min-height: 100vh;
         }
 
-
-        header {
-            position: sticky;
-            top: 0;
-
-            z-index: 100;
-
+        .navbar {
             background: white;
 
-            padding: 17px 5%;
+            padding: 17px 30px;
 
             display: flex;
-
+            justify-content: space-between;
             align-items: center;
 
-            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .07);
 
-            gap: 15px;
-
-            box-shadow:
-                0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-
-        .header-title h1 {
-            color: #198754;
-
-            font-size: 24px;
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
+        .navbar-icon {
+            width: 43px;
+            height: 43px;
 
-        .header-title p {
-            color: #777;
+            border-radius: 50%;
 
-            font-size: 13px;
-
-            margin-top: 4px;
-        }
-
-
-        .logout-btn {
-            border: none;
-
-            background: #dc3545;
-
+            background: #5f8f68;
             color: white;
 
-            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            border-radius: 8px;
+            font-size: 22px;
+        }
+
+        .navbar-brand h2 {
+            color: #477453;
+            font-size: 21px;
+        }
+
+        .navbar-brand span {
+            display: block;
+
+            margin-top: 2px;
+
+            color: #888;
+            font-size: 12px;
+        }
+
+        .logout-button {
+            border: none;
+
+            background: #f2dddd;
+            color: #a83c3c;
+
+            padding: 9px 15px;
+
+            border-radius: 9px;
 
             cursor: pointer;
-
             font-weight: bold;
         }
 
-
-        .logout-btn:hover {
-            background: #bb2d3b;
-        }
-
-
-        main {
-            width: 90%;
-
-            max-width: 1200px;
+        .container {
+            width: 100%;
+            max-width: 1100px;
 
             margin: 30px auto;
+            padding: 0 20px;
         }
 
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            color: #304d38;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: #777;
+        }
 
         /* =========================
-           STATISTIC
+           STATISTICS
         ========================= */
 
         .stats {
             display: grid;
+            grid-template-columns: repeat(3, 1fr);
 
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 20px;
+            gap: 18px;
 
             margin-bottom: 25px;
         }
-
 
         .stat-card {
             background: white;
 
             padding: 22px;
 
-            border-radius: 15px;
+            border-radius: 16px;
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
         }
-
 
         .stat-card p {
             color: #777;
-
             font-size: 14px;
-
             margin-bottom: 8px;
         }
 
-
         .stat-card h2 {
-            color: #198754;
-
+            color: #477453;
             font-size: 30px;
         }
 
-
         /* =========================
-           MESSAGE CONTAINER
+           MESSAGE
         ========================= */
 
-        .message-container {
+        .message-section {
             background: white;
 
             padding: 25px;
 
-            border-radius: 15px;
+            border-radius: 18px;
 
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
         }
 
-
-        .message-header {
+        .section-header {
             display: flex;
-
-            align-items: center;
-
             justify-content: space-between;
+            align-items: center;
 
             gap: 15px;
 
             margin-bottom: 20px;
         }
 
-
-        .message-header h2 {
-            font-size: 20px;
+        .section-header h2 {
+            color: #304d38;
         }
 
-
-        .connection {
-            font-size: 13px;
-
-            color: #198754;
-        }
-
-
-        .connection.offline {
-            color: #dc3545;
-        }
-
-
-        /* =========================
-           ACTION BAR
-        ========================= */
-
-        .action-bar {
-            display: flex;
-
-            justify-content: flex-end;
-
-            margin-bottom: 18px;
-        }
-
-
-        .delete-all-btn {
+        .delete-all-button {
             border: none;
 
-            background: #dc3545;
-
+            background: #d9534f;
             color: white;
 
             padding: 10px 15px;
 
-            border-radius: 8px;
+            border-radius: 9px;
 
             cursor: pointer;
-
             font-weight: bold;
-
-            font-size: 13px;
         }
 
-
-        .delete-all-btn:hover {
-            background: #bb2d3b;
-        }
-
-
-        .delete-all-btn:disabled {
-            opacity: 0.5;
-
-            cursor: not-allowed;
-        }
-
-
-        /* =========================
-           MESSAGE CARD
-        ========================= */
-
-        .message-list {
+        #messageList {
             display: flex;
-
             flex-direction: column;
-
             gap: 15px;
         }
 
-
         .message-card {
-            border: 1px solid #e5e5e5;
+            background: #fbfcfa;
 
-            border-radius: 12px;
+            border: 1px solid #e2e7e2;
+            border-radius: 13px;
 
             padding: 18px;
-
-            transition: 0.2s;
         }
-
-
-        .message-card:hover {
-            box-shadow:
-                0 4px 15px rgba(0, 0, 0, 0.06);
-        }
-
 
         .message-top {
             display: flex;
-
             justify-content: space-between;
 
-            align-items: center;
+            gap: 15px;
 
-            gap: 10px;
-
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-
 
         .sender {
-            color: #198754;
-
+            color: #477453;
             font-weight: bold;
-
-            word-break: break-word;
         }
 
-
-        .time {
+        .date {
             color: #888;
-
             font-size: 12px;
-
-            white-space: nowrap;
         }
-
 
         .message-text {
-            line-height: 1.7;
+            color: #444;
+
+            line-height: 1.6;
 
             margin-bottom: 15px;
 
             white-space: pre-wrap;
-
             word-break: break-word;
         }
 
-
-        .message-bottom {
+        .message-footer {
             display: flex;
-
             justify-content: space-between;
-
             align-items: center;
-
             gap: 10px;
         }
 
-
         .message-id {
             color: #aaa;
-
-            font-size: 10px;
-
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-
-            white-space: nowrap;
+            font-size: 11px;
         }
 
-
-        .delete-btn {
+        .delete-button {
             border: none;
 
-            background: #dc3545;
+            background: #f5dddd;
+            color: #b13e3e;
 
-            color: white;
-
-            padding: 8px 12px;
+            padding: 7px 12px;
 
             border-radius: 7px;
 
             cursor: pointer;
-
-            font-size: 12px;
-
-            flex-shrink: 0;
+            font-weight: bold;
         }
 
-
-        .delete-btn:hover {
-            background: #bb2d3b;
-        }
-
-
-        /* =========================
-           EMPTY / LOADING
-        ========================= */
-
-        .empty {
-            text-align: center;
-
+        .empty,
+        .loading {
             padding: 50px 20px;
+
+            text-align: center;
 
             color: #888;
         }
 
-
-        .empty h3 {
-            margin-bottom: 8px;
-
-            color: #555;
+        .empty-icon {
+            font-size: 45px;
+            margin-bottom: 12px;
         }
-
-
-        .loading {
-            text-align: center;
-
-            padding: 40px;
-
-            color: #777;
-        }
-
 
         /* =========================
-           MOBILE
+           RESPONSIVE
         ========================= */
 
         @media (max-width: 700px) {
 
-            header {
-                padding: 15px 4%;
+            .navbar {
+                padding: 15px;
             }
 
-
-            .header-title h1 {
-                font-size: 19px;
+            .navbar-brand h2 {
+                font-size: 18px;
             }
 
-
-            .header-title p {
-                font-size: 11px;
+            .container {
+                margin-top: 20px;
+                padding: 0 15px;
             }
 
-
-            .logout-btn {
-                padding: 9px 12px;
-
-                font-size: 12px;
+            .welcome h1 {
+                font-size: 23px;
             }
-
-
-            main {
-                width: 92%;
-
-                margin: 20px auto;
-            }
-
 
             .stats {
                 grid-template-columns: 1fr;
-
-                gap: 12px;
             }
 
-
-            .stat-card {
+            .message-section {
                 padding: 18px;
             }
 
-
-            .message-container {
-                padding: 18px;
-            }
-
-
-            .message-header {
-                align-items: flex-start;
-
+            .section-header {
                 flex-direction: column;
+                align-items: stretch;
             }
 
-
-            .message-top {
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-
-
-            .message-bottom {
-                align-items: flex-start;
-
-                flex-direction: column;
-            }
-
-
-            .delete-btn {
+            .delete-all-button {
                 width: 100%;
             }
 
+            .message-top {
+                flex-direction: column;
+            }
 
-            .message-id {
-                max-width: 100%;
+            .message-footer {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .delete-button {
+                width: 100%;
             }
         }
-
     </style>
-
 </head>
-
 
 <body>
 
 
-<!-- ==================================================
-     LOGIN PAGE
-================================================== -->
+<!-- =====================================================
+     LOGIN
+====================================================== -->
 
-<section id="loginPage">
+<div id="loginPage">
 
     <div class="login-box">
 
         <div class="logo">
 
             <div class="logo-icon">
-                ☘
+                🍀
             </div>
 
-            <h1>
-                Clover Admin
-            </h1>
+            <h1>Clover</h1>
 
-            <p>
-                Monitoring Pesan Kehangatan
-            </p>
+            <p>Admin Dashboard</p>
 
         </div>
 
@@ -664,7 +486,7 @@
                 <input
                     type="email"
                     id="email"
-                    placeholder="Email admin"
+                    placeholder="admin@email.com"
                     autocomplete="username"
                     required>
 
@@ -680,7 +502,7 @@
                 <input
                     type="password"
                     id="password"
-                    placeholder="Password admin"
+                    placeholder="Masukkan password"
                     autocomplete="current-password"
                     required>
 
@@ -689,70 +511,90 @@
 
             <button
                 type="submit"
-                id="loginButton"
-                class="login-btn">
+                class="login-button">
 
-                Masuk sebagai Admin
+                Masuk ke Dashboard
 
             </button>
 
 
             <div
                 id="loginError"
-                class="error">
+                class="login-error">
             </div>
 
         </form>
 
     </div>
 
-</section>
+</div>
 
 
 
-<!-- ==================================================
+<!-- =====================================================
      DASHBOARD
-================================================== -->
+====================================================== -->
 
-<section id="dashboard">
+<div id="dashboard">
 
 
-    <header>
+    <!-- NAVBAR -->
 
-        <div class="header-title">
+    <nav class="navbar">
 
-            <h1>
-                ☘ Clover Admin
-            </h1>
+        <div class="navbar-brand">
 
-            <p>
-                Monitoring Pesan Kehangatan
-            </p>
+            <div class="navbar-icon">
+                🍀
+            </div>
+
+            <div>
+
+                <h2>
+                    Clover Admin
+                </h2>
+
+                <span>
+                    Monitoring Pesan Kehangatan
+                </span>
+
+            </div>
 
         </div>
 
 
         <button
-            id="logoutBtn"
-            class="logout-btn">
+            id="logoutButton"
+            class="logout-button">
 
-            Keluar
+            Logout
 
         </button>
 
-    </header>
+    </nav>
 
 
 
-    <main>
+    <!-- CONTENT -->
+
+    <main class="container">
+
+        <div class="welcome">
+
+            <h1>
+                Dashboard Admin
+            </h1>
+
+            <p>
+                Pantau pesan kehangatan yang dikirim melalui website Clover.
+            </p>
+
+        </div>
 
 
-        <!-- =========================
-             STATISTICS
-        ========================= -->
+        <!-- STATISTICS -->
 
         <div class="stats">
-
 
             <div class="stat-card">
 
@@ -786,109 +628,75 @@
                     Status Database
                 </p>
 
-                <h2 id="databaseStatus">
-                    ●
+                <h2
+                    id="databaseStatus"
+                    style="font-size:20px;">
+
+                    Menunggu...
+
                 </h2>
 
             </div>
-
 
         </div>
 
 
 
-        <!-- =========================
-             MESSAGE
-        ========================= -->
+        <!-- PESAN -->
 
-        <div class="message-container">
+        <section class="message-section">
 
-
-            <div class="message-header">
+            <div class="section-header">
 
                 <h2>
-                    💌 Pesan Kehangatan
+                    💚 Pesan Kehangatan
                 </h2>
 
-
-                <span
-                    id="connectionStatus"
-                    class="connection">
-
-                    ● Terhubung
-
-                </span>
-
-            </div>
-
-
-
-            <!-- DELETE ALL -->
-
-            <div class="action-bar">
-
                 <button
-                    id="deleteAllBtn"
-                    class="delete-all-btn">
+                    id="deleteAllButton"
+                    class="delete-all-button">
 
-                    🗑 Hapus Semua Pesan
+                    Hapus Semua
 
                 </button>
 
             </div>
 
 
-
-            <!-- MESSAGE LIST -->
-
-            <div
-                id="messageList"
-                class="message-list">
+            <div id="messageList">
 
                 <div class="loading">
-
-                    Memuat pesan...
-
+                    Silakan login untuk melihat pesan.
                 </div>
 
             </div>
 
-
-        </div>
-
+        </section>
 
     </main>
 
-</section>
+</div>
 
 
 
-<!-- ==================================================
+<!-- =====================================================
      FIREBASE
-================================================== -->
+====================================================== -->
 
 <script type="module">
 
-
-    /* ==================================================
-       FIREBASE IMPORT
-    ================================================== */
-
     import {
         initializeApp
-    }
-    from
+    } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
     import {
-        initializeAuth,
-        inMemoryPersistence,
+        getAuth,
         signInWithEmailAndPassword,
-        onAuthStateChanged,
-        signOut
-    }
-    from
+        signOut,
+        onAuthStateChanged
+    } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
@@ -897,15 +705,13 @@
         ref,
         onValue,
         remove
-    }
-    from
+    } from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
-
-    /* ==================================================
+    /* =====================================================
        FIREBASE CONFIG
-    ================================================== */
+    ===================================================== */
 
     const firebaseConfig = {
 
@@ -932,142 +738,67 @@
 
         measurementId:
             "G-3TK6ZQGMDP"
-
     };
 
 
-
-    /* ==================================================
-       INITIALIZE FIREBASE
-    ================================================== */
+    /* =====================================================
+       INITIALIZE
+    ===================================================== */
 
     const app =
         initializeApp(firebaseConfig);
 
-
-    /*
-     * IN-MEMORY PERSISTENCE
-     *
-     * Login tidak disimpan ke localStorage,
-     * sessionStorage, atau IndexedDB.
-     *
-     * Jadi ketika halaman di-refresh,
-     * admin harus login kembali.
-     */
-
     const auth =
-        initializeAuth(app, {
+        getAuth(app);
 
-            persistence:
-                inMemoryPersistence
-
-        });
-
-
-    const db =
+    const database =
         getDatabase(app);
 
 
-
-    /* ==================================================
-       ADMIN EMAIL
-    ================================================== */
-
-    /*
-     * GANTI EMAIL DI BAWAH INI
-     * dengan email admin Firebase kamu.
-     *
-     * Contoh:
-     *
-     * const ADMIN_EMAIL =
-     *     "clover.admin@gmail.com";
-     */
-
-    const ADMIN_EMAIL =
-        "kevianorienski@gmail.com";
-
-
-
-    /* ==================================================
+    /* =====================================================
        ELEMENT
-    ================================================== */
+    ===================================================== */
 
     const loginPage =
-        document.getElementById(
-            "loginPage"
-        );
-
+        document.getElementById("loginPage");
 
     const dashboard =
-        document.getElementById(
-            "dashboard"
-        );
-
+        document.getElementById("dashboard");
 
     const loginForm =
-        document.getElementById(
-            "loginForm"
-        );
+        document.getElementById("loginForm");
 
+    const emailInput =
+        document.getElementById("email");
 
-    const loginButton =
-        document.getElementById(
-            "loginButton"
-        );
-
+    const passwordInput =
+        document.getElementById("password");
 
     const loginError =
-        document.getElementById(
-            "loginError"
-        );
+        document.getElementById("loginError");
 
-
-    const logoutBtn =
-        document.getElementById(
-            "logoutBtn"
-        );
-
+    const logoutButton =
+        document.getElementById("logoutButton");
 
     const messageList =
-        document.getElementById(
-            "messageList"
-        );
-
+        document.getElementById("messageList");
 
     const totalMessages =
-        document.getElementById(
-            "totalMessages"
-        );
-
+        document.getElementById("totalMessages");
 
     const todayMessages =
-        document.getElementById(
-            "todayMessages"
-        );
-
+        document.getElementById("todayMessages");
 
     const databaseStatus =
-        document.getElementById(
-            "databaseStatus"
-        );
+        document.getElementById("databaseStatus");
+
+    const deleteAllButton =
+        document.getElementById("deleteAllButton");
 
 
-    const connectionStatus =
-        document.getElementById(
-            "connectionStatus"
-        );
-
-
-    const deleteAllBtn =
-        document.getElementById(
-            "deleteAllBtn"
-        );
-
-
-
-    /* ==================================================
-       LOGIN
-    ================================================== */
+    /* =====================================================
+       LOGIN FORM
+    ===================================================== */
 
     loginForm.addEventListener(
         "submit",
@@ -1075,123 +806,63 @@
 
             event.preventDefault();
 
+            loginError.textContent = "";
 
             const email =
-                document
-                    .getElementById("email")
-                    .value
-                    .trim()
-                    .toLowerCase();
-
+                emailInput.value.trim();
 
             const password =
-                document
-                    .getElementById("password")
-                    .value;
-
-
-            loginError.style.display =
-                "none";
-
-
-            loginButton.disabled =
-                true;
-
-
-            loginButton.textContent =
-                "Memeriksa...";
+                passwordInput.value;
 
 
             try {
 
-                /*
-                 * LOGIN FIREBASE
-                 */
+                await signInWithEmailAndPassword(
+                    auth,
+                    email,
+                    password
+                );
 
-                const result =
-                    await signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password
-                    );
-
-
-                /*
-                 * CEK EMAIL ADMIN
-                 */
-
-                if (
-                    result.user.email
-                        .toLowerCase()
-                    !==
-                    ADMIN_EMAIL
-                        .toLowerCase()
-                ) {
-
-                    await signOut(auth);
-
-                    throw new Error(
-                        "Akun ini bukan akun admin Clover."
-                    );
-
-                }
-
-
-            }
-            catch (error) {
+            } catch (error) {
 
                 console.error(error);
 
+                switch (error.code) {
 
-                loginError.style.display =
-                    "block";
+                    case "auth/invalid-credential":
 
+                        loginError.textContent =
+                            "Email atau password salah.";
 
-                if (
-                    error.code ===
-                    "auth/invalid-credential"
-                ) {
+                        break;
 
-                    loginError.textContent =
-                        "Email atau password salah.";
+                    case "auth/user-not-found":
 
-                }
+                        loginError.textContent =
+                            "Akun admin tidak ditemukan.";
 
-                else if (
-                    error.code ===
-                    "auth/user-not-found"
-                ) {
+                        break;
 
-                    loginError.textContent =
-                        "Akun admin tidak ditemukan.";
+                    case "auth/wrong-password":
 
-                }
+                        loginError.textContent =
+                            "Password salah.";
 
-                else if (
-                    error.code ===
-                    "auth/wrong-password"
-                ) {
+                        break;
 
-                    loginError.textContent =
-                        "Password salah.";
+                    case "auth/invalid-email":
 
-                }
+                        loginError.textContent =
+                            "Format email tidak valid.";
 
-                else {
+                        break;
 
-                    loginError.textContent =
-                        error.message ||
-                        "Login gagal.";
+                    default:
+
+                        loginError.textContent =
+                            "Login gagal. Silakan coba lagi.";
 
                 }
-
-
-                loginButton.disabled =
-                    false;
-
-
-                loginButton.textContent =
-                    "Masuk sebagai Admin";
 
             }
 
@@ -1199,21 +870,27 @@
     );
 
 
-
-    /* ==================================================
-       AUTH STATE
-    ================================================== */
+    /* =====================================================
+       CEK STATUS LOGIN
+    ===================================================== */
 
     onAuthStateChanged(
         auth,
         function (user) {
 
+            if (user) {
 
-            /*
-             * TIDAK ADA USER
-             */
+                loginPage.style.display =
+                    "none";
 
-            if (!user) {
+                dashboard.style.display =
+                    "block";
+
+                loginError.textContent = "";
+
+                loadMessages();
+
+            } else {
 
                 loginPage.style.display =
                     "flex";
@@ -1221,77 +898,54 @@
                 dashboard.style.display =
                     "none";
 
-                return;
+                messageList.innerHTML = `
+
+                    <div class="loading">
+                        Silakan login untuk melihat pesan.
+                    </div>
+
+                `;
 
             }
-
-
-
-            /*
-             * USER ADA
-             *
-             * CEK ADMIN
-             */
-
-            if (
-                !user.email ||
-                user.email.toLowerCase()
-                !==
-                ADMIN_EMAIL.toLowerCase()
-            ) {
-
-                signOut(auth);
-
-                return;
-
-            }
-
-
-
-            /*
-             * ADMIN VALID
-             */
-
-            loginPage.style.display =
-                "none";
-
-
-            dashboard.style.display =
-                "block";
-
-
-            loadMessages();
 
         }
     );
 
 
-
-    /* ==================================================
+    /* =====================================================
        LOGOUT
-    ================================================== */
+    ===================================================== */
 
-    logoutBtn.addEventListener(
+    logoutButton.addEventListener(
         "click",
         async function () {
 
-            await signOut(auth);
+            try {
+
+                await signOut(auth);
+
+                emailInput.value = "";
+                passwordInput.value = "";
+
+            } catch (error) {
+
+                console.error(error);
+
+            }
 
         }
     );
 
 
-
-    /* ==================================================
-       LOAD MESSAGES
-    ================================================== */
+    /* =====================================================
+       LOAD PESAN
+    ===================================================== */
 
     function loadMessages() {
 
-
         const messagesRef =
             ref(
-                db,
+                database,
                 "clover/messages"
             );
 
@@ -1299,148 +953,92 @@
         onValue(
             messagesRef,
 
-
             function (snapshot) {
-
-
-                /*
-                 * DATABASE CONNECTED
-                 */
-
-                databaseStatus.textContent =
-                    "●";
-
-
-                connectionStatus.textContent =
-                    "● Terhubung";
-
-
-                connectionStatus.classList
-                    .remove("offline");
-
-
 
                 const data =
                     snapshot.val();
 
 
+                databaseStatus.textContent =
+                    "Online";
 
-                /*
-                 * TIDAK ADA DATA
-                 */
+                messageList.innerHTML = "";
+
 
                 if (!data) {
-
 
                     totalMessages.textContent =
                         "0";
 
-
                     todayMessages.textContent =
                         "0";
-
-
-                    deleteAllBtn.disabled =
-                        true;
 
 
                     messageList.innerHTML = `
 
                         <div class="empty">
 
-                            <h3>
-                                Belum ada pesan 💌
-                            </h3>
+                            <div class="empty-icon">
+                                💚
+                            </div>
 
                             <p>
-                                Pesan kehangatan
-                                yang masuk akan
-                                muncul di sini.
+                                Belum ada pesan kehangatan.
                             </p>
 
                         </div>
 
                     `;
 
-
                     return;
 
                 }
 
 
-
-                /*
-                 * UBAH OBJECT MENJADI ARRAY
-                 */
-
                 const messages =
                     Object.entries(data)
-                        .map(
-                            ([id, message]) => ({
-
-                                id: id,
-
-                                ...message
-
-                            })
-                        )
-                        .sort(
-                            (a, b) =>
-
-                                Number(
-                                    b.createdAt || 0
-                                )
-                                -
-                                Number(
-                                    a.createdAt || 0
-                                )
-                        );
+                    .map(
+                        ([id, message]) => ({
+                            id,
+                            ...message
+                        })
+                    );
 
 
+                /* Terbaru di atas */
 
-                /*
-                 * TOTAL
-                 */
+                messages.sort(
+                    (a, b) =>
+                        Number(b.createdAt || 0)
+                        -
+                        Number(a.createdAt || 0)
+                );
+
 
                 totalMessages.textContent =
                     messages.length;
 
 
-                deleteAllBtn.disabled =
-                    false;
+                /* Pesan hari ini */
 
-
-
-                /*
-                 * PESAN HARI INI
-                 */
-
-                const now =
-                    new Date();
-
-
-                const todayStart =
-                    new Date(
-
-                        now.getFullYear(),
-
-                        now.getMonth(),
-
-                        now.getDate()
-
-                    ).getTime();
+                const today =
+                    new Date().toDateString();
 
 
                 const todayCount =
                     messages.filter(
-                        message =>
+                        message => {
 
-                            Number(
-                                message.createdAt || 0
-                            )
-                            >=
-                            todayStart
+                            if (!message.createdAt) {
+                                return false;
+                            }
 
+                            return new Date(
+                                Number(message.createdAt)
+                            ).toDateString()
+                            === today;
+
+                        }
                     ).length;
 
 
@@ -1448,220 +1046,11 @@
                     todayCount;
 
 
-
-                /*
-                 * BERSIHKAN LIST
-                 */
-
-                messageList.innerHTML =
-                    "";
-
-
-
-                /*
-                 * TAMPILKAN SEMUA PESAN
-                 */
-
                 messages.forEach(
-                    function (message) {
+                    message => {
 
-
-                        const card =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        card.className =
-                            "message-card";
-
-
-
-                        /*
-                         * DATA
-                         */
-
-                        const sender =
-                            message.sender ||
-                            "Anonim";
-
-
-                        const text =
-                            message.text ||
-                            "(Pesan kosong)";
-
-
-                        const date =
-                            formatDate(
-                                message.createdAt
-                            );
-
-
-
-                        /*
-                         * TOP
-                         */
-
-                        const top =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        top.className =
-                            "message-top";
-
-
-
-                        const senderElement =
-                            document.createElement(
-                                "span"
-                            );
-
-
-                        senderElement.className =
-                            "sender";
-
-
-                        senderElement.textContent =
-                            "💚 " + sender;
-
-
-
-                        const timeElement =
-                            document.createElement(
-                                "span"
-                            );
-
-
-                        timeElement.className =
-                            "time";
-
-
-                        timeElement.textContent =
-                            date;
-
-
-
-                        top.appendChild(
-                            senderElement
-                        );
-
-
-                        top.appendChild(
-                            timeElement
-                        );
-
-
-
-                        /*
-                         * TEXT
-                         */
-
-                        const textElement =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        textElement.className =
-                            "message-text";
-
-
-                        textElement.textContent =
-                            text;
-
-
-
-                        /*
-                         * BOTTOM
-                         */
-
-                        const bottom =
-                            document.createElement(
-                                "div"
-                            );
-
-
-                        bottom.className =
-                            "message-bottom";
-
-
-
-                        const idElement =
-                            document.createElement(
-                                "span"
-                            );
-
-
-                        idElement.className =
-                            "message-id";
-
-
-                        idElement.textContent =
-                            "ID: " + message.id;
-
-
-
-                        const deleteButton =
-                            document.createElement(
-                                "button"
-                            );
-
-
-                        deleteButton.className =
-                            "delete-btn";
-
-
-                        deleteButton.textContent =
-                            "🗑 Hapus";
-
-
-                        deleteButton.addEventListener(
-                            "click",
-                            function () {
-
-                                deleteMessage(
-                                    message.id
-                                );
-
-                            }
-                        );
-
-
-
-                        bottom.appendChild(
-                            idElement
-                        );
-
-
-                        bottom.appendChild(
-                            deleteButton
-                        );
-
-
-
-                        /*
-                         * GABUNGKAN
-                         */
-
-                        card.appendChild(
-                            top
-                        );
-
-
-                        card.appendChild(
-                            textElement
-                        );
-
-
-                        card.appendChild(
-                            bottom
-                        );
-
-
-                        messageList.appendChild(
-                            card
+                        createMessageCard(
+                            message
                         );
 
                     }
@@ -1669,36 +1058,23 @@
 
             },
 
-
             function (error) {
-
 
                 console.error(error);
 
-
                 databaseStatus.textContent =
-                    "✕";
-
-
-                connectionStatus.textContent =
-                    "✕ Tidak terhubung";
-
-
-                connectionStatus.classList
-                    .add("offline");
-
+                    "Error";
 
                 messageList.innerHTML = `
 
                     <div class="empty">
 
-                        <h3>
-                            Gagal memuat pesan
-                        </h3>
+                        <div class="empty-icon">
+                            ⚠️
+                        </div>
 
                         <p>
-                            Periksa koneksi Firebase
-                            dan Database Rules.
+                            Tidak dapat mengambil data Firebase.
                         </p>
 
                     </div>
@@ -1706,58 +1082,140 @@
                 `;
 
             }
-
         );
 
     }
 
 
+    /* =====================================================
+       CARD PESAN
+    ===================================================== */
 
-    /* ==================================================
-       DELETE ONE MESSAGE
-    ================================================== */
+    function createMessageCard(message) {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "message-card";
+
+
+        const sender =
+            message.sender ||
+            "Anonim";
+
+
+        const text =
+            message.text ||
+            "(Pesan kosong)";
+
+
+        let dateText =
+            "Tanggal tidak tersedia";
+
+
+        if (message.createdAt) {
+
+            dateText =
+                new Date(
+                    Number(message.createdAt)
+                ).toLocaleString(
+                    "id-ID",
+                    {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    }
+                );
+
+        }
+
+
+        card.innerHTML = `
+
+            <div class="message-top">
+
+                <div class="sender">
+                    💚 ${escapeHTML(sender)}
+                </div>
+
+                <div class="date">
+                    ${dateText}
+                </div>
+
+            </div>
+
+
+            <div class="message-text">
+                ${escapeHTML(text)}
+            </div>
+
+
+            <div class="message-footer">
+
+                <div class="message-id">
+                    ID: ${escapeHTML(message.id)}
+                </div>
+
+                <button
+                    class="delete-button">
+
+                    Hapus
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        card
+            .querySelector(".delete-button")
+            .addEventListener(
+                "click",
+                () => deleteMessage(message.id)
+            );
+
+
+        messageList.appendChild(card);
+
+    }
+
+
+    /* =====================================================
+       HAPUS SATU PESAN
+    ===================================================== */
 
     async function deleteMessage(id) {
 
-
-        const confirmDelete =
+        const confirmation =
             confirm(
                 "Yakin ingin menghapus pesan ini?"
             );
 
 
-        if (!confirmDelete) {
-
+        if (!confirmation) {
             return;
-
         }
 
 
         try {
 
-
-            const messageRef =
-                ref(
-                    db,
-                    "clover/messages/" + id
-                );
-
-
             await remove(
-                messageRef
+                ref(
+                    database,
+                    "clover/messages/" + id
+                )
             );
 
-
-        }
-        catch (error) {
-
+        } catch (error) {
 
             console.error(error);
 
-
             alert(
-                "Gagal menghapus pesan:\n" +
-                error.message
+                "Gagal menghapus pesan."
             );
 
         }
@@ -1765,75 +1223,44 @@
     }
 
 
+    /* =====================================================
+       HAPUS SEMUA
+    ===================================================== */
 
-    /* ==================================================
-       DELETE ALL
-    ================================================== */
-
-    deleteAllBtn.addEventListener(
+    deleteAllButton.addEventListener(
         "click",
         async function () {
 
-
-            const firstConfirm =
+            const confirmation =
                 confirm(
-                    "Yakin ingin menghapus SEMUA pesan?"
+                    "Yakin ingin menghapus SEMUA pesan?\n\nTindakan ini tidak dapat dibatalkan."
                 );
 
 
-            if (!firstConfirm) {
-
+            if (!confirmation) {
                 return;
-
-            }
-
-
-            const secondConfirm =
-                confirm(
-                    "PERINGATAN!\n\n" +
-                    "Semua pesan kehangatan " +
-                    "akan dihapus secara permanen.\n\n" +
-                    "Lanjutkan?"
-                );
-
-
-            if (!secondConfirm) {
-
-                return;
-
             }
 
 
             try {
 
-
-                const messagesRef =
-                    ref(
-                        db,
-                        "clover/messages"
-                    );
-
-
                 await remove(
-                    messagesRef
+                    ref(
+                        database,
+                        "clover/messages"
+                    )
                 );
-
 
                 alert(
                     "Semua pesan berhasil dihapus."
                 );
 
-
-            }
-            catch (error) {
-
+            } catch (error) {
 
                 console.error(error);
 
-
                 alert(
-                    "Gagal menghapus semua pesan:\n" +
-                    error.message
+                    "Gagal menghapus semua pesan."
                 );
 
             }
@@ -1842,50 +1269,22 @@
     );
 
 
+    /* =====================================================
+       ESCAPE HTML
+    ===================================================== */
 
-    /* ==================================================
-       FORMAT DATE
-    ================================================== */
+    function escapeHTML(value) {
 
-    function formatDate(timestamp) {
-
-
-        if (!timestamp) {
-
-            return "Waktu tidak tersedia";
-
-        }
-
-
-        const date =
-            new Date(
-                Number(timestamp)
-            );
-
-
-        return date.toLocaleString(
-            "id-ID",
-            {
-
-                day: "2-digit",
-
-                month: "2-digit",
-
-                year: "numeric",
-
-                hour: "2-digit",
-
-                minute: "2-digit"
-
-            }
-        );
+        return String(value)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
 
     }
 
-
 </script>
 
-
 </body>
-
     </html>
