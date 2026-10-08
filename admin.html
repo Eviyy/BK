@@ -66,7 +66,7 @@
 </div>
 
 <!-- =====================================================
-     LOGIN PAGE (Wajib login sebelum dashboard muncul)
+     LOGIN PAGE
 ===================================================== -->
 <div id="loginPage" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-100">
     <div class="w-full max-w-md glass-card rounded-[2.5rem] p-8 md:p-10 shadow-2xl border border-white">
@@ -102,7 +102,7 @@
 </div>
 
 <!-- =====================================================
-     DASHBOARD (Tersembunyi secara default sebelum login sukses)
+     DASHBOARD
 ===================================================== -->
 <div id="dashboard" class="hidden min-h-screen flex flex-col">
 
@@ -180,7 +180,7 @@
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
@@ -387,7 +387,6 @@
         card.querySelectorAll("[data-action]").forEach(button => {
             button.addEventListener("click", function() {
                 const action = this.dataset.action;
-                console.log("Tombol diklik:", action, "untuk ID:", message.id);
                 if (action === "approve") changeStatus(message.id, "approved");
                 else if (action === "reject") changeStatus(message.id, "rejected");
                 else if (action === "pending") changeStatus(message.id, "pending");
@@ -402,33 +401,40 @@
         const msg = newStatus === "approved" ? "Setujui pesan ini?" : newStatus === "rejected" ? "Tolak pesan ini?" : "Kembalikan pesan menjadi pending?";
         if (!confirm(msg)) return;
         try {
-            console.log("Mengubah status ke:", newStatus, "pada ID:", id);
             await update(ref(database, "clover/messages/" + id), { status: newStatus });
-            console.log("Status berhasil diubah!");
         } catch (error) {
             console.error("Gagal update:", error);
-            alert("Gagal mengubah status pesan. Cek koneksi atau izin database.");
+            alert("Gagal mengubah status pesan.");
         }
     }
 
     async function deleteMessage(id) {
         if (!confirm("Yakin ingin menghapus pesan ini?")) return;
         try {
-            console.log("Menghapus pesan ID:", id);
             await remove(ref(database, "clover/messages/" + id));
-            console.log("Pesan berhasil dihapus!");
         } catch (error) {
             console.error("Gagal hapus:", error);
-            alert("Gagal menghapus pesan. Cek koneksi atau izin database.");
+            alert("Gagal menghapus pesan.");
         }
     }
 
+    // Fungsi Hapus Semua menggunakan Multi-path Update yang aman dari batasan parent-node
     deleteAllButton.addEventListener("click", async function() {
         if (!confirm("Yakin ingin menghapus SEMUA pesan?\n\nTindakan ini tidak dapat dibatalkan.")) return;
         try {
-            console.log("Menghapus semua pesan...");
-            await remove(ref(database, "clover/messages"));
-            alert("Semua pesan berhasil dihapus.");
+            const messagesRef = ref(database, "clover/messages");
+            const snapshot = await get(messagesRef);
+            
+            if (snapshot.exists()) {
+                const updates = {};
+                snapshot.forEach((childSnapshot) => {
+                    updates[childSnapshot.key] = null;
+                });
+                await update(messagesRef, updates);
+                alert("Semua pesan berhasil dihapus.");
+            } else {
+                alert("Tidak ada pesan untuk dihapus.");
+            }
         } catch (error) {
             console.error("Gagal hapus semua:", error);
             alert("Gagal menghapus semua pesan.");
