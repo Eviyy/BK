@@ -1,0 +1,16 @@
+{
+  "name": "Clover — Kamu Tidak Sendirian",
+  "short_name": "Clover",
+  "start_url": "/BK/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/svgs/solid/clover.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
