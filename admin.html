@@ -10,9 +10,10 @@
     <meta name="description"
         content="Clover Admin Dashboard">
 
-    <title>Clover — Admin</title>
+    <title>Clover — Admin Dashboard</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -26,26 +27,40 @@
             min-height: 100vh;
         }
 
+
         /* =========================
            LOGIN
         ========================= */
 
         #loginPage {
             min-height: 100vh;
+
             display: flex;
             justify-content: center;
             align-items: center;
+
             padding: 20px;
-            background: linear-gradient(135deg, #e7f1e8, #f7f2e7);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #e7f1e8,
+                    #f7f2e7
+                );
         }
 
         .login-box {
             width: 100%;
             max-width: 400px;
+
             background: white;
+
             padding: 35px;
+
             border-radius: 22px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, .10);
+
+            box-shadow:
+                0 15px 40px rgba(0, 0, 0, .10);
         }
 
         .logo {
@@ -56,6 +71,7 @@
         .logo-icon {
             width: 70px;
             height: 70px;
+
             margin: auto;
             margin-bottom: 12px;
 
@@ -64,6 +80,7 @@
             justify-content: center;
 
             background: #5f8f68;
+
             border-radius: 50%;
 
             color: white;
@@ -86,29 +103,37 @@
 
         .form-group label {
             display: block;
+
             margin-bottom: 7px;
+
             font-size: 14px;
             font-weight: bold;
         }
 
         .form-group input {
             width: 100%;
+
             padding: 13px 14px;
 
             border: 1px solid #d5ddd5;
             border-radius: 10px;
 
             outline: none;
+
             font-size: 15px;
         }
 
         .form-group input:focus {
             border-color: #5f8f68;
-            box-shadow: 0 0 0 3px rgba(95, 143, 104, .12);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(95, 143, 104, .12);
         }
 
         .login-button {
             width: 100%;
+
             padding: 13px;
 
             border: none;
@@ -129,13 +154,16 @@
 
         .login-error {
             min-height: 20px;
+
             margin-top: 12px;
 
             text-align: center;
 
             color: #d9534f;
+
             font-size: 14px;
         }
+
 
         /* =========================
            DASHBOARD
@@ -155,16 +183,19 @@
             justify-content: space-between;
             align-items: center;
 
-            box-shadow: 0 2px 12px rgba(0, 0, 0, .07);
+            box-shadow:
+                0 2px 12px rgba(0, 0, 0, .07);
 
             position: sticky;
             top: 0;
+
             z-index: 10;
         }
 
         .navbar-brand {
             display: flex;
             align-items: center;
+
             gap: 12px;
         }
 
@@ -195,6 +226,7 @@
             margin-top: 2px;
 
             color: #888;
+
             font-size: 12px;
         }
 
@@ -209,14 +241,25 @@
             border-radius: 9px;
 
             cursor: pointer;
+
             font-weight: bold;
         }
+
+        .logout-button:hover {
+            background: #ead0d0;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
 
         .container {
             width: 100%;
             max-width: 1100px;
 
             margin: 30px auto;
+
             padding: 0 20px;
         }
 
@@ -226,7 +269,9 @@
 
         .welcome h1 {
             color: #304d38;
+
             font-size: 28px;
+
             margin-bottom: 5px;
         }
 
@@ -234,13 +279,16 @@
             color: #777;
         }
 
+
         /* =========================
            STATISTICS
         ========================= */
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
 
             gap: 18px;
 
@@ -254,22 +302,28 @@
 
             border-radius: 16px;
 
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, .06);
         }
 
         .stat-card p {
             color: #777;
+
             font-size: 14px;
+
             margin-bottom: 8px;
         }
 
         .stat-card h2 {
             color: #477453;
+
             font-size: 30px;
         }
 
+
         /* =========================
-           MESSAGE
+           MESSAGE SECTION
         ========================= */
 
         .message-section {
@@ -279,11 +333,14 @@
 
             border-radius: 18px;
 
-            box-shadow: 0 5px 20px rgba(0, 0, 0, .06);
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, .06);
         }
 
         .section-header {
             display: flex;
+
             justify-content: space-between;
             align-items: center;
 
@@ -307,12 +364,24 @@
             border-radius: 9px;
 
             cursor: pointer;
+
             font-weight: bold;
         }
 
+        .delete-all-button:hover {
+            background: #bd4541;
+        }
+
+
+        /* =========================
+           MESSAGE LIST
+        ========================= */
+
         #messageList {
             display: flex;
+
             flex-direction: column;
+
             gap: 15px;
         }
 
@@ -320,14 +389,26 @@
             background: #fbfcfa;
 
             border: 1px solid #e2e7e2;
+
             border-radius: 13px;
 
             padding: 18px;
+
+            transition: .2s;
+        }
+
+        .message-card:hover {
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, .05);
         }
 
         .message-top {
             display: flex;
+
             justify-content: space-between;
+
+            align-items: flex-start;
 
             gap: 15px;
 
@@ -336,11 +417,15 @@
 
         .sender {
             color: #477453;
+
             font-weight: bold;
+
+            font-size: 15px;
         }
 
         .date {
             color: #888;
+
             font-size: 12px;
         }
 
@@ -352,34 +437,148 @@
             margin-bottom: 15px;
 
             white-space: pre-wrap;
+
             word-break: break-word;
         }
 
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        .status-row {
+            margin-bottom: 15px;
+        }
+
+        .status-badge {
+            display: inline-block;
+
+            padding: 5px 10px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: bold;
+        }
+
+        .status-pending {
+            background: #fff1c7;
+            color: #9b7100;
+        }
+
+        .status-approved {
+            background: #dff2e2;
+            color: #397347;
+        }
+
+        .status-rejected {
+            background: #f7dddd;
+            color: #a83c3c;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .action-buttons {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+        }
+
+        .action-button {
+            border: none;
+
+            padding: 8px 13px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 12px;
+
+            font-weight: bold;
+
+            transition: .2s;
+        }
+
+        .approve-button {
+            background: #dff2e2;
+            color: #397347;
+        }
+
+        .approve-button:hover {
+            background: #c9e8cf;
+        }
+
+        .reject-button {
+            background: #f7dddd;
+            color: #a83c3c;
+        }
+
+        .reject-button:hover {
+            background: #eccaca;
+        }
+
+        .pending-button {
+            background: #fff1c7;
+            color: #9b7100;
+        }
+
+        .pending-button:hover {
+            background: #f8e7b3;
+        }
+
+        .delete-button {
+            background: #eeeeee;
+            color: #666;
+        }
+
+        .delete-button:hover {
+            background: #dddddd;
+        }
+
+
+        /* =========================
+           FOOTER MESSAGE
+        ========================= */
+
         .message-footer {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             gap: 10px;
+
+            margin-top: 12px;
+
+            padding-top: 12px;
+
+            border-top: 1px solid #eeeeee;
         }
 
         .message-id {
             color: #aaa;
-            font-size: 11px;
+
+            font-size: 10px;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+            white-space: nowrap;
         }
 
-        .delete-button {
-            border: none;
 
-            background: #f5dddd;
-            color: #b13e3e;
-
-            padding: 7px 12px;
-
-            border-radius: 7px;
-
-            cursor: pointer;
-            font-weight: bold;
-        }
+        /* =========================
+           EMPTY / LOADING
+        ========================= */
 
         .empty,
         .loading {
@@ -392,8 +591,10 @@
 
         .empty-icon {
             font-size: 45px;
+
             margin-bottom: 12px;
         }
+
 
         /* =========================
            RESPONSIVE
@@ -411,6 +612,7 @@
 
             .container {
                 margin-top: 20px;
+
                 padding: 0 15px;
             }
 
@@ -428,6 +630,7 @@
 
             .section-header {
                 flex-direction: column;
+
                 align-items: stretch;
             }
 
@@ -437,25 +640,37 @@
 
             .message-top {
                 flex-direction: column;
+
+                gap: 5px;
             }
 
             .message-footer {
                 flex-direction: column;
+
                 align-items: stretch;
             }
 
-            .delete-button {
+            .action-buttons {
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .action-button {
                 width: 100%;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
 
 <!-- =====================================================
-     LOGIN
+     LOGIN PAGE
 ====================================================== -->
 
 <div id="loginPage">
@@ -468,9 +683,13 @@
                 🍀
             </div>
 
-            <h1>Clover</h1>
+            <h1>
+                Clover
+            </h1>
 
-            <p>Admin Dashboard</p>
+            <p>
+                Admin Dashboard
+            </p>
 
         </div>
 
@@ -579,6 +798,7 @@
 
     <main class="container">
 
+
         <div class="welcome">
 
             <h1>
@@ -586,15 +806,17 @@
             </h1>
 
             <p>
-                Pantau pesan kehangatan yang dikirim melalui website Clover.
+                Pantau dan moderasi pesan kehangatan Clover.
             </p>
 
         </div>
 
 
+
         <!-- STATISTICS -->
 
         <div class="stats">
+
 
             <div class="stat-card">
 
@@ -638,19 +860,22 @@
 
             </div>
 
+
         </div>
 
 
 
-        <!-- PESAN -->
+        <!-- MESSAGE SECTION -->
 
         <section class="message-section">
+
 
             <div class="section-header">
 
                 <h2>
                     💚 Pesan Kehangatan
                 </h2>
+
 
                 <button
                     id="deleteAllButton"
@@ -666,12 +891,16 @@
             <div id="messageList">
 
                 <div class="loading">
+
                     Silakan login untuk melihat pesan.
+
                 </div>
 
             </div>
 
+
         </section>
+
 
     </main>
 
@@ -685,9 +914,15 @@
 
 <script type="module">
 
+
+    /* =====================================================
+       IMPORT FIREBASE
+    ===================================================== */
+
     import {
         initializeApp
-    } from
+    }
+    from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 
@@ -696,7 +931,8 @@
         signInWithEmailAndPassword,
         signOut,
         onAuthStateChanged
-    } from
+    }
+    from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 
@@ -704,9 +940,12 @@
         getDatabase,
         ref,
         onValue,
+        update,
         remove
-    } from
+    }
+    from
     "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
 
 
     /* =====================================================
@@ -738,21 +977,35 @@
 
         measurementId:
             "G-3TK6ZQGMDP"
+
     };
 
 
+
     /* =====================================================
-       INITIALIZE
+       ADMIN UID
+    ===================================================== */
+
+    const ADMIN_UID =
+        "B5hS7tiFB7Q291pToua9CituJug2";
+
+
+
+    /* =====================================================
+       INITIALIZE FIREBASE
     ===================================================== */
 
     const app =
         initializeApp(firebaseConfig);
 
+
     const auth =
         getAuth(app);
 
+
     const database =
         getDatabase(app);
+
 
 
     /* =====================================================
@@ -760,49 +1013,85 @@
     ===================================================== */
 
     const loginPage =
-        document.getElementById("loginPage");
+        document.getElementById(
+            "loginPage"
+        );
+
 
     const dashboard =
-        document.getElementById("dashboard");
+        document.getElementById(
+            "dashboard"
+        );
+
 
     const loginForm =
-        document.getElementById("loginForm");
+        document.getElementById(
+            "loginForm"
+        );
+
 
     const emailInput =
-        document.getElementById("email");
+        document.getElementById(
+            "email"
+        );
+
 
     const passwordInput =
-        document.getElementById("password");
+        document.getElementById(
+            "password"
+        );
+
 
     const loginError =
-        document.getElementById("loginError");
+        document.getElementById(
+            "loginError"
+        );
+
 
     const logoutButton =
-        document.getElementById("logoutButton");
+        document.getElementById(
+            "logoutButton"
+        );
+
 
     const messageList =
-        document.getElementById("messageList");
+        document.getElementById(
+            "messageList"
+        );
+
 
     const totalMessages =
-        document.getElementById("totalMessages");
+        document.getElementById(
+            "totalMessages"
+        );
+
 
     const todayMessages =
-        document.getElementById("todayMessages");
+        document.getElementById(
+            "todayMessages"
+        );
+
 
     const databaseStatus =
-        document.getElementById("databaseStatus");
+        document.getElementById(
+            "databaseStatus"
+        );
+
 
     const deleteAllButton =
-        document.getElementById("deleteAllButton");
+        document.getElementById(
+            "deleteAllButton"
+        );
+
 
 
     /* =====================================================
-       LOGIN FORM
+       LOGIN
     ===================================================== */
 
     loginForm.addEventListener(
         "submit",
-        async function (event) {
+        async function(event) {
 
             event.preventDefault();
 
@@ -817,50 +1106,92 @@
 
             try {
 
-                await signInWithEmailAndPassword(
-                    auth,
-                    email,
-                    password
+                const result =
+                    await signInWithEmailAndPassword(
+                        auth,
+                        email,
+                        password
+                    );
+
+
+                /*
+                 * Pastikan akun yang login
+                 * benar-benar akun admin.
+                 */
+
+                if (
+                    result.user.uid !==
+                    ADMIN_UID
+                ) {
+
+                    await signOut(auth);
+
+                    throw new Error(
+                        "Akun ini bukan akun admin Clover."
+                    );
+
+                }
+
+
+            } catch(error) {
+
+                console.error(
+                    error
                 );
 
-            } catch (error) {
 
-                console.error(error);
+                if (
+                    error.message ===
+                    "Akun ini bukan akun admin Clover."
+                ) {
 
-                switch (error.code) {
+                    loginError.textContent =
+                        "Akun tersebut bukan akun admin Clover.";
 
-                    case "auth/invalid-credential":
+                }
 
-                        loginError.textContent =
-                            "Email atau password salah.";
+                else {
 
-                        break;
+                    switch(error.code) {
 
-                    case "auth/user-not-found":
+                        case "auth/invalid-credential":
 
-                        loginError.textContent =
-                            "Akun admin tidak ditemukan.";
+                            loginError.textContent =
+                                "Email atau password salah.";
 
-                        break;
+                            break;
 
-                    case "auth/wrong-password":
 
-                        loginError.textContent =
-                            "Password salah.";
+                        case "auth/user-not-found":
 
-                        break;
+                            loginError.textContent =
+                                "Akun tidak ditemukan.";
 
-                    case "auth/invalid-email":
+                            break;
 
-                        loginError.textContent =
-                            "Format email tidak valid.";
 
-                        break;
+                        case "auth/wrong-password":
 
-                    default:
+                            loginError.textContent =
+                                "Password salah.";
 
-                        loginError.textContent =
-                            "Login gagal. Silakan coba lagi.";
+                            break;
+
+
+                        case "auth/invalid-email":
+
+                            loginError.textContent =
+                                "Format email tidak valid.";
+
+                            break;
+
+
+                        default:
+
+                            loginError.textContent =
+                                "Login gagal. Silakan coba lagi.";
+
+                    }
 
                 }
 
@@ -870,38 +1201,79 @@
     );
 
 
+
     /* =====================================================
-       CEK STATUS LOGIN
+       AUTH STATE
     ===================================================== */
 
     onAuthStateChanged(
         auth,
-        function (user) {
+        function(user) {
 
-            if (user) {
+
+            if(user) {
+
+
+                /*
+                 * Jika bukan admin,
+                 * langsung logout.
+                 */
+
+                if(
+                    user.uid !==
+                    ADMIN_UID
+                ) {
+
+                    signOut(auth);
+
+                    loginPage.style.display =
+                        "flex";
+
+                    dashboard.style.display =
+                        "none";
+
+                    loginError.textContent =
+                        "Akun ini bukan akun admin.";
+
+                    return;
+
+                }
+
 
                 loginPage.style.display =
                     "none";
+
 
                 dashboard.style.display =
                     "block";
 
-                loginError.textContent = "";
+
+                loginError.textContent =
+                    "";
+
 
                 loadMessages();
 
-            } else {
+
+            }
+
+            else {
+
 
                 loginPage.style.display =
                     "flex";
 
+
                 dashboard.style.display =
                     "none";
+
 
                 messageList.innerHTML = `
 
                     <div class="loading">
+
                         Silakan login untuk melihat pesan.
+
                     </div>
 
                 `;
@@ -912,24 +1284,30 @@
     );
 
 
+
     /* =====================================================
        LOGOUT
     ===================================================== */
 
     logoutButton.addEventListener(
         "click",
-        async function () {
+        async function() {
 
             try {
 
                 await signOut(auth);
 
                 emailInput.value = "";
+
                 passwordInput.value = "";
 
-            } catch (error) {
+            }
 
-                console.error(error);
+            catch(error) {
+
+                console.error(
+                    error
+                );
 
             }
 
@@ -937,11 +1315,13 @@
     );
 
 
+
     /* =====================================================
-       LOAD PESAN
+       LOAD MESSAGES
     ===================================================== */
 
     function loadMessages() {
+
 
         const messagesRef =
             ref(
@@ -951,9 +1331,11 @@
 
 
         onValue(
+
             messagesRef,
 
-            function (snapshot) {
+            function(snapshot) {
+
 
                 const data =
                     snapshot.val();
@@ -962,13 +1344,21 @@
                 databaseStatus.textContent =
                     "Online";
 
-                messageList.innerHTML = "";
+
+                databaseStatus.style.fontSize =
+                    "20px";
 
 
-                if (!data) {
+                messageList.innerHTML =
+                    "";
+
+
+                if(!data) {
+
 
                     totalMessages.textContent =
                         "0";
+
 
                     todayMessages.textContent =
                         "0";
@@ -995,6 +1385,11 @@
                 }
 
 
+
+                /* =========================
+                   UBAH OBJECT MENJADI ARRAY
+                ========================= */
+
                 const messages =
                     Object.entries(data)
                     .map(
@@ -1005,21 +1400,36 @@
                     );
 
 
-                /* Terbaru di atas */
+
+                /* =========================
+                   PESAN TERBARU DI ATAS
+                ========================= */
 
                 messages.sort(
                     (a, b) =>
-                        Number(b.createdAt || 0)
+                        Number(
+                            b.createdAt || 0
+                        )
                         -
-                        Number(a.createdAt || 0)
+                        Number(
+                            a.createdAt || 0
+                        )
                 );
 
+
+
+                /* =========================
+                   TOTAL PESAN
+                ========================= */
 
                 totalMessages.textContent =
                     messages.length;
 
 
-                /* Pesan hari ini */
+
+                /* =========================
+                   PESAN HARI INI
+                ========================= */
 
                 const today =
                     new Date().toDateString();
@@ -1029,12 +1439,19 @@
                     messages.filter(
                         message => {
 
-                            if (!message.createdAt) {
+                            if(
+                                !message.createdAt
+                            ) {
+
                                 return false;
+
                             }
 
+
                             return new Date(
-                                Number(message.createdAt)
+                                Number(
+                                    message.createdAt
+                                )
                             ).toDateString()
                             === today;
 
@@ -1045,6 +1462,11 @@
                 todayMessages.textContent =
                     todayCount;
 
+
+
+                /* =========================
+                   TAMPILKAN PESAN
+                ========================= */
 
                 messages.forEach(
                     message => {
@@ -1058,12 +1480,22 @@
 
             },
 
-            function (error) {
 
-                console.error(error);
+            function(error) {
+
+
+                console.error(
+                    error
+                );
+
 
                 databaseStatus.textContent =
                     "Error";
+
+
+                databaseStatus.style.fontSize =
+                    "20px";
+
 
                 messageList.innerHTML = `
 
@@ -1082,22 +1514,31 @@
                 `;
 
             }
+
         );
 
     }
 
 
+
     /* =====================================================
-       CARD PESAN
+       CREATE MESSAGE CARD
     ===================================================== */
 
-    function createMessageCard(message) {
+    function createMessageCard(
+        message
+    ) {
+
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
+
 
         card.className =
             "message-card";
+
 
 
         const sender =
@@ -1110,15 +1551,29 @@
             "(Pesan kosong)";
 
 
+        const status =
+            message.status ||
+            "pending";
+
+
+
+        /* =========================
+           TANGGAL
+        ========================= */
+
         let dateText =
             "Tanggal tidak tersedia";
 
 
-        if (message.createdAt) {
+        if(
+            message.createdAt
+        ) {
 
             dateText =
                 new Date(
-                    Number(message.createdAt)
+                    Number(
+                        message.createdAt
+                    )
                 ).toLocaleString(
                     "id-ID",
                     {
@@ -1133,62 +1588,427 @@
         }
 
 
+
+        /* =========================
+           STATUS
+        ========================= */
+
+        let statusHTML = "";
+
+
+        if(
+            status === "approved"
+        ) {
+
+            statusHTML = `
+
+                <span
+                    class="status-badge status-approved">
+
+                    🟢 Approved
+
+                </span>
+
+            `;
+
+        }
+
+        else if(
+            status === "rejected"
+        ) {
+
+            statusHTML = `
+
+                <span
+                    class="status-badge status-rejected">
+
+                    🔴 Rejected
+
+                </span>
+
+            `;
+
+        }
+
+        else {
+
+            statusHTML = `
+
+                <span
+                    class="status-badge status-pending">
+
+                    🟡 Pending
+
+                </span>
+
+            `;
+
+        }
+
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        let buttonsHTML = "";
+
+
+
+        if(
+            status === "pending"
+        ) {
+
+            buttonsHTML = `
+
+                <button
+                    class="action-button approve-button"
+                    data-action="approve">
+
+                    ✓ Approve
+
+                </button>
+
+
+                <button
+                    class="action-button reject-button"
+                    data-action="reject">
+
+                    ✕ Reject
+
+                </button>
+
+            `;
+
+        }
+
+
+
+        else if(
+            status === "approved"
+        ) {
+
+            buttonsHTML = `
+
+                <button
+                    class="action-button pending-button"
+                    data-action="pending">
+
+                    ↩ Pending
+
+                </button>
+
+
+                <button
+                    class="action-button reject-button"
+                    data-action="reject">
+
+                    ✕ Reject
+
+                </button>
+
+            `;
+
+        }
+
+
+
+        else if(
+            status === "rejected"
+        ) {
+
+            buttonsHTML = `
+
+                <button
+                    class="action-button approve-button"
+                    data-action="approve">
+
+                    ✓ Approve
+
+                </button>
+
+
+                <button
+                    class="action-button pending-button"
+                    data-action="pending">
+
+                    ↩ Pending
+
+                </button>
+
+            `;
+
+        }
+
+
+
+        buttonsHTML += `
+
+            <button
+                class="action-button delete-button"
+                data-action="delete">
+
+                🗑 Hapus
+
+            </button>
+
+        `;
+
+
+
+        /* =========================
+           HTML CARD
+        ========================= */
+
         card.innerHTML = `
 
             <div class="message-top">
 
                 <div class="sender">
+
                     💚 ${escapeHTML(sender)}
+
                 </div>
 
+
                 <div class="date">
+
                     ${dateText}
+
                 </div>
 
             </div>
 
 
             <div class="message-text">
+
                 ${escapeHTML(text)}
+
+            </div>
+
+
+            <div class="status-row">
+
+                ${statusHTML}
+
+            </div>
+
+
+            <div class="action-buttons">
+
+                ${buttonsHTML}
+
             </div>
 
 
             <div class="message-footer">
 
                 <div class="message-id">
-                    ID: ${escapeHTML(message.id)}
+
+                    ID:
+                    ${escapeHTML(message.id)}
+
                 </div>
-
-                <button
-                    class="delete-button">
-
-                    Hapus
-
-                </button>
 
             </div>
 
         `;
 
 
-        card
-            .querySelector(".delete-button")
-            .addEventListener(
-                "click",
-                () => deleteMessage(message.id)
+
+        /* =========================
+           BUTTON EVENTS
+        ========================= */
+
+        const buttons =
+            card.querySelectorAll(
+                "[data-action]"
             );
 
 
-        messageList.appendChild(card);
+        buttons.forEach(
+            button => {
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        const action =
+                            this.dataset.action;
+
+
+                        if(
+                            action ===
+                            "approve"
+                        ) {
+
+                            changeStatus(
+                                message.id,
+                                "approved"
+                            );
+
+                        }
+
+
+                        else if(
+                            action ===
+                            "reject"
+                        ) {
+
+                            changeStatus(
+                                message.id,
+                                "rejected"
+                            );
+
+                        }
+
+
+                        else if(
+                            action ===
+                            "pending"
+                        ) {
+
+                            changeStatus(
+                                message.id,
+                                "pending"
+                            );
+
+                        }
+
+
+                        else if(
+                            action ===
+                            "delete"
+                        ) {
+
+                            deleteMessage(
+                                message.id
+                            );
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+
+        messageList.appendChild(
+            card
+        );
 
     }
 
 
+
     /* =====================================================
-       HAPUS SATU PESAN
+       CHANGE STATUS
     ===================================================== */
 
-    async function deleteMessage(id) {
+    async function changeStatus(
+        id,
+        newStatus
+    ) {
+
+
+        let confirmationMessage =
+            "";
+
+
+        if(
+            newStatus ===
+            "approved"
+        ) {
+
+            confirmationMessage =
+                "Setujui pesan ini?";
+
+        }
+
+        else if(
+            newStatus ===
+            "rejected"
+        ) {
+
+            confirmationMessage =
+                "Tolak pesan ini?";
+
+        }
+
+        else {
+
+            confirmationMessage =
+                "Kembalikan pesan menjadi pending?";
+
+        }
+
+
+
+        const confirmation =
+            confirm(
+                confirmationMessage
+            );
+
+
+        if(
+            !confirmation
+        ) {
+
+            return;
+
+        }
+
+
+
+        try {
+
+
+            const messageRef =
+                ref(
+                    database,
+                    "clover/messages/" + id
+                );
+
+
+            await update(
+                messageRef,
+                {
+                    status:
+                        newStatus
+                }
+            );
+
+
+        }
+
+        catch(error) {
+
+
+            console.error(
+                error
+            );
+
+
+            alert(
+                "Gagal mengubah status pesan."
+            );
+
+
+        }
+
+    }
+
+
+
+    /* =====================================================
+       DELETE MESSAGE
+    ===================================================== */
+
+    async function deleteMessage(
+        id
+    ) {
+
 
         const confirmation =
             confirm(
@@ -1196,12 +2016,18 @@
             );
 
 
-        if (!confirmation) {
+        if(
+            !confirmation
+        ) {
+
             return;
+
         }
 
 
+
         try {
+
 
             await remove(
                 ref(
@@ -1210,26 +2036,36 @@
                 )
             );
 
-        } catch (error) {
 
-            console.error(error);
+        }
+
+        catch(error) {
+
+
+            console.error(
+                error
+            );
+
 
             alert(
                 "Gagal menghapus pesan."
             );
+
 
         }
 
     }
 
 
+
     /* =====================================================
-       HAPUS SEMUA
+       DELETE ALL
     ===================================================== */
 
     deleteAllButton.addEventListener(
         "click",
-        async function () {
+        async function() {
+
 
             const confirmation =
                 confirm(
@@ -1237,12 +2073,18 @@
                 );
 
 
-            if (!confirmation) {
+            if(
+                !confirmation
+            ) {
+
                 return;
+
             }
 
 
+
             try {
+
 
                 await remove(
                     ref(
@@ -1251,17 +2093,26 @@
                     )
                 );
 
+
                 alert(
                     "Semua pesan berhasil dihapus."
                 );
 
-            } catch (error) {
 
-                console.error(error);
+            }
+
+            catch(error) {
+
+
+                console.error(
+                    error
+                );
+
 
                 alert(
                     "Gagal menghapus semua pesan."
                 );
+
 
             }
 
@@ -1269,22 +2120,46 @@
     );
 
 
+
     /* =====================================================
        ESCAPE HTML
     ===================================================== */
 
-    function escapeHTML(value) {
+    function escapeHTML(
+        value
+    ) {
 
         return String(value)
-            .replaceAll("&", "&amp;")
-            .replaceAll("<", "&lt;")
-            .replaceAll(">", "&gt;")
-            .replaceAll('"', "&quot;")
-            .replaceAll("'", "&#039;");
+
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
 
     }
 
 </script>
 
 </body>
+
     </html>
