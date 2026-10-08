@@ -1,1029 +1,251 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+    <title>KoneksiKita - Kampanye Sosial Kesepian & Isolasi Sosial</title>
 
-    <meta name="description"
-        content="Clover - Kamu tidak sendirian. Ruang kecil untuk terhubung, berbagi, dan saling menguatkan.">
-
-    <title>Clover — Kamu Tidak Sendirian</title>
-
-
-    <!-- =========================
-         TAILWIND CSS
-    ========================== -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- =========================
-         FONT AWESOME
-    ========================== -->
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    >
-
-
-    <!-- =========================
-         GOOGLE FONT
-    ========================== -->
-    <link rel="preconnect"
-        href="https://fonts.googleapis.com">
-
-    <link rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin>
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- =========================
-         CUSTOM CSS
-    ========================== -->
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+          rel="stylesheet">
 
     <style>
-
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
-
 
         html {
             scroll-behavior: smooth;
         }
 
-
-        body {
-            font-family:
-                'Plus Jakarta Sans',
-                sans-serif;
-
-            background: #f8fafc;
-
-            color: #334155;
-
-            margin: 0;
-        }
-
-
-        /* =========================
-           NAVBAR
-        ========================== */
-
-        .navbar {
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-
-        /* =========================
-           HERO
-        ========================== */
-
-        .hero-gradient {
-            background:
-                linear-gradient(
-                    135deg,
-                    #ecfdf5 0%,
-                    #f0fdfa 45%,
-                    #f8fafc 100%
-                );
-        }
-
-
-        /* =========================
-           LEAF
-        ========================== */
-
-        .leaf {
-            transition: all 0.3s ease;
-        }
-
-
-        .leaf.active {
-            color: #0d9488;
-            transform: scale(1.15);
-        }
-
-
-        .leaf.inactive {
-            color: #cbd5e1;
-        }
-
-
-        /* =========================
-           PROGRESS
-        ========================== */
-
-        .progress-bar {
-            transition: width 0.5s ease;
-        }
-
-
-        /* =========================
-           CHALLENGE
-        ========================== */
-
-        .challenge-item {
-            transition: all 0.3s ease;
-        }
-
-
-        .challenge-item:hover {
-            transform: translateY(-2px);
-        }
-
-
-        .task-done {
-            background: #f0fdfa;
-            border-color: #5eead4;
-        }
-
-
-        .task-done .challenge-title {
-            text-decoration: line-through;
-            color: #94a3b8;
-        }
-
-
-        /* =========================
-           ENCOURAGEMENT
-        ========================== */
-
-        .encouragement-box {
-            animation: fadeIn 0.4s ease;
-        }
-
-
-        @keyframes fadeIn {
-
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-        }
-
-
-        /* =========================
-           MESSAGE CARD
-        ========================== */
-
         .message-card {
             transition: all 0.25s ease;
         }
-
 
         .message-card:hover {
             transform: translateY(-3px);
         }
 
-
-        /* =========================
-           LIKE BUTTON
-        ========================== */
-
-        .like-button {
-            transition: all 0.2s ease;
+        .challenge-done {
+            opacity: 0.65;
+            background-color: #f0fdfa;
+            border-color: #99f6e4;
         }
 
-
-        .like-button:hover {
-            transform: scale(1.05);
+        .challenge-done span {
+            text-decoration: line-through;
         }
 
-
-        .like-button.liked {
-            color: #e11d48;
+        .loading {
+            animation: pulse 1.5s infinite;
         }
 
-
-        /* =========================
-           STATUS
-        ========================== */
-
-        .firebase-status {
-            transition: all 0.3s ease;
-        }
-
-
-        /* =========================
-           SECTION
-        ========================== */
-
-        section {
-            scroll-margin-top: 80px;
-        }
-
-
-        /* =========================
-           MOBILE
-        ========================== */
-
-        @media (max-width: 640px) {
-
-            .hero-title {
-                font-size: 2.25rem;
-                line-height: 1.15;
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
             }
 
+            50% {
+                opacity: .45;
+            }
         }
-
     </style>
-
 </head>
 
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
-<body>
-
-
-    <!-- =====================================================
+    <!-- =========================
          NAVBAR
-    ====================================================== -->
+    ========================== -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
 
-    <nav
-        class="navbar fixed top-0 left-0 right-0 z-50
-        bg-white/85 border-b border-slate-100"
-    >
-
-        <div
-            class="max-w-6xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
-
-            <div
-                class="h-16 flex items-center
-                justify-between"
-            >
-
-                <!-- LOGO -->
-
-                <a
-                    href="#hero"
-                    class="flex items-center gap-2"
-                >
-
-                    <div
-                        class="w-10 h-10 rounded-xl
-                        bg-teal-600
-                        flex items-center justify-center
-                        text-white shadow-sm"
-                    >
-
-                        <i class="fa-solid fa-leaf"></i>
-
-                    </div>
-
-
-                    <span
-                        class="text-xl font-extrabold
-                        text-slate-800"
-                    >
-                        Clover
-                    </span>
-
-                </a>
-
-
-                <!-- NAVIGATION -->
-
-                <div
-                    class="hidden md:flex
-                    items-center gap-6
-                    text-sm font-medium"
-                >
-
-                    <a
-                        href="#tentang"
-                        class="text-slate-600
-                        hover:text-teal-600"
-                    >
-                        Tentang
-                    </a>
-
-
-                    <a
-                        href="#note-sampah"
-                        class="text-slate-600
-                        hover:text-teal-600"
-                    >
-                        Note Sampah
-                    </a>
-
-
-                    <a
-                        href="#tantangan"
-                        class="text-slate-600
-                        hover:text-teal-600"
-                    >
-                        Tantangan
-                    </a>
-
-
-                    <a
-                        href="#wall"
-                        class="text-slate-600
-                        hover:text-teal-600"
-                    >
-                        Papan Kehangatan
-                    </a>
-
-
-                    <a
-                        href="#bantuan"
-                        class="text-slate-600
-                        hover:text-teal-600"
-                    >
-                        Bantuan
-                    </a>
-
+            <a href="#" class="flex items-center gap-2">
+                <div class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white text-lg">
+                    <i class="fa-solid fa-heart-pulse"></i>
                 </div>
-
-
-                <!-- EMERGENCY -->
-
-                <a
-                    href="#bantuan"
-                    class="hidden sm:inline-flex
-                    items-center gap-2
-                    px-4 py-2 rounded-xl
-                    bg-rose-50 text-rose-600
-                    text-sm font-semibold
-                    hover:bg-rose-100"
-                >
-
-                    <i class="fa-solid fa-phone"></i>
-
-                    Bantuan
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-
-
-    <!-- =====================================================
-         HERO
-    ====================================================== -->
-
-    <section
-        id="hero"
-        class="hero-gradient pt-32 pb-20"
-    >
-
-        <div
-            class="max-w-6xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
-
-            <div
-                class="grid lg:grid-cols-2
-                gap-12 items-center"
-            >
-
-                <!-- TEXT -->
 
                 <div>
-
-                    <div
-                        class="inline-flex items-center gap-2
-                        px-4 py-2 rounded-full
-                        bg-white border border-teal-100
-                        text-teal-700 text-sm font-semibold
-                        shadow-sm mb-6"
-                    >
-
-                        <span>🍀</span>
-
-                        Ruang aman untuk terhubung
-
-                    </div>
-
-
-                    <h1
-                        class="hero-title
-                        text-4xl sm:text-5xl
-                        lg:text-6xl
-                        font-extrabold
-                        text-slate-800
-                        leading-tight"
-                    >
-
-                        Kamu Tidak Sendirian
-                        di Dunia yang Ramai Ini
-
+                    <h1 class="font-bold text-lg text-slate-800 leading-tight">
+                        KoneksiKita
                     </h1>
 
-
-                    <p
-                        class="mt-6
-                        text-lg text-slate-600
-                        leading-relaxed max-w-xl"
-                    >
-
-                        Clover adalah ruang kecil untuk
-                        berhenti sejenak, mengenali
-                        perasaanmu, dan membangun
-                        kembali koneksi dengan orang lain.
-
+                    <p class="text-xs text-slate-500">
+                        Gerakan Bersama Melawan Kesepian
                     </p>
-
-
-                    <div
-                        class="mt-8
-                        flex flex-col sm:flex-row
-                        gap-3"
-                    >
-
-                        <a
-                            href="#tantangan"
-                            class="inline-flex
-                            items-center justify-center
-                            gap-2 px-6 py-3
-                            rounded-xl
-                            bg-teal-600 text-white
-                            font-bold
-                            hover:bg-teal-700
-                            shadow-lg shadow-teal-600/20"
-                        >
-
-                            Mulai Tantangan
-
-                            <i
-                                class="fa-solid fa-arrow-down"
-                            ></i>
-
-                        </a>
-
-
-                        <a
-                            href="#wall"
-                            class="inline-flex
-                            items-center justify-center
-                            gap-2 px-6 py-3
-                            rounded-xl
-                            bg-white
-                            border border-slate-200
-                            text-slate-700
-                            font-semibold
-                            hover:border-teal-300
-                            hover:text-teal-700"
-                        >
-
-                            <i
-                                class="fa-regular fa-heart"
-                            ></i>
-
-                            Papan Kehangatan
-
-                        </a>
-
-                    </div>
-
                 </div>
+            </a>
+
+            <a href="#bantuan"
+               class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-sm px-4 py-2 rounded-full transition-all flex items-center gap-2">
+
+                <i class="fa-solid fa-phone"></i>
+
+                <span class="hidden sm:inline">
+                    Bantuan Darurat
+                </span>
+
+                <span class="sm:hidden">
+                    Bantuan
+                </span>
+
+            </a>
+        </div>
+    </header>
 
 
-                <!-- HERO VISUAL -->
+    <!-- =========================
+         HERO
+    ========================== -->
+    <section class="bg-gradient-to-b from-teal-50/50 to-slate-50 py-16 px-4">
 
-                <div
-                    class="flex justify-center"
-                >
+        <div class="max-w-4xl mx-auto text-center">
 
-                    <div
-                        class="relative
-                        w-72 h-72 sm:w-80 sm:h-80
-                        rounded-full
-                        bg-white
-                        shadow-2xl
-                        border border-teal-100
-                        flex items-center
-                        justify-center"
-                    >
+            <span class="bg-teal-100 text-teal-800 text-xs font-semibold px-3.5 py-1.5 rounded-full inline-block mb-4">
+                Kampanye Kesadaran Sosial
+            </span>
 
-                        <div
-                            class="text-[120px]"
-                        >
-                            🍀
-                        </div>
+            <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
+                Kamu Tidak Sendirian di Dunia yang Ramai Ini
+            </h2>
 
+            <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-8">
+                Kesepian bukan tanda kelemahan. Ini adalah sinyal alami manusia
+                yang membutuhkan koneksi nyata. Mari saling menyapa dan
+                membangun ruang aman bersama.
+            </p>
 
-                        <div
-                            class="absolute -top-3 -right-3
-                            w-14 h-14 rounded-2xl
-                            bg-white shadow-lg
-                            flex items-center justify-center
-                            text-2xl"
-                        >
-                            💚
-                        </div>
+            <div class="flex flex-wrap justify-center gap-4">
 
+                <a href="#tantangan"
+                   class="bg-teal-600 hover:bg-teal-700 text-white font-medium px-6 py-3 rounded-full shadow-lg shadow-teal-600/20 transition-all">
+                    Ikut Tantangan Hari Ini
+                </a>
 
-                        <div
-                            class="absolute -bottom-3 -left-3
-                            w-14 h-14 rounded-2xl
-                            bg-white shadow-lg
-                            flex items-center justify-center
-                            text-2xl"
-                        >
-                            🌱
-                        </div>
-
-                    </div>
-
-                </div>
+                <a href="#wall"
+                   class="bg-white hover:bg-slate-100 text-slate-700 font-medium px-6 py-3 rounded-full border border-slate-200 transition-all">
+                    Bagikan Pesan Kehangatan
+                </a>
 
             </div>
-
         </div>
-
     </section>
 
 
+    <!-- =========================
+         MAIN
+    ========================== -->
+    <main class="max-w-5xl mx-auto px-4 py-12 flex-1 space-y-16">
 
-    <!-- =====================================================
-         STATS
-    ====================================================== -->
 
-    <section
-        id="tentang"
-        class="bg-white py-16"
-    >
+        <!-- =========================
+             STATISTIK
+        ========================== -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        <div
-            class="max-w-6xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
+                <div class="text-3xl font-bold text-teal-600 mb-1">
+                    1 dari 4
+                </div>
 
-            <div class="text-center mb-12">
-
-                <p
-                    class="text-teal-600
-                    font-bold text-sm uppercase
-                    tracking-wider"
-                >
-                    Tentang Clover
+                <p class="text-slate-600 text-sm">
+                    Orang dewasa mengalami kesepian kronis di dunia
                 </p>
-
-
-                <h2
-                    class="mt-2 text-3xl
-                    font-extrabold
-                    text-slate-800"
-                >
-                    Koneksi kecil bisa berarti besar
-                </h2>
-
-
-                <p
-                    class="mt-4 max-w-2xl mx-auto
-                    text-slate-500"
-                >
-                    Kesepian tidak selalu berarti
-                    tidak ada orang di sekitar kita.
-                    Terkadang kita hanya membutuhkan
-                    seseorang yang mau hadir dan
-                    mendengarkan.
-                </p>
-
             </div>
 
 
-            <div
-                class="grid sm:grid-cols-3
-                gap-5"
-            >
-
-                <div
-                    class="rounded-2xl
-                    bg-teal-50 p-6 text-center"
-                >
-
-                    <div
-                        class="text-4xl font-extrabold
-                        text-teal-700"
-                    >
-                        1
-                    </div>
-
-                    <p
-                        class="mt-2 font-semibold
-                        text-slate-700"
-                    >
-                        Sapaan
-                    </p>
-
-                    <p
-                        class="mt-2 text-sm
-                        text-slate-500"
-                    >
-                        Satu sapaan sederhana
-                        bisa menjadi awal koneksi.
-                    </p>
-
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
+                <div class="text-3xl font-bold text-teal-600 mb-1">
+                    50%
                 </div>
 
-
-                <div
-                    class="rounded-2xl
-                    bg-emerald-50 p-6 text-center"
-                >
-
-                    <div
-                        class="text-4xl"
-                    >
-                        💚
-                    </div>
-
-                    <p
-                        class="mt-2 font-semibold
-                        text-slate-700"
-                    >
-                        Saling Menguatkan
-                    </p>
-
-                    <p
-                        class="mt-2 text-sm
-                        text-slate-500"
-                    >
-                        Kita tidak harus
-                        menghadapi semuanya sendiri.
-                    </p>
-
-                </div>
-
-
-                <div
-                    class="rounded-2xl
-                    bg-lime-50 p-6 text-center"
-                >
-
-                    <div
-                        class="text-4xl"
-                    >
-                        🍀
-                    </div>
-
-                    <p
-                        class="mt-2 font-semibold
-                        text-slate-700"
-                    >
-                        Bertumbuh
-                    </p>
-
-                    <p
-                        class="mt-2 text-sm
-                        text-slate-500"
-                    >
-                        Hubungan tumbuh dari
-                        langkah-langkah kecil.
-                    </p>
-
-                </div>
-
+                <p class="text-slate-600 text-sm">
+                    Peningkatan risiko isolasi sosial bagi usia muda
+                </p>
             </div>
 
-        </div>
 
-    </section>
-
-
-
-    <!-- =====================================================
-         NOTE SAMPAH
-    ====================================================== -->
-
-    <section
-        id="note-sampah"
-        class="py-20 bg-slate-50"
-    >
-
-        <div
-            class="max-w-4xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
-
-            <div class="text-center">
-
-                <div
-                    class="inline-flex
-                    w-16 h-16 rounded-2xl
-                    bg-teal-100
-                    items-center justify-center
-                    text-3xl"
-                >
-                    🗑️
+            <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
+                <div class="text-3xl font-bold text-teal-600 mb-1">
+                    1 Sapaan
                 </div>
 
+                <p class="text-slate-600 text-sm">
+                    Dapat mengubah hari seseorang menjadi lebih berarti
+                </p>
+            </div>
 
-                <h2
-                    class="mt-5 text-3xl
-                    font-extrabold
-                    text-slate-800"
-                >
-                    Buang Keluhanmu di Sini
-                </h2>
+        </section>
 
 
-                <p
-                    class="mt-3
-                    text-slate-500
-                    max-w-xl mx-auto"
-                >
-                    Tulis hal yang sedang
-                    mengganggumu. Setelah itu,
-                    buang keluhan tersebut dan
-                    berikan dirimu kesempatan
-                    untuk bernapas.
+        <!-- =========================
+             TANTANGAN
+        ========================== -->
+        <section id="tantangan"
+                 class="bg-white rounded-3xl p-8 border border-slate-100 shadow-sm">
+
+            <div class="max-w-2xl">
+
+                <span class="text-teal-600 text-xs font-semibold uppercase tracking-wider">
+                    Langkah Kecil
+                </span>
+
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                    Tantangan Koneksi Harian
+                </h3>
+
+                <p class="text-slate-600 text-sm mb-6">
+                    Langkah kecil setiap hari untuk mempererat silaturahmi
+                    dan membuka diri.
                 </p>
 
             </div>
 
 
-            <div
-                class="mt-8
-                bg-white rounded-3xl
-                p-5 sm:p-8
-                shadow-sm
-                border border-slate-100"
-            >
+            <div class="space-y-4" id="challenge-list">
 
-                <textarea
-                    id="complaint-input"
-                    rows="5"
-                    maxlength="1000"
-                    placeholder="Tulis keluhanmu di sini..."
-                    class="w-full resize-none
-                    rounded-2xl
-                    border border-slate-200
-                    p-4
-                    text-slate-700
-                    outline-none
-                    focus:border-teal-400
-                    focus:ring-4
-                    focus:ring-teal-100"
-                ></textarea>
+                <div class="challenge-item flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-teal-300 transition-all cursor-pointer"
+                     data-index="0">
 
+                    <input type="checkbox"
+                           class="challenge-checkbox w-5 h-5 accent-teal-600 rounded cursor-pointer">
 
-                <button
-                    id="throw-complaint"
-                    type="button"
-                    class="mt-4 w-full
-                    rounded-xl
-                    bg-slate-800
-                    text-white
-                    py-3.5
-                    font-bold
-                    hover:bg-slate-900"
-                >
-
-                    <i
-                        class="fa-solid fa-trash-can mr-2"
-                    ></i>
-
-                    Buang Keluhan
-
-                </button>
-
-
-                <!-- ENCOURAGEMENT -->
-
-                <div
-                    id="encouragement-box"
-                    class="encouragement-box
-                    hidden mt-5
-                    rounded-2xl
-                    bg-teal-50
-                    border border-teal-100
-                    p-5"
-                >
-
-                    <div
-                        class="flex gap-3"
-                    >
-
-                        <div
-                            class="text-2xl"
-                        >
-                            🍀
-                        </div>
-
-
-                        <div>
-
-                            <p
-                                class="font-bold
-                                text-teal-800"
-                            >
-                                Untukmu
-                            </p>
-
-
-                            <p
-                                id="encouragement-text"
-                                class="mt-1
-                                text-sm
-                                text-teal-700
-                                leading-relaxed"
-                            ></p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         CLOVER CHALLENGE
-    ====================================================== -->
-
-    <section
-        id="tantangan"
-        class="py-20 bg-white"
-    >
-
-        <div
-            class="max-w-4xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
-
-            <div class="text-center">
-
-                <p
-                    class="text-teal-600
-                    font-bold text-sm uppercase
-                    tracking-wider"
-                >
-                    Clover Challenge
-                </p>
-
-
-                <h2
-                    class="mt-2 text-3xl
-                    font-extrabold
-                    text-slate-800"
-                >
-                    Satu langkah kecil hari ini
-                </h2>
-
-
-                <p
-                    class="mt-3
-                    text-slate-500"
-                >
-                    Kamu tidak perlu melakukan
-                    semuanya sekaligus.
-                    Pilih satu langkah yang terasa
-                    mungkin dilakukan hari ini.
-                </p>
-
-            </div>
-
-
-            <!-- PROGRESS -->
-
-            <div
-                class="mt-10
-                bg-slate-50
-                rounded-3xl
-                p-6"
-            >
-
-                <div
-                    class="flex items-center
-                    justify-between gap-4"
-                >
-
-                    <div>
-
-                        <p
-                            class="text-sm
-                            text-slate-500"
-                        >
-                            Progress kamu
-                        </p>
-
-
-                        <p
-                            class="mt-1
-                            font-bold
-                            text-slate-800"
-                        >
-
-                            <span
-                                id="completed-count"
-                            >
-                                0
-                            </span>
-
-                            / 8 selesai
-
-                        </p>
-
-                    </div>
-
-
-                    <div
-                        id="leaf-progress"
-                        class="flex gap-2
-                        text-2xl"
-                    >
-
-                        <span
-                            class="leaf inactive"
-                        >
-                            🍃
-                        </span>
-
-                        <span
-                            class="leaf inactive"
-                        >
-                            🍃
-                        </span>
-
-                        <span
-                            class="leaf inactive"
-                        >
-                            🍃
-                        </span>
-
-                        <span
-                            class="leaf inactive"
-                        >
-                            🍃
-                        </span>
-
-                        <span
-                            class="leaf inactive"
-                        >
-                            🍃
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    class="mt-5
-                    h-3 bg-slate-200
-                    rounded-full overflow-hidden"
-                >
-
-                    <div
-                        id="progress-bar"
-                        class="progress-bar
-                        h-full bg-teal-600
-                        rounded-full"
-                        style="width: 0%"
-                    ></div>
-
-                </div>
-
-
-                <div
-                    class="mt-3 flex
-                    justify-between
-                    text-xs text-slate-500"
-                >
-
-                    <span
-                        id="progress-message"
-                    >
-                        Tidak apa-apa. Setiap langkah
-                        dimulai dari satu hal kecil.
+                    <span class="text-slate-700 font-medium">
+                        Kirim pesan "Apa kabar?" ke teman lama yang sudah lama tidak disapa
                     </span>
 
+                </div>
 
-                    <span
-                        id="leaf-text"
-                        class="font-semibold
-                        whitespace-nowrap"
-                    >
-                        0 daun terkumpul
+
+                <div class="challenge-item flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-teal-300 transition-all cursor-pointer"
+                     data-index="1">
+
+                    <input type="checkbox"
+                           class="challenge-checkbox w-5 h-5 accent-teal-600 rounded cursor-pointer">
+
+                    <span class="text-slate-700 font-medium">
+                        Tersenyum dan katakan terima kasih secara jujur kepada kasir atau kurir hari ini
+                    </span>
+
+                </div>
+
+
+                <div class="challenge-item flex items-center gap-4 p-4 rounded-xl border border-slate-200 hover:border-teal-300 transition-all cursor-pointer"
+                     data-index="2">
+
+                    <input type="checkbox"
+                           class="challenge-checkbox w-5 h-5 accent-teal-600 rounded cursor-pointer">
+
+                    <span class="text-slate-700 font-medium">
+                        Luangkan 15 menit tanpa HP saat mengobrol dengan anggota keluarga atau teman
                     </span>
 
                 </div>
@@ -1031,935 +253,286 @@
             </div>
 
 
-            <!-- CHALLENGES -->
+            <div class="mt-6 p-4 bg-teal-50 rounded-xl">
 
-            <div
-                class="mt-6 space-y-3"
-            >
+                <div class="flex justify-between items-center">
 
-                <!-- 1 -->
+                    <span class="text-sm font-medium text-teal-800">
+                        Progress hari ini
+                    </span>
 
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
+                    <span id="challenge-progress"
+                          class="text-sm font-bold text-teal-700">
+                        0/3
+                    </span>
 
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
+                </div>
 
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
+                <div class="w-full bg-teal-100 rounded-full h-2 mt-3">
 
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Menyapa seseorang hari ini
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Kirim sapaan sederhana
-                                kepada teman atau keluarga.
-                            </p>
-
-                        </div>
-
+                    <div id="challenge-progress-bar"
+                         class="bg-teal-600 h-2 rounded-full transition-all"
+                         style="width: 0%">
                     </div>
 
-                </label>
-
-
-                <!-- 2 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Berbicara dengan seseorang
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Luangkan beberapa menit
-                                untuk berbincang.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
-
-
-                <!-- 3 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Keluar dari kamar sejenak
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Cari udara segar atau
-                                berjalan sebentar.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
-
-
-                <!-- 4 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Mendengarkan seseorang
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Berikan kesempatan kepada
-                                seseorang untuk bercerita.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
-
-
-                <!-- 5 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Mengucapkan terima kasih
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Sampaikan apresiasi kepada
-                                seseorang yang berarti.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
-
-
-                <!-- 6 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Melakukan sesuatu yang disukai
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Luangkan waktu untuk
-                                aktivitas yang membuatmu nyaman.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
-
-
-                <!-- 7 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Menghubungi teman lama
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Kirim pesan sederhana
-                                kepada seseorang yang sudah lama
-                                tidak kamu hubungi.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
-
-
-                <!-- 8 -->
-
-                <label
-                    class="challenge-item
-                    block cursor-pointer
-                    rounded-2xl
-                    border border-slate-200
-                    bg-white p-5"
-                >
-
-                    <div
-                        class="flex gap-4
-                        items-start"
-                    >
-
-                        <input
-                            type="checkbox"
-                            class="challenge-checkbox
-                            mt-1 w-5 h-5
-                            accent-teal-600"
-                        >
-
-
-                        <div>
-
-                            <p
-                                class="challenge-title
-                                font-bold
-                                text-slate-700"
-                            >
-                                Berani meminta bantuan
-                            </p>
-
-
-                            <p
-                                class="mt-1 text-sm
-                                text-slate-500"
-                            >
-                                Jika terasa berat, coba
-                                ceritakan kepada seseorang
-                                yang kamu percaya.
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </label>
+                </div>
 
             </div>
 
-
-            <!-- COMPLETION -->
-
-            <div
-                class="mt-6 rounded-2xl
-                bg-teal-50
-                border border-teal-100
-                p-5 text-center"
-            >
-
-                <p
-                    id="completion-message"
-                    class="text-sm
-                    text-teal-700
-                    font-medium"
-                >
-                    🌱 Tidak perlu terburu-buru.
-                    Satu langkah kecil sudah berarti.
-                </p>
-
-            </div>
-
-        </div>
-
-    </section>
+        </section>
 
 
+        <!-- =========================
+             PAPAN KEHANGATAN
+        ========================== -->
+        <section id="wall" class="space-y-6">
 
-    <!-- =====================================================
-         PAPAN KEHANGATAN
-    ====================================================== -->
+            <div>
 
-    <section
-        id="wall"
-        class="py-20 bg-slate-50"
-    >
+                <span class="text-teal-600 text-xs font-semibold uppercase tracking-wider">
+                    Ruang Aman
+                </span>
 
-        <div
-            class="max-w-6xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
+                <h3 class="text-2xl font-bold text-slate-900 mb-2">
+                    Papan Kehangatan
+                </h3>
 
-            <div class="text-center">
-
-                <p
-                    class="text-teal-600
-                    font-bold text-sm uppercase
-                    tracking-wider"
-                >
-                    Papan Kehangatan Clover
-                </p>
-
-
-                <h2
-                    class="mt-2 text-3xl
-                    font-extrabold
-                    text-slate-800"
-                >
-                    Tinggalkan sedikit kehangatan
-                </h2>
-
-
-                <p
-                    class="mt-3 max-w-2xl mx-auto
-                    text-slate-500"
-                >
-                    Tulis pesan positif untuk
-                    seseorang yang mungkin sedang
-                    membutuhkan sedikit semangat.
+                <p class="text-slate-600 text-sm">
+                    Tinggalkan pesan positif untuk memberi semangat bagi
+                    siapa pun yang sedang merasa sendiri.
                 </p>
 
             </div>
 
 
-            <!-- FIREBASE STATUS -->
+            <!-- Status Firebase -->
+            <div id="firebase-status"
+                 class="bg-slate-100 text-slate-600 border border-slate-200 rounded-xl px-4 py-3 text-sm">
 
-            <div
-                id="firebase-status"
-                class="firebase-status
-                mt-6 mx-auto
-                max-w-xl
-                rounded-xl
-                bg-teal-50
-                border border-teal-100
-                px-4 py-3
-                text-center
-                text-sm text-teal-700"
-            >
+                <div class="flex items-center gap-2">
 
-                <i
-                    class="fa-solid fa-circle-notch
-                    fa-spin mr-2"
-                ></i>
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
 
-                Menghubungkan ke Papan Kehangatan...
+                    <span>
+                        Menghubungkan ke Papan Kehangatan...
+                    </span>
+
+                </div>
 
             </div>
 
 
             <!-- FORM -->
-
-            <div
-                class="mt-6
-                max-w-2xl mx-auto
-                bg-white rounded-3xl
-                p-5 sm:p-8
-                border border-slate-100
-                shadow-sm"
-            >
-
-                <form
-                    id="message-form"
-                >
-
-                    <label
-                        for="message-input"
-                        class="block
-                        text-sm font-bold
-                        text-slate-700"
-                    >
-                        Pesan kehangatan
-                    </label>
-
-
-                    <textarea
-                        id="message-input"
-                        rows="4"
-                        maxlength="300"
-                        required
-                        placeholder="Contoh: Kamu sudah melakukan yang terbaik. Jangan menyerah, ya. 🍀"
-                        class="mt-2 w-full
-                        resize-none
-                        rounded-2xl
-                        border border-slate-200
-                        p-4
-                        outline-none
-                        text-slate-700
-                        focus:border-teal-400
-                        focus:ring-4
-                        focus:ring-teal-100"
-                    ></textarea>
-
-
-                    <div
-                        class="mt-4"
-                    >
-
-                        <label
-                            for="sender-input"
-                            class="block
-                            text-sm font-bold
-                            text-slate-700"
-                        >
-                            Nama
-                            <span
-                                class="font-normal
-                                text-slate-400"
-                            >
-                                (opsional)
-                            </span>
-                        </label>
-
-
-                        <input
-                            id="sender-input"
-                            type="text"
-                            maxlength="40"
-                            placeholder="Sahabat Anonim"
-                            class="mt-2 w-full
-                            rounded-xl
-                            border border-slate-200
-                            px-4 py-3
-                            outline-none
-                            text-slate-700
-                            focus:border-teal-400
-                            focus:ring-4
-                            focus:ring-teal-100"
-                        >
-
-                    </div>
-
-
-                    <button
-                        type="submit"
-                        class="mt-5 w-full
-                        rounded-xl
-                        bg-teal-600
-                        text-white
-                        py-3.5
-                        font-bold
-                        hover:bg-teal-700
-                        transition"
-                    >
-
-                        <i
-                            class="fa-solid fa-paper-plane mr-2"
-                        ></i>
-
-                        Kirim Kehangatan
-
-                    </button>
-
-                </form>
-
-            </div>
-
-
-            <!-- MESSAGES -->
-
-            <div
-                id="messages-container"
-                class="mt-8
-                grid md:grid-cols-2
-                gap-4"
-            >
-
-                <div
-                    class="md:col-span-2
-                    text-center py-10
-                    text-slate-400"
-                >
-
-                    Memuat pesan...
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         BANTUAN
-    ====================================================== -->
-
-    <section
-        id="bantuan"
-        class="py-20 bg-white"
-    >
-
-        <div
-            class="max-w-5xl mx-auto
-            px-4 sm:px-6 lg:px-8"
-        >
-
-            <div class="text-center">
-
-                <p
-                    class="text-rose-500
-                    font-bold text-sm uppercase
-                    tracking-wider"
-                >
-                    Butuh Bantuan?
-                </p>
-
-
-                <h2
-                    class="mt-2 text-3xl
-                    font-extrabold
-                    text-slate-800"
-                >
-                    Kamu tidak harus menghadapi
-                    semuanya sendirian
-                </h2>
-
-
-                <p
-                    class="mt-4 max-w-2xl mx-auto
-                    text-slate-500"
-                >
-                    Jika keadaan terasa terlalu berat,
-                    jangan ragu untuk mencari bantuan
-                    dari orang yang kamu percaya atau
-                    layanan profesional.
-                </p>
-
-            </div>
-
-
-            <div
-                class="mt-10
-                grid md:grid-cols-2
-                gap-5"
-            >
-
-                <!-- SEJIWA -->
-
-                <div
-                    class="rounded-3xl
-                    bg-rose-50
-                    border border-rose-100
-                    p-6"
-                >
-
-                    <div
-                        class="w-12 h-12
-                        rounded-xl
-                        bg-rose-100
-                        text-rose-600
-                        flex items-center
-                        justify-center
-                        text-xl"
-                    >
-
-                        <i
-                            class="fa-solid fa-headset"
-                        ></i>
-
-                    </div>
-
-
-                    <h3
-                        class="mt-5 text-xl
-                        font-bold
-                        text-slate-800"
-                    >
-                        Layanan Sejiwa
-                    </h3>
-
-
-                    <p
-                        class="mt-2 text-sm
-                        text-slate-600
-                        leading-relaxed"
-                    >
-                        Untuk mendapatkan dukungan
-                        dan bantuan kesehatan jiwa,
-                        kamu dapat menghubungi layanan
-                        kesehatan yang tersedia.
-                    </p>
-
-
-                    <a
-                        href="tel:119"
-                        class="mt-5 inline-flex
-                        items-center gap-2
-                        rounded-xl
-                        bg-rose-600
-                        text-white
-                        px-5 py-3
-                        font-bold
-                        hover:bg-rose-700"
-                    >
-
-                        <i
-                            class="fa-solid fa-phone"
-                        ></i>
-
-                        119
-
-                    </a>
-
-                </div>
-
-
-                <!-- EMERGENCY -->
-
-                <div
-                    class="rounded-3xl
-                    bg-slate-50
-                    border border-slate-200
-                    p-6"
-                >
-
-                    <div
-                        class="w-12 h-12
-                        rounded-xl
-                        bg-slate-200
-                        text-slate-700
-                        flex items-center
-                        justify-center
-                        text-xl"
-                    >
-
-                        <i
-                            class="fa-solid fa-triangle-exclamation"
-                        ></i>
-
-                    </div>
-
-
-                    <h3
-                        class="mt-5 text-xl
-                        font-bold
-                        text-slate-800"
-                    >
-                        Keadaan Darurat
-                    </h3>
-
-
-                    <p
-                        class="mt-2 text-sm
-                        text-slate-600
-                        leading-relaxed"
-                    >
-                        Jika kamu atau orang di sekitarmu
-                        berada dalam keadaan darurat,
-                        segera cari bantuan dari layanan
-                        darurat atau orang terdekat.
-                    </p>
-
-
-                    <a
-                        href="tel:112"
-                        class="mt-5 inline-flex
-                        items-center gap-2
-                        rounded-xl
-                        bg-slate-800
-                        text-white
-                        px-5 py-3
-                        font-bold
-                        hover:bg-slate-900"
-                    >
-
-                        <i
-                            class="fa-solid fa-phone"
-                        ></i>
-
-                        112
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- =====================================================
-         FOOTER
-    ====================================================== -->
-
-    <footer
-        class="bg-slate-900
-        text-slate-300"
-    >
-
-        <div
-            class="max-w-6xl mx-auto
-            px-4 sm:px-6 lg:px-8
-            py-10"
-        >
-
-            <div
-                class="flex flex-col
-                md:flex-row
-                justify-between
-                gap-6"
-            >
+            <form id="message-form"
+                  class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
 
                 <div>
 
-                    <div
-                        class="flex items-center
-                        gap-2"
-                    >
+                    <label for="message-input"
+                           class="block text-sm font-semibold text-slate-700 mb-2">
+                        Pesan Kehangatan
+                    </label>
 
-                        <div
-                            class="w-9 h-9
-                            rounded-xl
-                            bg-teal-600
-                            flex items-center
-                            justify-center
-                            text-white"
-                        >
+                    <textarea id="message-input"
+                              rows="4"
+                              maxlength="300"
+                              required
+                              placeholder="Tuliskan kata-kata penyemangat di sini..."
+                              class="w-full p-4 bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 text-slate-800 text-sm resize-none"></textarea>
 
-                            <i
-                                class="fa-solid fa-leaf"
-                            ></i>
+                    <div class="text-right mt-1">
 
-                        </div>
-
-
-                        <span
-                            class="text-lg
-                            font-bold
-                            text-white"
-                        >
-                            Clover
+                        <span id="character-count"
+                              class="text-xs text-slate-400">
+                            0/300
                         </span>
 
                     </div>
 
+                </div>
 
-                    <p
-                        class="mt-3
-                        max-w-md
-                        text-sm
-                        text-slate-400"
-                    >
-                        Sebuah ruang kecil untuk
-                        mengingatkan bahwa kamu tidak
-                        sendirian.
+
+                <div>
+
+                    <label for="sender-input"
+                           class="block text-sm font-semibold text-slate-700 mb-2">
+                        Nama
+                    </label>
+
+                    <input type="text"
+                           id="sender-input"
+                           maxlength="40"
+                           placeholder="Nama / Anonim"
+                           class="w-full p-3 bg-slate-50 rounded-lg border border-slate-200 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500">
+
+                </div>
+
+
+                <div class="bg-teal-50 border border-teal-100 rounded-xl p-4">
+
+                    <div class="flex gap-3">
+
+                        <i class="fa-solid fa-shield-heart text-teal-600 mt-1"></i>
+
+                        <p class="text-xs text-teal-800 leading-relaxed">
+                            Pesan akan diperiksa terlebih dahulu sebelum
+                            ditampilkan di Papan Kehangatan. Hindari
+                            informasi pribadi dan gunakan kata-kata yang
+                            positif serta saling menghargai.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="flex justify-end">
+
+                    <button type="submit"
+                            id="submit-message"
+                            class="bg-teal-600 hover:bg-teal-700 disabled:bg-slate-300 disabled:cursor-not-allowed text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all">
+
+                        <i class="fa-solid fa-paper-plane mr-2"></i>
+                        Kirim Kehangatan
+
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- DAFTAR PESAN -->
+            <div id="messages-container"
+                 class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div class="col-span-full text-center py-10 text-slate-400">
+
+                    <i class="fa-solid fa-circle-notch fa-spin text-xl mb-3"></i>
+
+                    <p class="text-sm">
+                        Memuat pesan kehangatan...
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             BANTUAN
+        ========================== -->
+        <section id="bantuan"
+                 class="bg-rose-50 rounded-3xl p-8 border border-rose-100">
+
+            <div class="max-w-2xl mb-6">
+
+                <span class="text-rose-600 text-xs font-semibold uppercase tracking-wider">
+                    Layanan Penting
+                </span>
+
+                <h3 class="text-2xl font-bold text-slate-900 mt-1 mb-2">
+                    Butuh Teman Bicara?
+                </h3>
+
+                <p class="text-slate-600 text-sm">
+                    Jika kamu atau orang tersayang merasa sangat tertekan
+                    atau membutuhkan bantuan, jangan hadapi semuanya
+                    sendirian. Cobalah berbicara dengan orang yang dipercaya
+                    atau mencari bantuan profesional.
+                </p>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                <div class="bg-white p-5 rounded-2xl border border-rose-100 shadow-sm flex items-center justify-between gap-4">
+
+                    <div>
+
+                        <h4 class="font-bold text-slate-800 text-sm">
+                            Layanan Darurat
+                        </h4>
+
+                        <p class="text-xs text-slate-500">
+                            Bantuan medis darurat
+                        </p>
+
+                    </div>
+
+                    <a href="tel:119"
+                       class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all whitespace-nowrap">
+
+                        Call 119
+
+                    </a>
+
+                </div>
+
+
+                <div class="bg-white p-5 rounded-2xl border border-rose-100 shadow-sm">
+
+                    <h4 class="font-bold text-slate-800 text-sm mb-1">
+                        Orang Terpercaya
+                    </h4>
+
+                    <p class="text-xs text-slate-500">
+                        Hubungi teman, keluarga, guru, konselor,
+                        atau orang dewasa yang kamu percaya.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="mt-auto border-t border-slate-200 bg-white">
+
+        <div class="max-w-5xl mx-auto px-4 py-8">
+
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+
+                <div class="text-center md:text-left">
+
+                    <div class="flex items-center justify-center md:justify-start gap-2">
+
+                        <div class="w-8 h-8 rounded-full bg-teal-500 flex items-center justify-center text-white text-sm">
+
+                            <i class="fa-solid fa-heart"></i>
+
+                        </div>
+
+                        <span class="font-bold text-slate-800">
+                            KoneksiKita
+                        </span>
+
+                    </div>
+
+                    <p class="text-xs text-slate-400 mt-2">
+                        Ruang kecil untuk menciptakan koneksi yang berarti.
                     </p>
 
                 </div>
 
 
-                <div
-                    class="text-sm
-                    text-slate-400
-                    md:text-right"
-                >
+                <p class="text-xs text-slate-400 text-center">
 
-                    <p>
-                        Dibuat untuk berbagi
-                        kepedulian dan kehangatan.
-                    </p>
+                    &copy;
+                    <span id="current-year"></span>
+                    KoneksiKita.
+                    Dibuat untuk kampanye kesadaran sosial.
 
-
-                    <p class="mt-2">
-
-                        ©
-                        <span id="year"></span>
-                        Clover.
-
-                        All rights reserved.
-
-                    </p>
-
-                </div>
+                </p>
 
             </div>
 
@@ -1968,30 +541,24 @@
     </footer>
 
 
-
-    <!-- =====================================================
+    <!-- =========================
          FIREBASE + JAVASCRIPT
-    ====================================================== -->
-
+    ========================== -->
     <script type="module">
 
         /* ==========================================
-           FIREBASE IMPORT
+           IMPORT FIREBASE
         ========================================== */
 
         import {
             initializeApp
-        } from
-        "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-
+        } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
         import {
             getAuth,
             signInAnonymously,
             onAuthStateChanged
-        } from
-        "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-
+        } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
         import {
             getDatabase,
@@ -1999,10 +566,11 @@
             push,
             onValue,
             set,
-            remove
-        } from
-        "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
-
+            remove,
+            query,
+            orderByChild,
+            equalTo
+        } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
 
         /* ==========================================
@@ -2010,175 +578,152 @@
         ========================================== */
 
         const firebaseConfig = {
-
-            apiKey:
-                "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
-
-            authDomain:
-                "aplikasi-d862d.firebaseapp.com",
-
-            databaseURL:
-                "https://aplikasi-d862d-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-            projectId:
-                "aplikasi-d862d",
-
-            storageBucket:
-                "aplikasi-d862d.firebasestorage.app",
-
-            messagingSenderId:
-                "491134919372",
-
-            appId:
-                "1:491134919372:web:63fde8d8d32eb8820e1869",
-
-            measurementId:
-                "G-3TK6ZQGMDP"
-
+            apiKey: "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
+            authDomain: "aplikasi-d862d.firebaseapp.com",
+            databaseURL: "https://aplikasi-d862d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "aplikasi-d862d",
+            storageBucket: "aplikasi-d862d.firebasestorage.app",
+            messagingSenderId: "491134919372",
+            appId: "1:491134919372:web:63fde8d8d32eb8820e1869",
+            measurementId: "G-3TK6ZQGMDP"
         };
-
 
 
         /* ==========================================
            INITIALIZE FIREBASE
         ========================================== */
 
-        const app =
-            initializeApp(firebaseConfig);
+        const app = initializeApp(firebaseConfig);
 
+        const auth = getAuth(app);
 
-        const auth =
-            getAuth(app);
-
-
-        const db =
-            getDatabase(app);
-
+        const db = getDatabase(app);
 
 
         /* ==========================================
-           ELEMENTS
-        ========================================== */
-
-        const messagesContainer =
-            document.getElementById(
-                "messages-container"
-            );
-
-
-        const messageForm =
-            document.getElementById(
-                "message-form"
-            );
-
-
-        const messageInput =
-            document.getElementById(
-                "message-input"
-            );
-
-
-        const senderInput =
-            document.getElementById(
-                "sender-input"
-            );
-
-
-        const firebaseStatus =
-            document.getElementById(
-                "firebase-status"
-            );
-
-
-
-        /* ==========================================
-           ESCAPE HTML
-        ========================================== */
-
-        function escapeHTML(value) {
-
-            const div =
-                document.createElement("div");
-
-            div.textContent =
-                value ?? "";
-
-            return div.innerHTML;
-
-        }
-
-
-
-        /* ==========================================
-           CURRENT USER
+           GLOBAL VARIABLES
         ========================================== */
 
         let currentUser = null;
 
-
         let messagesData = {};
-
 
         let likesData = {};
 
 
-
         /* ==========================================
-           STATUS
+           DOM ELEMENTS
         ========================================== */
 
-        function setFirebaseStatus(
-            message,
-            type = "normal"
-        ) {
+        const messageForm =
+            document.getElementById("message-form");
 
-            if (!firebaseStatus) return;
+        const messageInput =
+            document.getElementById("message-input");
 
+        const senderInput =
+            document.getElementById("sender-input");
+
+        const submitButton =
+            document.getElementById("submit-message");
+
+        const messagesContainer =
+            document.getElementById("messages-container");
+
+        const firebaseStatus =
+            document.getElementById("firebase-status");
+
+        const characterCount =
+            document.getElementById("character-count");
+
+
+        /* ==========================================
+           ESCAPE HTML
+           Mencegah HTML/Script masuk ke pesan
+        ========================================== */
+
+        function escapeHTML(text) {
+
+            const div = document.createElement("div");
+
+            div.textContent = text;
+
+            return div.innerHTML;
+        }
+
+
+        /* ==========================================
+           FIREBASE STATUS
+        ========================================== */
+
+        function setFirebaseStatus(message, type = "normal") {
+
+            let classes = "px-4 py-3 rounded-xl text-sm border ";
+
+            let icon = "";
 
             if (type === "success") {
 
-                firebaseStatus.className =
-                    "firebase-status mt-6 mx-auto max-w-xl rounded-xl bg-teal-50 border border-teal-100 px-4 py-3 text-center text-sm text-teal-700";
+                classes +=
+                    "bg-emerald-50 text-emerald-700 border-emerald-100";
 
+                icon =
+                    '<i class="fa-solid fa-circle-check"></i>';
 
-                firebaseStatus.innerHTML =
-                    `
-                    <i class="fa-solid fa-circle-check mr-2"></i>
-                    ${message}
-                    `;
+            } else if (type === "error") {
 
+                classes +=
+                    "bg-rose-50 text-rose-700 border-rose-100";
+
+                icon =
+                    '<i class="fa-solid fa-circle-exclamation"></i>';
+
+            } else if (type === "warning") {
+
+                classes +=
+                    "bg-amber-50 text-amber-700 border-amber-100";
+
+                icon =
+                    '<i class="fa-solid fa-triangle-exclamation"></i>';
+
+            } else {
+
+                classes +=
+                    "bg-slate-100 text-slate-600 border-slate-200";
+
+                icon =
+                    '<i class="fa-solid fa-circle-info"></i>';
             }
 
-            else if (type === "error") {
+            firebaseStatus.className = classes;
 
-                firebaseStatus.className =
-                    "firebase-status mt-6 mx-auto max-w-xl rounded-xl bg-rose-50 border border-rose-100 px-4 py-3 text-center text-sm text-rose-700";
-
-
-                firebaseStatus.innerHTML =
-                    `
-                    <i class="fa-solid fa-circle-exclamation mr-2"></i>
-                    ${message}
-                    `;
-
-            }
-
-            else {
-
-                firebaseStatus.className =
-                    "firebase-status mt-6 mx-auto max-w-xl rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-center text-sm text-slate-600";
-
-
-                firebaseStatus.innerHTML =
-                    `
-                    <i class="fa-solid fa-circle-notch fa-spin mr-2"></i>
-                    ${message}
-                    `;
-
-            }
-
+            firebaseStatus.innerHTML = `
+                <div class="flex items-center gap-2">
+                    ${icon}
+                    <span>${escapeHTML(message)}</span>
+                </div>
+            `;
         }
 
+
+        /* ==========================================
+           FORMAT DATE
+        ========================================== */
+
+        function formatDate(timestamp) {
+
+            if (!timestamp) {
+                return "";
+            }
+
+            const date = new Date(timestamp);
+
+            return date.toLocaleDateString("id-ID", {
+                day: "numeric",
+                month: "short",
+                year: "numeric"
+            });
+        }
 
 
         /* ==========================================
@@ -2187,334 +732,222 @@
 
         function renderMessages() {
 
-            if (!messagesContainer) return;
-
-
             const entries =
-                Object.entries(messagesData);
+                Object.entries(messagesData || {});
 
 
             if (entries.length === 0) {
 
-                messagesContainer.innerHTML =
-                    `
+                messagesContainer.innerHTML = `
+                    <div class="col-span-full bg-white border border-slate-100 rounded-2xl p-8 text-center">
 
-                    <div
-                        class="md:col-span-2
-                        text-center
-                        bg-white
-                        rounded-3xl
-                        border border-slate-100
-                        p-10"
-                    >
+                        <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center">
 
-                        <div
-                            class="text-4xl mb-4"
-                        >
-                            🍀
+                            <i class="fa-solid fa-leaf"></i>
+
                         </div>
 
+                        <h4 class="font-semibold text-slate-700 mb-1">
+                            Belum ada pesan
+                        </h4>
 
-                        <p
-                            class="font-semibold
-                            text-slate-700"
-                        >
-                            Belum ada pesan.
-                        </p>
-
-
-                        <p
-                            class="mt-1
-                            text-sm
-                            text-slate-400"
-                        >
-                            Jadilah orang pertama
-                            yang memberikan kehangatan.
+                        <p class="text-sm text-slate-400">
+                            Jadilah orang pertama yang memberikan kehangatan.
                         </p>
 
                     </div>
-
-                    `;
+                `;
 
                 return;
-
             }
 
 
-            const messages =
-                entries
-                .map(
-                    ([id, message]) => ({
-                        id,
-                        ...message
-                    })
-                )
-                .sort(
-                    (a, b) =>
-                        (b.createdAt || 0) -
-                        (a.createdAt || 0)
+            const messages = entries
+                .map(([id, message]) => ({
+                    id,
+                    ...message
+                }))
+                .sort((a, b) =>
+                    (b.createdAt || 0) - (a.createdAt || 0)
                 );
 
 
             messagesContainer.innerHTML =
-                messages
-                .map(message => {
+                messages.map(message => {
 
                     const likes =
-                        likesData[message.id]
-                            ? Object.keys(
-                                likesData[message.id]
-                            ).length
-                            : 0;
+                        likesData?.[message.id] || {};
 
+                    const likeCount =
+                        Object.keys(likes).length;
 
                     const liked =
                         currentUser &&
-                        likesData[message.id] &&
-                        likesData[message.id]
-                            [currentUser.uid];
+                        likes[currentUser.uid];
 
 
                     return `
-
-                    <article
-                        class="message-card
-                        bg-white
-                        rounded-3xl
-                        border border-slate-100
-                        shadow-sm
-                        p-6"
-                    >
-
-                        <div
-                            class="flex
-                            justify-between
-                            items-start
-                            gap-4"
+                        <article
+                            class="message-card bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4"
                         >
 
-                            <div
-                                class="w-10 h-10
-                                shrink-0
-                                rounded-xl
-                                bg-teal-50
-                                flex items-center
-                                justify-center
-                                text-lg"
-                            >
-                                🍀
-                            </div>
+                            <div class="flex items-start justify-between gap-3">
 
+                                <div class="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center flex-shrink-0">
 
-                            <button
-                                type="button"
-                                class="like-button
-                                ${liked ? "liked" : ""}
-                                ml-auto
-                                inline-flex
-                                items-center
-                                gap-2
-                                text-sm
-                                font-semibold"
-                                data-like-id="${escapeHTML(message.id)}"
-                                aria-label="Sukai pesan"
-                            >
+                                    <i class="fa-solid fa-leaf"></i>
 
-                                <i
-                                    class="${
+                                </div>
+
+                                <button
+                                    type="button"
+                                    onclick="toggleLike('${message.id}')"
+                                    class="flex items-center gap-1.5 text-sm font-medium transition-all ${
+                                        liked
+                                        ? "text-rose-600"
+                                        : "text-slate-400 hover:text-rose-500"
+                                    }"
+                                >
+
+                                    <i class="${
                                         liked
                                         ? "fa-solid"
                                         : "fa-regular"
-                                    } fa-heart"
-                                ></i>
+                                    } fa-heart"></i>
 
-                                <span>
-                                    ${likes}
+                                    <span>${likeCount}</span>
+
+                                </button>
+
+                            </div>
+
+
+                            <p class="text-slate-700 text-sm leading-relaxed">
+                                "${escapeHTML(message.text || "")}"
+                            </p>
+
+
+                            <div class="flex justify-between items-center gap-3 text-xs">
+
+                                <span class="text-slate-500 font-medium">
+                                    — ${escapeHTML(
+                                        message.sender ||
+                                        "Sahabat Anonim"
+                                    )}
                                 </span>
 
-                            </button>
+                                <span class="text-slate-400">
+                                    ${formatDate(message.createdAt)}
+                                </span>
 
-                        </div>
+                            </div>
 
-
-                        <p
-                            class="mt-5
-                            text-slate-700
-                            leading-relaxed"
-                        >
-                            "${escapeHTML(
-                                message.text
-                            )}"
-                        </p>
-
-
-                        <div
-                            class="mt-5
-                            pt-4
-                            border-t border-slate-100
-                            text-sm
-                            text-slate-400"
-                        >
-
-                            —
-                            ${escapeHTML(
-                                message.sender ||
-                                "Sahabat Anonim"
-                            )}
-
-                        </div>
-
-                    </article>
-
+                        </article>
                     `;
 
-                })
-                .join("");
-
-
-            /* ======================================
-               LIKE EVENTS
-            ====================================== */
-
-            document
-                .querySelectorAll(
-                    ".like-button"
-                )
-                .forEach(button => {
-
-                    button.addEventListener(
-                        "click",
-                        () => {
-
-                            toggleLike(
-                                button.dataset.likeId
-                            );
-
-                        }
-                    );
-
-                });
-
+                }).join("");
         }
-
 
 
         /* ==========================================
            TOGGLE LIKE
         ========================================== */
 
-        async function toggleLike(messageId) {
+        window.toggleLike = async function(messageId) {
 
             if (!currentUser) {
 
-                alert(
-                    "Tunggu sebentar sampai koneksi Clover aktif."
+                setFirebaseStatus(
+                    "Tunggu sampai koneksi selesai.",
+                    "warning"
                 );
 
                 return;
-
             }
-
-
-            const likeRef =
-                ref(
-                    db,
-                    `clover/messageLikes/${messageId}/${currentUser.uid}`
-                );
-
-
-            const alreadyLiked =
-                likesData[messageId] &&
-                likesData[messageId]
-                    [currentUser.uid];
 
 
             try {
 
-                if (alreadyLiked) {
+                const likeRef =
+                    ref(
+                        db,
+                        `clover/messageLikes/${messageId}/${currentUser.uid}`
+                    );
+
+
+                const existingLike =
+                    likesData?.[messageId]?.[currentUser.uid];
+
+
+                if (existingLike) {
 
                     await remove(likeRef);
 
-                }
+                } else {
 
-                else {
-
-                    await set(
-                        likeRef,
-                        true
-                    );
+                    await set(likeRef, true);
 
                 }
 
-            }
+            } catch (error) {
 
-            catch (error) {
+                console.error("Like error:", error);
 
-                console.error(
-                    "Like error:",
-                    error
+                setFirebaseStatus(
+                    "Gagal memperbarui like.",
+                    "error"
                 );
-
-
-                alert(
-                    "Like gagal. Silakan coba lagi."
-                );
-
             }
-
-        }
-
+        };
 
 
         /* ==========================================
-           FIREBASE AUTH
+           AUTH STATE
         ========================================== */
 
-        setFirebaseStatus(
-            "Menghubungkan ke Clover..."
-        );
+        onAuthStateChanged(auth, user => {
 
+            if (user) {
 
-        onAuthStateChanged(
-            auth,
-            user => {
+                currentUser = user;
 
-                if (user) {
+                setFirebaseStatus(
+                    "Terhubung. Papan Kehangatan aktif.",
+                    "success"
+                );
 
-                    currentUser =
-                        user;
+                startRealtimeDatabase();
 
+            } else {
 
-                    setFirebaseStatus(
-                        "Terhubung. Papan Kehangatan aktif.",
-                        "success"
-                    );
+                currentUser = null;
 
-
-                    startRealtimeDatabase();
-
-                }
-
+                setFirebaseStatus(
+                    "Menghubungkan...",
+                    "normal"
+                );
             }
-        );
 
+        });
+
+
+        /* ==========================================
+           ANONYMOUS AUTH
+        ========================================== */
 
         signInAnonymously(auth)
             .catch(error => {
 
                 console.error(
-                    "Anonymous Authentication Error:",
+                    "Anonymous authentication error:",
                     error
                 );
 
-
                 setFirebaseStatus(
-                    "Firebase Authentication belum aktif.",
+                    "Gagal terhubung ke Firebase. Periksa konfigurasi Authentication.",
                     "error"
                 );
-
             });
-
 
 
         /* ==========================================
@@ -2524,30 +957,31 @@
         function startRealtimeDatabase() {
 
             const messagesRef =
-                ref(
-                    db,
-                    "clover/messages"
-                );
-
+                ref(db, "clover/messages");
 
             const likesRef =
-                ref(
-                    db,
-                    "clover/messageLikes"
+                ref(db, "clover/messageLikes");
+
+
+            /*
+             * HANYA mengambil pesan yang
+             * status-nya approved.
+             */
+
+            const approvedMessagesQuery =
+                query(
+                    messagesRef,
+                    orderByChild("status"),
+                    equalTo("approved")
                 );
 
 
-            /* ==============================
-               MESSAGES
-            ============================== */
-
             onValue(
-                messagesRef,
+                approvedMessagesQuery,
                 snapshot => {
 
                     messagesData =
                         snapshot.val() || {};
-
 
                     renderMessages();
 
@@ -2555,23 +989,21 @@
                 error => {
 
                     console.error(
-                        "Messages error:",
+                        "Gagal membaca messages:",
                         error
                     );
 
-
                     setFirebaseStatus(
-                        "Tidak dapat membaca pesan dari Firebase.",
+                        "Gagal memuat pesan kehangatan.",
                         "error"
                     );
-
                 }
             );
 
 
-            /* ==============================
-               LIKES
-            ============================== */
+            /*
+             * Membaca jumlah like
+             */
 
             onValue(
                 likesRef,
@@ -2580,623 +1012,352 @@
                     likesData =
                         snapshot.val() || {};
 
-
                     renderMessages();
 
                 },
                 error => {
 
                     console.error(
-                        "Likes error:",
+                        "Gagal membaca likes:",
                         error
                     );
-
                 }
             );
-
         }
 
 
-
         /* ==========================================
-           SEND MESSAGE
+           KIRIM PESAN
         ========================================== */
 
-        if (messageForm) {
+        messageForm.addEventListener(
+            "submit",
+            async event => {
 
-            messageForm.addEventListener(
-                "submit",
-                async event => {
-
-                    event.preventDefault();
+                event.preventDefault();
 
 
-                    if (!currentUser) {
+                if (!currentUser) {
 
-                        alert(
-                            "Clover sedang menghubungkan. Tunggu sebentar lalu coba lagi."
-                        );
+                    setFirebaseStatus(
+                        "Koneksi belum siap. Silakan coba lagi.",
+                        "warning"
+                    );
 
-                        return;
-
-                    }
-
-
-                    const text =
-                        messageInput
-                        .value
-                        .trim();
+                    return;
+                }
 
 
-                    const sender =
-                        senderInput
-                        .value
-                        .trim();
+                const text =
+                    messageInput.value.trim();
+
+                const sender =
+                    senderInput.value.trim();
 
 
-                    if (!text) {
+                if (!text) {
 
-                        messageInput.focus();
+                    messageInput.focus();
 
-                        return;
-
-                    }
-
-
-                    if (text.length > 300) {
-
-                        alert(
-                            "Pesan maksimal 300 karakter."
-                        );
-
-                        return;
-
-                    }
+                    return;
+                }
 
 
-                    if (sender.length > 40) {
+                if (text.length > 300) {
 
-                        alert(
-                            "Nama maksimal 40 karakter."
-                        );
+                    setFirebaseStatus(
+                        "Pesan maksimal 300 karakter.",
+                        "warning"
+                    );
 
-                        return;
+                    return;
+                }
 
-                    }
 
+                submitButton.disabled = true;
+
+                submitButton.innerHTML = `
+                    <i class="fa-solid fa-circle-notch fa-spin mr-2"></i>
+                    Mengirim...
+                `;
+
+
+                try {
 
                     const messagesRef =
-                        ref(
-                            db,
-                            "clover/messages"
-                        );
-
-
-                    try {
-
-                        await push(
-                            messagesRef,
-                            {
-
-                                text:
-                                    text,
-
-                                sender:
-                                    sender ||
-                                    "Sahabat Anonim",
-
-                                uid:
-                                    currentUser.uid,
-
-                                createdAt:
-                                    Date.now()
-
-                            }
-                        );
-
-
-                        messageInput.value =
-                            "";
-
-                        senderInput.value =
-                            "";
-
-
-                    }
-
-                    catch (error) {
-
-                        console.error(
-                            "Send message error:",
-                            error
-                        );
-
-
-                        alert(
-                            "Pesan gagal dikirim. Periksa koneksi Firebase."
-                        );
-
-                    }
-
-                }
-            );
-
-        }
-
-
-
-        /* ==========================================
-           NOTE SAMPAH
-        ========================================== */
-
-        const complaintInput =
-            document.getElementById(
-                "complaint-input"
-            );
-
-
-        const throwComplaintButton =
-            document.getElementById(
-                "throw-complaint"
-            );
-
-
-        const encouragementBox =
-            document.getElementById(
-                "encouragement-box"
-            );
-
-
-        const encouragementText =
-            document.getElementById(
-                "encouragement-text"
-            );
-
-
-        const encouragementMessages = [
-
-            "Tidak semua hal harus kamu selesaikan hari ini. Beri dirimu waktu untuk bernapas. Kamu tetap berharga. 🍀",
-
-            "Apa yang kamu rasakan itu valid. Jangan terlalu keras kepada dirimu sendiri. Kamu sudah berusaha sejauh ini.",
-
-            "Hari yang berat bukan berarti hidupmu akan selalu berat. Perlahan saja, masih ada hari baik yang menunggumu.",
-
-            "Kamu tidak harus selalu kuat. Tidak apa-apa untuk merasa lelah dan mengambil waktu untuk beristirahat.",
-
-            "Satu masalah tidak menentukan seluruh hidupmu. Ambil napas, tenangkan diri, lalu lanjutkan sedikit demi sedikit.",
-
-            "Mungkin hari ini terasa sepi, tetapi itu bukan berarti kamu tidak berarti. Kehadiranmu tetap berharga. 💚",
-
-            "Terima kasih sudah berani mengeluarkan apa yang kamu rasakan. Sekarang, beri dirimu kesempatan untuk melangkah lagi.",
-
-            "Tidak perlu membandingkan perjalananmu dengan orang lain. Setiap orang punya waktunya sendiri. 🌱"
-
-        ];
-
-
-        function getRandomEncouragement() {
-
-            const index =
-                Math.floor(
-                    Math.random() *
-                    encouragementMessages.length
-                );
-
-
-            return encouragementMessages[index];
-
-        }
-
-
-        if (throwComplaintButton) {
-
-            throwComplaintButton.addEventListener(
-                "click",
-                () => {
-
-                    const complaint =
-                        complaintInput
-                        .value
-                        .trim();
-
-
-                    if (!complaint) {
-
-                        complaintInput.focus();
-
-                        complaintInput.placeholder =
-                            "Tulis dulu keluhanmu sebelum membuangnya...";
-
-                        return;
-
-                    }
+                        ref(db, "clover/messages");
 
 
                     /*
-                       KELUHAN TIDAK DISIMPAN.
+                     * Pesan SELALU masuk sebagai pending.
+                     * Tidak bisa langsung tampil.
+                     */
 
-                       Tidak dikirim ke Firebase.
-                       Tidak masuk localStorage.
-                       Setelah tombol ditekan,
-                       teks langsung dihapus.
-                    */
+                    await push(messagesRef, {
 
-                    complaintInput.value =
-                        "";
+                        text: text,
+
+                        sender:
+                            sender ||
+                            "Sahabat Anonim",
+
+                        uid:
+                            currentUser.uid,
+
+                        createdAt:
+                            Date.now(),
+
+                        status:
+                            "pending"
+
+                    });
 
 
-                    encouragementText.textContent =
-                        getRandomEncouragement();
+                    messageInput.value = "";
+
+                    senderInput.value = "";
+
+                    updateCharacterCount();
 
 
-                    encouragementBox.classList.remove(
-                        "hidden"
+                    setFirebaseStatus(
+                        "Pesan berhasil dikirim dan sedang menunggu persetujuan.",
+                        "success"
                     );
 
 
-                    encouragementBox.scrollIntoView({
-                        behavior: "smooth",
-                        block: "center"
-                    });
+                } catch (error) {
 
+                    console.error(
+                        "Gagal mengirim pesan:",
+                        error
+                    );
+
+
+                    setFirebaseStatus(
+                        "Pesan gagal dikirim. Silakan coba lagi.",
+                        "error"
+                    );
+
+                } finally {
+
+                    submitButton.disabled = false;
+
+                    submitButton.innerHTML = `
+                        <i class="fa-solid fa-paper-plane mr-2"></i>
+                        Kirim Kehangatan
+                    `;
                 }
-            );
+
+            }
+        );
+
+
+        /* ==========================================
+           CHARACTER COUNT
+        ========================================== */
+
+        function updateCharacterCount() {
+
+            const length =
+                messageInput.value.length;
+
+            characterCount.textContent =
+                `${length}/300`;
 
         }
 
 
+        messageInput.addEventListener(
+            "input",
+            updateCharacterCount
+        );
+
 
         /* ==========================================
-           CLOVER CHALLENGE
+           CHALLENGE SYSTEM
         ========================================== */
 
-        const STORAGE_CHALLENGES =
-            "clover_challenges";
+        const challengeItems =
+            document.querySelectorAll(".challenge-item");
 
-
-        const checkboxes =
-            document.querySelectorAll(
-                ".challenge-checkbox"
-            );
+        const challengeCheckboxes =
+            document.querySelectorAll(".challenge-checkbox");
 
 
         function loadChallenges() {
 
+            let saved;
+
             try {
 
-                const saved =
+                saved =
                     JSON.parse(
                         localStorage.getItem(
-                            STORAGE_CHALLENGES
+                            "clover_challenges"
                         )
-                    );
+                    ) || [];
+
+            } catch (error) {
+
+                saved = [];
+
+            }
 
 
-                if (
-                    Array.isArray(saved) &&
-                    saved.length ===
-                    checkboxes.length
-                ) {
+            challengeCheckboxes.forEach(
+                (checkbox, index) => {
 
-                    return saved;
+                    const completed =
+                        saved[index] === true;
 
+                    checkbox.checked =
+                        completed;
+
+                    challengeItems[index]
+                        .classList.toggle(
+                            "challenge-done",
+                            completed
+                        );
                 }
-
-            }
-
-            catch (error) {
-
-                console.warn(
-                    "Gagal membaca progress challenge.",
-                    error
-                );
-
-            }
-
-
-            return new Array(
-                checkboxes.length
-            ).fill(false);
-
-        }
-
-
-        function saveChallenges(
-            challenges
-        ) {
-
-            localStorage.setItem(
-                STORAGE_CHALLENGES,
-                JSON.stringify(
-                    challenges
-                )
             );
 
+
+            updateChallengeProgress();
         }
 
 
+        function saveChallenges() {
 
-        /* ==========================================
-           UPDATE CHALLENGE
-        ========================================== */
+            const data =
+                Array.from(
+                    challengeCheckboxes
+                ).map(
+                    checkbox =>
+                        checkbox.checked
+                );
+
+
+            localStorage.setItem(
+                "clover_challenges",
+                JSON.stringify(data)
+            );
+
+
+            updateChallengeProgress();
+        }
+
 
         function updateChallengeProgress() {
 
-            const challenges =
-                loadChallenges();
-
+            const total =
+                challengeCheckboxes.length;
 
             const completed =
-                challenges.filter(
-                    Boolean
+                Array.from(
+                    challengeCheckboxes
+                ).filter(
+                    checkbox =>
+                        checkbox.checked
                 ).length;
 
 
-            const leaves =
-                Math.min(
-                    completed,
-                    5
-                );
-
-
             const percentage =
-                (
-                    completed /
-                    checkboxes.length
-                ) * 100;
+                total > 0
+                    ? (completed / total) * 100
+                    : 0;
 
 
-            const completedCount =
-                document.getElementById(
-                    "completed-count"
-                );
+            document.getElementById(
+                "challenge-progress"
+            ).textContent =
+                `${completed}/${total}`;
 
 
-            const progressBar =
-                document.getElementById(
-                    "progress-bar"
-                );
-
-
-            const leafText =
-                document.getElementById(
-                    "leaf-text"
-                );
-
-
-            const progressMessage =
-                document.getElementById(
-                    "progress-message"
-                );
-
-
-            const completionMessage =
-                document.getElementById(
-                    "completion-message"
-                );
-
-
-            completedCount.textContent =
-                completed;
-
-
-            progressBar.style.width =
+            document.getElementById(
+                "challenge-progress-bar"
+            ).style.width =
                 `${percentage}%`;
-
-
-            leafText.textContent =
-                `${leaves} daun terkumpul`;
-
-
-            const leafElements =
-                document.querySelectorAll(
-                    "#leaf-progress .leaf"
-                );
-
-
-            leafElements.forEach(
-                (leaf, index) => {
-
-                    if (index < leaves) {
-
-                        leaf.classList.remove(
-                            "inactive"
-                        );
-
-                        leaf.classList.add(
-                            "active"
-                        );
-
-                    }
-
-                    else {
-
-                        leaf.classList.remove(
-                            "active"
-                        );
-
-                        leaf.classList.add(
-                            "inactive"
-                        );
-
-                    }
-
-                }
-            );
-
-
-            if (completed === 0) {
-
-                progressMessage.textContent =
-                    "Tidak apa-apa. Setiap langkah dimulai dari satu hal kecil.";
-
-
-                completionMessage.textContent =
-                    "🌱 Tidak perlu terburu-buru. Satu langkah kecil sudah berarti.";
-
-            }
-
-            else if (completed === 1) {
-
-                progressMessage.textContent =
-                    "Satu langkah kecil sudah kamu ambil. 🌱";
-
-
-                completionMessage.textContent =
-                    "🍃 Kamu sudah memulai. Itu adalah hal yang berarti.";
-
-            }
-
-            else if (completed <= 3) {
-
-                progressMessage.textContent =
-                    "Kamu mulai membuka ruang untuk koneksi baru.";
-
-
-                completionMessage.textContent =
-                    "🌿 Perlahan, kamu sedang membangun koneksi.";
-
-            }
-
-            else if (completed === 4) {
-
-                progressMessage.textContent =
-                    "Hubungan tumbuh dari langkah-langkah kecil.";
-
-
-                completionMessage.textContent =
-                    "🌿 Sedikit lagi. Terus lakukan dengan caramu sendiri.";
-
-            }
-
-            else if (completed < 8) {
-
-                progressMessage.textContent =
-                    "Clover-mu mulai lengkap! Terima kasih sudah berani terhubung. 🍀";
-
-
-                completionMessage.textContent =
-                    "🍀 Kamu sudah mengumpulkan 5 daun. Setiap koneksi kecil memiliki arti.";
-
-            }
-
-            else {
-
-                progressMessage.textContent =
-                    "Clover-mu lengkap! Kamu sudah menyelesaikan semua tantangan. 🍀";
-
-
-                completionMessage.textContent =
-                    "🌳 Hebat! Kamu telah menyelesaikan seluruh Clover Challenge.";
-
-            }
-
         }
 
 
+        challengeItems.forEach(
+            (item, index) => {
 
-        /* ==========================================
-           INITIALIZE CHALLENGES
-        ========================================== */
+                item.addEventListener(
+                    "click",
+                    event => {
 
-        function initializeChallenges() {
+                        /*
+                         * Jika yang diklik adalah checkbox,
+                         * biarkan browser menangani check.
+                         */
 
-            const challenges =
-                loadChallenges();
+                        if (
+                            event.target.tagName ===
+                            "INPUT"
+                        ) {
+
+                            setTimeout(
+                                () => {
+
+                                    item.classList.toggle(
+                                        "challenge-done",
+                                        challengeCheckboxes[index].checked
+                                    );
+
+                                    saveChallenges();
+
+                                },
+                                0
+                            );
+
+                            return;
+                        }
 
 
-            checkboxes.forEach(
-                (checkbox, index) => {
-
-                    checkbox.checked =
-                        challenges[index];
+                        const checkbox =
+                            challengeCheckboxes[index];
 
 
-                    const item =
-                        checkbox.closest(
-                            ".challenge-item"
-                        );
+                        checkbox.checked =
+                            !checkbox.checked;
 
-
-                    if (item) {
 
                         item.classList.toggle(
-                            "task-done",
+                            "challenge-done",
                             checkbox.checked
                         );
 
+
+                        saveChallenges();
+
                     }
+                );
 
-
-                    checkbox.addEventListener(
-                        "change",
-                        () => {
-
-                            const current =
-                                loadChallenges();
-
-
-                            current[index] =
-                                checkbox.checked;
-
-
-                            saveChallenges(
-                                current
-                            );
-
-
-                            if (item) {
-
-                                item.classList.toggle(
-                                    "task-done",
-                                    checkbox.checked
-                                );
-
-                            }
-
-
-                            updateChallengeProgress();
-
-                        }
-                    );
-
-                }
-            );
-
-        }
-
+            }
+        );
 
 
         /* ==========================================
-           YEAR
+           FOOTER YEAR
         ========================================== */
 
-        const year =
-            document.getElementById(
-                "year"
-            );
-
-
-        if (year) {
-
-            year.textContent =
-                new Date()
-                .getFullYear();
-
-        }
-
+        document.getElementById(
+            "current-year"
+        ).textContent =
+            new Date().getFullYear();
 
 
         /* ==========================================
-           START CHALLENGE
+           INITIAL LOAD
         ========================================== */
 
-        initializeChallenges();
+        loadChallenges();
 
-        updateChallengeProgress();
+        updateCharacterCount();
 
     </script>
 
 </body>
-
-  </html>
+</html>
