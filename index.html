@@ -1,1221 +1,914 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="module">
 
-  <meta
-    name="description"
-    content="Clover - Kampanye sosial tentang kesepian dan isolasi sosial."
-  >
+  /* =====================================================
+     FIREBASE IMPORT
+  ===================================================== */
 
-  <title>Clover - Kampanye Sosial Kesepian & Isolasi Sosial</title>
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  import {
+    getAuth,
+    signInAnonymously,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-  <!-- Font Awesome -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  >
+  import {
+    getDatabase,
+    ref,
+    push,
+    set,
+    onValue,
+    runTransaction,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
 
-  <!-- Google Font -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  >
 
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
+  /* =====================================================
+     FIREBASE CONFIG
+  ===================================================== */
 
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+  const firebaseConfig = {
 
-    .task-done {
-      background: #f0fdfa;
-      border-color: #5eead4;
-    }
+    apiKey:
+      "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
 
-    .task-done .challenge-title {
-      text-decoration: line-through;
-      color: #94a3b8;
-    }
+    authDomain:
+      "aplikasi-d862d.firebaseapp.com",
 
-    .leaf {
-      transition: all 0.3s ease;
-    }
+    projectId:
+      "aplikasi-d862d",
 
-    .leaf.active {
-      color: #0d9488;
-      transform: scale(1.15);
-    }
+    storageBucket:
+      "aplikasi-d862d.firebasestorage.app",
 
-    .leaf.inactive {
-      color: #cbd5e1;
-    }
+    messagingSenderId:
+      "491134919372",
 
-    .progress-bar {
-      transition: width 0.5s ease;
-    }
+    appId:
+      "1:491134919372:web:63fde8d8d32eb8820e1869",
 
-    .challenge-item {
-      transition: all 0.3s ease;
-    }
+    measurementId:
+      "G-3TK6ZQGMDP",
 
-    .challenge-item:hover {
-      transform: translateY(-2px);
-    }
-  </style>
-</head>
+    databaseURL:
+      "https://aplikasi-d862d-default-rtdb.asia-southeast1.firebasedatabase.app"
 
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+  };
 
-  <!-- ================= NAVBAR ================= -->
-  <header class="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center gap-4">
 
-      <a href="#" class="flex items-center gap-2">
-        <div class="w-10 h-10 rounded-full bg-teal-500 flex items-center justify-center text-white text-lg">
-          <i class="fa-solid fa-heart-pulse"></i>
-        </div>
+  /* =====================================================
+     INITIALIZE FIREBASE
+  ===================================================== */
 
-        <div>
-          <h1 class="font-bold text-lg text-slate-800 leading-tight">
-            Clover
-          </h1>
+  const app =
+    initializeApp(firebaseConfig);
 
-          <p class="text-xs text-slate-500">
-            Gerakan Bersama Melawan Kesepian
-          </p>
-        </div>
-      </a>
+  const auth =
+    getAuth(app);
 
-      <a
-        href="#bantuan"
-        class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold text-sm px-4 py-2 rounded-full transition-all flex items-center gap-2"
-      >
-        <i class="fa-solid fa-phone"></i>
+  const database =
+    getDatabase(app);
 
-        <span class="hidden sm:inline">
-          Bantuan Darurat
-        </span>
-      </a>
 
-    </div>
-  </header>
+  /* =====================================================
+     USER ANONIM
+  ===================================================== */
 
+  let currentUser = null;
 
-  <!-- ================= HERO ================= -->
-  <section class="bg-gradient-to-b from-teal-50/50 to-slate-50 py-16 px-4">
 
-    <div class="max-w-4xl mx-auto text-center">
+  signInAnonymously(auth)
+    .catch(error => {
 
-      <span class="bg-teal-100 text-teal-800 text-xs font-semibold px-3.5 py-1.5 rounded-full inline-block mb-4">
-        Kampanye Kesadaran Sosial
-      </span>
-
-      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
-        Kamu Tidak Sendirian di Dunia yang Ramai Ini
-      </h2>
-
-      <p class="text-base md:text-lg text-slate-600 max-w-2xl mx-auto mb-8">
-        Kesepian bukan tanda kelemahan. Ini adalah sinyal alami manusia yang membutuhkan koneksi nyata.
-        Mari saling menyapa dan membangun ruang aman bersama.
-      </p>
-
-      <div class="flex flex-wrap justify-center gap-4">
-
-        <a
-          href="#tantangan"
-          class="bg-teal-600 hover:bg-teal-700 text-white font-medium px-6 py-3 rounded-full shadow-lg shadow-teal-600/20 transition-all"
-        >
-          Ikut Clover Challenge
-        </a>
-
-        <a
-          href="#wall"
-          class="bg-white hover:bg-slate-100 text-slate-700 font-medium px-6 py-3 rounded-full border border-slate-200 transition-all"
-        >
-          Bagikan Pesan Kehangatan
-        </a>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <main class="max-w-5xl mx-auto px-4 py-12 flex-1 space-y-16 w-full">
-
-
-    <!-- ================= STATS ================= -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
-
-        <div class="text-3xl font-bold text-teal-600 mb-1">
-          1 dari 4
-        </div>
-
-        <p class="text-slate-600 text-sm">
-          Orang dewasa mengalami kesepian kronis di dunia
-        </p>
-
-      </div>
-
-
-      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
-
-        <div class="text-3xl font-bold text-teal-600 mb-1">
-          50%
-        </div>
-
-        <p class="text-slate-600 text-sm">
-          Peningkatan risiko isolasi sosial bagi usia muda
-        </p>
-
-      </div>
-
-
-      <div class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm text-center">
-
-        <div class="text-3xl font-bold text-teal-600 mb-1">
-          1 Sapaan
-        </div>
-
-        <p class="text-slate-600 text-sm">
-          Dapat mengubah hari seseorang menjadi lebih berarti
-        </p>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= CLOVER CHALLENGE ================= -->
-    <section
-      id="tantangan"
-      class="bg-white rounded-3xl p-6 md:p-8 border border-slate-100 shadow-sm"
-    >
-
-      <!-- Header -->
-      <div class="text-center max-w-2xl mx-auto">
-
-        <span class="inline-flex items-center gap-2 bg-teal-50 text-teal-700 text-xs font-bold px-4 py-2 rounded-full mb-4">
-          <i class="fa-solid fa-clover"></i>
-          CLOVER CHALLENGE
-        </span>
-
-        <h3 class="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
-          Tantangan Hari Ini
-        </h3>
-
-        <p class="text-slate-600 text-sm leading-relaxed">
-          Satu langkah kecil bisa menjadi awal dari hubungan yang berarti.
-          Pilih tantangan yang terasa nyaman untukmu dan lakukan secara perlahan.
-        </p>
-
-      </div>
-
-
-      <!-- Progress -->
-      <div class="mt-8 bg-teal-50 rounded-2xl p-5">
-
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-4">
-
-          <div>
-            <p class="text-sm font-bold text-slate-800">
-              Perjalanan Clover-mu
-            </p>
-
-            <p
-              id="progress-message"
-              class="text-xs text-slate-500 mt-1"
-            >
-              Tidak apa-apa. Setiap langkah dimulai dari satu hal kecil.
-            </p>
-          </div>
-
-          <div class="text-sm font-bold text-teal-700">
-            <span id="completed-count">0</span>/8 selesai
-          </div>
-
-        </div>
-
-
-        <!-- Leaves -->
-        <div
-          id="leaf-progress"
-          class="flex justify-center gap-3 text-3xl mb-5"
-          aria-label="Progress Clover"
-        >
-
-          <i class="fa-solid fa-leaf leaf inactive"></i>
-          <i class="fa-solid fa-leaf leaf inactive"></i>
-          <i class="fa-solid fa-leaf leaf inactive"></i>
-          <i class="fa-solid fa-leaf leaf inactive"></i>
-          <i class="fa-solid fa-leaf leaf inactive"></i>
-
-        </div>
-
-
-        <!-- Progress bar -->
-        <div class="w-full h-3 bg-white rounded-full overflow-hidden">
-
-          <div
-            id="progress-bar"
-            class="progress-bar h-full bg-teal-500 rounded-full"
-            style="width: 0%"
-          ></div>
-
-        </div>
-
-        <p
-          id="leaf-text"
-          class="text-center text-xs text-slate-500 mt-3"
-        >
-          0 daun terkumpul
-        </p>
-
-      </div>
-
-
-      <!-- Challenges -->
-      <div class="mt-8">
-
-        <div class="flex items-center justify-between mb-4">
-
-          <div>
-            <h4 class="font-bold text-slate-900">
-              Pilih langkahmu
-            </h4>
-
-            <p class="text-xs text-slate-500 mt-1">
-              Tidak perlu menyelesaikan semuanya sekaligus.
-            </p>
-          </div>
-
-        </div>
-
-
-        <div
-          id="challenge-list"
-          class="space-y-4"
-        >
-
-          <!-- Challenge 1 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Sapa Seseorang
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Sapa satu orang hari ini, baik secara langsung maupun melalui chat.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 2 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Keluar Selama 10 Menit
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Luangkan waktu 10 menit untuk keluar kamar atau rumah dan berada di lingkungan sekitar.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 3 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Hubungi Teman Lama
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Kirim pesan kepada satu teman yang sudah lama tidak kamu hubungi.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 4 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Berbagi Cerita
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Ceritakan satu hal tentang harimu kepada seseorang yang kamu percaya.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 5 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Lakukan Aktivitas Bersama
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Ajak seseorang melakukan aktivitas sederhana seperti makan, bermain, belajar, atau berjalan bersama.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 6 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Bergabung dengan Komunitas
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Cari dan ikuti satu komunitas yang sesuai dengan minatmu.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 7 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Dengarkan Orang Lain
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Luangkan waktu untuk mendengarkan cerita seseorang tanpa menghakimi.
-              </p>
-
-            </div>
-
-          </label>
-
-
-          <!-- Challenge 8 -->
-          <label
-            class="challenge-item flex items-start gap-4 p-4 rounded-2xl border border-slate-200 hover:border-teal-300 cursor-pointer"
-          >
-
-            <input
-              type="checkbox"
-              class="challenge-checkbox mt-1 w-5 h-5 accent-teal-600 cursor-pointer flex-shrink-0"
-            >
-
-            <div>
-
-              <span class="challenge-title block text-slate-800 font-semibold text-sm">
-                Tantangan 3 Hari
-              </span>
-
-              <p class="text-xs text-slate-500 mt-1">
-                Selama tiga hari, lakukan minimal satu interaksi sosial kecil setiap hari.
-              </p>
-
-            </div>
-
-          </label>
-
-        </div>
-
-      </div>
-
-
-      <!-- Bottom motivation -->
-      <div class="mt-8 text-center">
-
-        <p
-          id="completion-message"
-          class="text-sm text-slate-500"
-        >
-          🌱 Tidak perlu terburu-buru. Satu langkah kecil sudah berarti.
-        </p>
-
-      </div>
-
-    </section>
-
-
-    <!-- ================= WALL ================= -->
-    <section
-      id="wall"
-      class="space-y-6"
-    >
-
-      <div>
-
-        <h3 class="text-2xl font-bold text-slate-900 mb-2">
-          Papan Kehangatan Clover
-        </h3>
-
-        <p class="text-slate-600 text-sm">
-          Tinggalkan pesan positif anonim untuk memberi semangat bagi siapa pun yang sedang merasa sendiri.
-        </p>
-
-      </div>
-
-
-      <form
-        id="message-form"
-        class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4"
-      >
-
-        <textarea
-          id="message-input"
-          rows="3"
-          required
-          maxlength="300"
-          placeholder="Tuliskan kata-kata penyemangat di sini..."
-          class="w-full p-4 bg-slate-50 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 text-slate-800 text-sm resize-none"
-        ></textarea>
-
-
-        <div class="flex flex-col sm:flex-row gap-3 justify-between items-stretch sm:items-center">
-
-          <input
-            type="text"
-            id="sender-input"
-            maxlength="40"
-            placeholder="Nama / Anonim"
-            class="p-2.5 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-700 focus:outline-none focus:ring-2 focus:ring-teal-500"
-          >
-
-          <button
-            type="submit"
-            class="bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all"
-          >
-            Kirim Pesan
-          </button>
-
-        </div>
-
-      </form>
-
-
-      <div
-        id="messages-container"
-        class="grid grid-cols-1 md:grid-cols-2 gap-4"
-      ></div>
-
-    </section>
-
-
-    <!-- ================= HELP ================= -->
-    <section
-      id="bantuan"
-      class="bg-rose-50 rounded-3xl p-8 border border-rose-100"
-    >
-
-      <div class="max-w-2xl mb-6">
-
-        <span class="text-rose-600 text-xs font-semibold uppercase tracking-wider">
-          Layanan Penting
-        </span>
-
-        <h3 class="text-2xl font-bold text-slate-900 mt-1 mb-2">
-          Butuh Teman Bicara?
-        </h3>
-
-        <p class="text-slate-600 text-sm">
-          Jika kamu atau orang tersayang merasa sangat tertekan atau terisolasi,
-          layanan bantuan kesehatan mental siap mendengarkan tanpa menghakimi.
-        </p>
-
-      </div>
-
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-        <div class="bg-white p-5 rounded-2xl border border-rose-100 shadow-sm flex items-center justify-between gap-4">
-
-          <div>
-
-            <h4 class="font-bold text-slate-800 text-sm">
-              Layanan Sejiwa (Kemenkes)
-            </h4>
-
-            <p class="text-xs text-slate-500">
-              Bantuan Psikologi Gratis
-            </p>
-
-          </div>
-
-          <a
-            href="tel:119"
-            class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all whitespace-nowrap"
-          >
-            Call 119
-          </a>
-
-        </div>
-
-
-        <div class="bg-white p-5 rounded-2xl border border-rose-100 shadow-sm flex items-center justify-between gap-4">
-
-          <div>
-
-            <h4 class="font-bold text-slate-800 text-sm">
-              Dalam keadaan darurat
-            </h4>
-
-            <p class="text-xs text-slate-500">
-              Hubungi layanan darurat setempat.
-            </p>
-
-          </div>
-
-          <a
-            href="tel:112"
-            class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-all whitespace-nowrap"
-          >
-            Call 112
-          </a>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="border-t border-slate-200 bg-white mt-auto">
-
-    <div class="max-w-5xl mx-auto px-4 py-6 text-center text-xs text-slate-400">
-
-      <p>
-        &copy;
-        <span id="year"></span>
-        Clover. Semua hak dilindungi.
-      </p>
-
-    </div>
-
-  </footer>
-
-
-  <!-- ================= JAVASCRIPT ================= -->
-  <script>
-
-    /* ==========================================
-       CLOVER STORAGE
-    ========================================== */
-
-    const STORAGE_MESSAGES = "clover_messages";
-    const STORAGE_CHALLENGES = "clover_challenges";
-
-
-    /* ==========================================
-       PESAN DEFAULT
-    ========================================== */
-
-    const defaultMessages = [
-      {
-        text: "Ingatlah bahwa awan mendung tidak bertahan selamanya. Kamu berharga dan kehadiranmu berarti!",
-        sender: "Sahabat Anonim",
-        likes: 12,
-        liked: false
-      }
-    ];
-
-
-    /* ==========================================
-       ESCAPE HTML
-    ========================================== */
-
-    function escapeHTML(value) {
-
-      const div = document.createElement("div");
-
-      div.textContent = value;
-
-      return div.innerHTML;
-
-    }
-
-
-    /* ==========================================
-       PESAN CLOVER
-    ========================================== */
-
-    function getMessages() {
-
-      try {
-
-        const saved =
-          JSON.parse(
-            localStorage.getItem(STORAGE_MESSAGES)
-          );
-
-        return Array.isArray(saved) && saved.length
-          ? saved
-          : defaultMessages;
-
-      } catch (error) {
-
-        return defaultMessages;
-
-      }
-
-    }
-
-
-    function saveMessages(messages) {
-
-      localStorage.setItem(
-        STORAGE_MESSAGES,
-        JSON.stringify(messages)
+      console.error(
+        "Firebase Authentication Error:",
+        error
       );
 
+    });
+
+
+  onAuthStateChanged(
+    auth,
+    user => {
+
+      if (!user) {
+        return;
+      }
+
+      currentUser = user;
+
+      console.log(
+        "Clover User ID:",
+        currentUser.uid
+      );
+
+      listenToMessages();
+
     }
+  );
 
 
-    function renderMessages() {
+  /* =====================================================
+     HELPER
+  ===================================================== */
 
-      const container =
-        document.getElementById("messages-container");
+  function escapeHTML(value) {
 
-      const messages = getMessages();
+    const div =
+      document.createElement("div");
 
+    div.textContent =
+      value ?? "";
 
-      container.innerHTML = messages.map(
-        (message, index) => `
+    return div.innerHTML;
 
-          <article
-            class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-3"
-          >
-
-            <p class="text-slate-700 text-sm leading-relaxed">
-              "${escapeHTML(message.text)}"
-            </p>
-
-            <div
-              class="flex justify-between items-center text-xs text-slate-400 gap-3"
-            >
-
-              <span>
-                — ${escapeHTML(message.sender || "Anonim")}
-              </span>
-
-              <button
-                type="button"
-                data-like-index="${index}"
-                class="like-button flex items-center gap-1 text-rose-500 hover:text-rose-600 font-medium"
-              >
-
-                <i
-                  class="${
-                    message.liked
-                      ? "fa-solid"
-                      : "fa-regular"
-                  } fa-heart"
-                ></i>
-
-                <span>
-                  ${Number(message.likes) || 0}
-                </span>
-
-              </button>
-
-            </div>
-
-          </article>
-
-        `
-      ).join("");
+  }
 
 
-      container
-        .querySelectorAll("[data-like-index]")
-        .forEach(button => {
+  /* =====================================================
+     PAPAN KEHANGATAN
+  ===================================================== */
 
-          button.addEventListener("click", () => {
+  const messagesRef =
+    ref(database, "messages");
 
-            likeCard(
-              Number(button.dataset.likeIndex)
+
+  function listenToMessages() {
+
+    onValue(
+      messagesRef,
+
+      snapshot => {
+
+        const data =
+          snapshot.val();
+
+        const messages = [];
+
+
+        if (data) {
+
+          Object.entries(data)
+            .forEach(
+              ([id, message]) => {
+
+                messages.push({
+
+                  id: id,
+
+                  text:
+                    message.text || "",
+
+                  sender:
+                    message.sender || "Anonim",
+
+                  likes:
+                    Number(message.likes) || 0,
+
+                  likedBy:
+                    message.likedBy || {},
+
+                  createdAt:
+                    message.createdAt || 0
+
+                });
+
+              }
             );
 
-          });
-
-        });
-
-    }
+        }
 
 
-    function likeCard(index) {
-
-      const messages = getMessages();
-
-      if (!messages[index]) return;
-
-
-      messages[index].liked =
-        !messages[index].liked;
-
-
-      messages[index].likes =
-        Math.max(
-          0,
-          (Number(messages[index].likes) || 0) +
-          (messages[index].liked ? 1 : -1)
+        messages.sort(
+          (a, b) =>
+            Number(b.createdAt || 0) -
+            Number(a.createdAt || 0)
         );
 
 
-      saveMessages(messages);
+        renderMessages(messages);
 
-      renderMessages();
+      },
+
+      error => {
+
+        console.error(
+          "Gagal membaca pesan:",
+          error
+        );
+
+      }
+    );
+
+  }
+
+
+  /* =====================================================
+     TAMPILKAN PESAN
+  ===================================================== */
+
+  function renderMessages(messages) {
+
+    const container =
+      document.getElementById(
+        "messages-container"
+      );
+
+
+    if (!messages.length) {
+
+      container.innerHTML = `
+
+        <article
+          class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm"
+        >
+
+          <p class="text-slate-700 text-sm leading-relaxed">
+            "Ingatlah bahwa awan mendung tidak bertahan selamanya.
+            Kamu berharga dan kehadiranmu berarti!"
+          </p>
+
+          <div
+            class="text-xs text-slate-400 mt-3"
+          >
+            — Sahabat Anonim
+          </div>
+
+        </article>
+
+      `;
+
+      return;
 
     }
 
 
-    document
-      .getElementById("message-form")
-      .addEventListener("submit", function(event) {
+    container.innerHTML =
+      messages.map(
+        message => {
+
+          const userLiked =
+            currentUser &&
+            message.likedBy &&
+            message.likedBy[currentUser.uid];
+
+
+          return `
+
+            <article
+              class="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-3"
+            >
+
+              <p
+                class="text-slate-700 text-sm leading-relaxed"
+              >
+                "${escapeHTML(message.text)}"
+              </p>
+
+
+              <div
+                class="flex justify-between items-center text-xs text-slate-400 gap-3"
+              >
+
+                <span>
+                  — ${escapeHTML(
+                    message.sender || "Anonim"
+                  )}
+                </span>
+
+
+                <button
+                  type="button"
+                  data-like-id="${escapeHTML(message.id)}"
+                  class="like-button flex items-center gap-1 text-rose-500 hover:text-rose-600 font-medium"
+                >
+
+                  <i
+                    class="${
+                      userLiked
+                        ? "fa-solid"
+                        : "fa-regular"
+                    } fa-heart"
+                  ></i>
+
+                  <span>
+                    ${Number(message.likes) || 0}
+                  </span>
+
+                </button>
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
+
+
+    container
+      .querySelectorAll(
+        "[data-like-id]"
+      )
+      .forEach(button => {
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            likeMessage(
+              button.dataset.likeId
+            );
+
+          }
+        );
+
+      });
+
+  }
+
+
+  /* =====================================================
+     KIRIM PESAN KE FIREBASE
+  ===================================================== */
+
+  document
+    .getElementById("message-form")
+    .addEventListener(
+      "submit",
+      async function(event) {
 
         event.preventDefault();
 
 
+        if (!currentUser) {
+
+          alert(
+            "Clover sedang menghubungkan ke server. Silakan coba lagi."
+          );
+
+          return;
+
+        }
+
+
         const messageInput =
-          document.getElementById("message-input");
+          document.getElementById(
+            "message-input"
+          );
 
         const senderInput =
-          document.getElementById("sender-input");
+          document.getElementById(
+            "sender-input"
+          );
 
 
         const text =
           messageInput.value.trim();
 
         const sender =
-          senderInput.value.trim() || "Anonim";
+          senderInput.value.trim() ||
+          "Anonim";
 
 
-        if (!text) return;
-
-
-        const messages =
-          getMessages();
-
-
-        messages.unshift({
-
-          text: text,
-
-          sender: sender,
-
-          likes: 0,
-
-          liked: false
-
-        });
-
-
-        saveMessages(messages);
-
-        renderMessages();
-
-        this.reset();
-
-      });
-
-
-    /* ==========================================
-       CLOVER CHALLENGE
-    ========================================== */
-
-    const checkboxes =
-      document.querySelectorAll(
-        ".challenge-checkbox"
-      );
-
-
-    function loadChallenges() {
-
-      try {
-
-        const saved =
-          JSON.parse(
-            localStorage.getItem(
-              STORAGE_CHALLENGES
-            )
-          );
-
-
-        if (
-          Array.isArray(saved) &&
-          saved.length === checkboxes.length
-        ) {
-
-          return saved;
-
+        if (!text) {
+          return;
         }
 
 
-        return new Array(
-          checkboxes.length
-        ).fill(false);
+        try {
 
-      } catch (error) {
+          const newMessage =
+            push(messagesRef);
 
-        return new Array(
-          checkboxes.length
-        ).fill(false);
 
-      }
+          await set(
+            newMessage,
+            {
 
-    }
+              text:
+                text,
 
+              sender:
+                sender,
 
-    function saveChallenges(challenges) {
+              likes:
+                0,
 
-      localStorage.setItem(
-        STORAGE_CHALLENGES,
-        JSON.stringify(challenges)
-      );
+              likedBy:
+                {},
 
-    }
+              createdAt:
+                serverTimestamp(),
 
-
-    /* ==========================================
-       UPDATE CLOVER PROGRESS
-    ========================================== */
-
-    function updateChallengeProgress() {
-
-      const challenges =
-        loadChallenges();
-
-
-      const completed =
-        challenges.filter(Boolean).length;
-
-
-      /*
-        Setiap challenge memberikan
-        satu daun sampai maksimal 5 daun.
-      */
-
-      const leaves =
-        Math.min(completed, 5);
-
-
-      /*
-        Progress berdasarkan 8 challenge.
-      */
-
-      const percentage =
-        (completed / challenges.length) * 100;
-
-
-      /* Jumlah selesai */
-
-      document.getElementById(
-        "completed-count"
-      ).textContent = completed;
-
-
-      /* Progress bar */
-
-      document.getElementById(
-        "progress-bar"
-      ).style.width = `${percentage}%`;
-
-
-      /* Daun */
-
-      const leafElements =
-        document.querySelectorAll(
-          "#leaf-progress .leaf"
-        );
-
-
-      leafElements.forEach(
-        (leaf, index) => {
-
-          if (index < leaves) {
-
-            leaf.classList.remove(
-              "inactive"
-            );
-
-            leaf.classList.add(
-              "active"
-            );
-
-          } else {
-
-            leaf.classList.remove(
-              "active"
-            );
-
-            leaf.classList.add(
-              "inactive"
-            );
-
-          }
-
-        }
-      );
-
-
-      /* Teks daun */
-
-      document.getElementById(
-        "leaf-text"
-      ).textContent =
-        `${leaves} daun terkumpul`;
-
-
-      /* Pesan motivasi */
-
-      const progressMessage =
-        document.getElementById(
-          "progress-message"
-        );
-
-      const completionMessage =
-        document.getElementById(
-          "completion-message"
-        );
-
-
-      if (completed === 0) {
-
-        progressMessage.textContent =
-          "Tidak apa-apa. Setiap langkah dimulai dari satu hal kecil.";
-
-        completionMessage.textContent =
-          "🌱 Tidak perlu terburu-buru. Satu langkah kecil sudah berarti.";
-
-      }
-
-      else if (completed === 1) {
-
-        progressMessage.textContent =
-          "Satu langkah kecil sudah kamu ambil. 🌱";
-
-        completionMessage.textContent =
-          "🍃 Kamu sudah memulai. Itu adalah hal yang berarti.";
-
-      }
-
-      else if (completed <= 3) {
-
-        progressMessage.textContent =
-          "Kamu mulai membuka ruang untuk koneksi baru.";
-
-        completionMessage.textContent =
-          "🌿 Perlahan, kamu sedang membangun koneksi.";
-
-      }
-
-      else if (completed === 4) {
-
-        progressMessage.textContent =
-          "Hubungan tumbuh dari langkah-langkah kecil.";
-
-        completionMessage.textContent =
-          "🌿 Sedikit lagi. Terus lakukan dengan caramu sendiri.";
-
-      }
-
-      else if (completed >= 5 && completed < 8) {
-
-        progressMessage.textContent =
-          "Clover-mu mulai lengkap! Terima kasih sudah berani terhubung. 🍀";
-
-        completionMessage.textContent =
-          "🍀 Kamu sudah mengumpulkan 5 daun. Setiap koneksi kecil memiliki arti.";
-
-      }
-
-      else {
-
-        progressMessage.textContent =
-          "Clover-mu lengkap! Kamu sudah menyelesaikan semua tantangan. 🍀";
-
-        completionMessage.textContent =
-          "🌳 Hebat! Kamu telah menyelesaikan seluruh Clover Challenge.";
-
-      }
-
-    }
-
-
-    /* ==========================================
-       CHECKBOX EVENT
-    ========================================== */
-
-    function initializeChallenges() {
-
-      const challenges =
-        loadChallenges();
-
-
-      checkboxes.forEach(
-        (checkbox, index) => {
-
-          checkbox.checked =
-            challenges[index] || false;
-
-
-          checkbox
-            .closest("label")
-            .classList.toggle(
-              "task-done",
-              checkbox.checked
-            );
-
-
-          checkbox.addEventListener(
-            "change",
-            () => {
-
-              const currentChallenges =
-                loadChallenges();
-
-
-              currentChallenges[index] =
-                checkbox.checked;
-
-
-              saveChallenges(
-                currentChallenges
-              );
-
-
-              checkbox
-                .closest("label")
-                .classList.toggle(
-                  "task-done",
-                  checkbox.checked
-                );
-
-
-              updateChallengeProgress();
+              userId:
+                currentUser.uid
 
             }
           );
 
+
+          this.reset();
+
+
+        } catch (error) {
+
+          console.error(
+            "Gagal mengirim pesan:",
+            error
+          );
+
+          alert(
+            "Pesan gagal dikirim. Periksa koneksi atau Firebase Rules."
+          );
+
         }
+
+      }
+    );
+
+
+  /* =====================================================
+     LIKE PESAN
+  ===================================================== */
+
+  async function likeMessage(messageId) {
+
+    if (!currentUser) {
+      return;
+    }
+
+
+    if (!messageId) {
+      return;
+    }
+
+
+    const messageRef =
+      ref(
+        database,
+        `messages/${messageId}`
+      );
+
+
+    try {
+
+      await runTransaction(
+        messageRef,
+
+        currentData => {
+
+          if (!currentData) {
+            return;
+          }
+
+
+          if (!currentData.likedBy) {
+
+            currentData.likedBy = {};
+
+          }
+
+
+          const alreadyLiked =
+            currentData.likedBy[
+              currentUser.uid
+            ] === true;
+
+
+          if (alreadyLiked) {
+
+            delete currentData.likedBy[
+              currentUser.uid
+            ];
+
+            currentData.likes =
+              Math.max(
+                0,
+                (Number(currentData.likes) || 0) - 1
+              );
+
+          } else {
+
+            currentData.likedBy[
+              currentUser.uid
+            ] = true;
+
+            currentData.likes =
+              (Number(currentData.likes) || 0) + 1;
+
+          }
+
+
+          return currentData;
+
+        }
+      );
+
+    } catch (error) {
+
+      console.error(
+        "Gagal memberikan like:",
+        error
       );
 
     }
 
+  }
 
-    /* ==========================================
-       YEAR
-    ========================================== */
+
+  /* =====================================================
+     NOTE SAMPAH
+     KELUHAN TIDAK DIKIRIM KE FIREBASE
+  ===================================================== */
+
+  const complaintInput =
+    document.getElementById(
+      "complaint-input"
+    );
+
+  const throwComplaintButton =
+    document.getElementById(
+      "throw-complaint"
+    );
+
+  const encouragementBox =
+    document.getElementById(
+      "encouragement-box"
+    );
+
+  const encouragementText =
+    document.getElementById(
+      "encouragement-text"
+    );
+
+
+  const encouragementMessages = [
+
+    "Tidak semua hal harus kamu selesaikan hari ini. Beri dirimu waktu untuk bernapas. Kamu tetap berharga. 🍀",
+
+    "Apa yang kamu rasakan itu valid. Jangan terlalu keras kepada dirimu sendiri. Kamu sudah berusaha sejauh ini.",
+
+    "Hari yang berat bukan berarti hidupmu akan selalu berat. Perlahan saja, masih ada hari baik yang menunggumu.",
+
+    "Kamu tidak harus selalu kuat. Tidak apa-apa untuk merasa lelah dan mengambil waktu untuk beristirahat.",
+
+    "Satu masalah tidak menentukan seluruh hidupmu. Ambil napas, tenangkan diri, lalu lanjutkan sedikit demi sedikit.",
+
+    "Mungkin hari ini terasa sepi, tetapi itu bukan berarti kamu tidak berarti. Kehadiranmu tetap berharga. 💚",
+
+    "Terima kasih sudah berani mengeluarkan apa yang kamu rasakan. Sekarang, beri dirimu kesempatan untuk melangkah lagi.",
+
+    "Tidak perlu membandingkan perjalananmu dengan orang lain. Setiap orang punya waktunya sendiri. 🌱"
+
+  ];
+
+
+  function getRandomEncouragement() {
+
+    const randomIndex =
+      Math.floor(
+        Math.random() *
+        encouragementMessages.length
+      );
+
+    return encouragementMessages[
+      randomIndex
+    ];
+
+  }
+
+
+  throwComplaintButton.addEventListener(
+    "click",
+    function() {
+
+      const complaint =
+        complaintInput.value.trim();
+
+
+      if (!complaint) {
+
+        complaintInput.focus();
+
+        complaintInput.placeholder =
+          "Tulis dulu keluhanmu sebelum membuangnya...";
+
+        return;
+
+      }
+
+
+      /*
+        KELUHAN TIDAK DISIMPAN.
+        TIDAK MASUK FIREBASE.
+      */
+
+      complaintInput.value = "";
+
+
+      encouragementText.textContent =
+        getRandomEncouragement();
+
+
+      encouragementBox.classList.remove(
+        "hidden"
+      );
+
+
+      encouragementBox.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+
+    }
+  );
+
+
+  /* =====================================================
+     CLOVER CHALLENGE
+     PROGRESS MASING-MASING USER
+  ===================================================== */
+
+  const checkboxes =
+    document.querySelectorAll(
+      ".challenge-checkbox"
+    );
+
+
+  const STORAGE_CHALLENGES =
+    "clover_challenges";
+
+
+  function loadChallenges() {
+
+    try {
+
+      const saved =
+        JSON.parse(
+          localStorage.getItem(
+            STORAGE_CHALLENGES
+          )
+        );
+
+
+      if (
+        Array.isArray(saved) &&
+        saved.length === checkboxes.length
+      ) {
+
+        return saved;
+
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+    }
+
+
+    return new Array(
+      checkboxes.length
+    ).fill(false);
+
+  }
+
+
+  function saveChallenges(
+    challenges
+  ) {
+
+    localStorage.setItem(
+      STORAGE_CHALLENGES,
+      JSON.stringify(challenges)
+    );
+
+  }
+
+
+  function updateChallengeProgress() {
+
+    const challenges =
+      loadChallenges();
+
+
+    const completed =
+      challenges.filter(Boolean).length;
+
+
+    const leaves =
+      Math.min(
+        completed,
+        5
+      );
+
+
+    const percentage =
+      challenges.length === 0
+        ? 0
+        : (
+            completed /
+            challenges.length
+          ) * 100;
+
 
     document.getElementById(
-      "year"
+      "completed-count"
     ).textContent =
-      new Date().getFullYear();
+      completed;
 
 
-    /* ==========================================
-       INITIALIZE
-    ========================================== */
+    document.getElementById(
+      "progress-bar"
+    ).style.width =
+      `${percentage}%`;
 
-    initializeChallenges();
+
+    const leafElements =
+      document.querySelectorAll(
+        "#leaf-progress .leaf"
+      );
+
+
+    leafElements.forEach(
+      (leaf, index) => {
+
+        leaf.classList.toggle(
+          "active",
+          index < leaves
+        );
+
+        leaf.classList.toggle(
+          "inactive",
+          index >= leaves
+        );
+
+      }
+    );
+
+
+    document.getElementById(
+      "leaf-text"
+    ).textContent =
+      `${leaves} daun terkumpul`;
+
+
+    const progressMessage =
+      document.getElementById(
+        "progress-message"
+      );
+
+    const completionMessage =
+      document.getElementById(
+        "completion-message"
+      );
+
+
+    if (completed === 0) {
+
+      progressMessage.textContent =
+        "Tidak apa-apa. Setiap langkah dimulai dari satu hal kecil.";
+
+      completionMessage.textContent =
+        "🌱 Tidak perlu terburu-buru. Satu langkah kecil sudah berarti.";
+
+    }
+
+    else if (completed === 1) {
+
+      progressMessage.textContent =
+        "Satu langkah kecil sudah kamu ambil. 🌱";
+
+      completionMessage.textContent =
+        "🍃 Kamu sudah memulai. Itu adalah hal yang berarti.";
+
+    }
+
+    else if (completed <= 3) {
+
+      progressMessage.textContent =
+        "Kamu mulai membuka ruang untuk koneksi baru.";
+
+      completionMessage.textContent =
+        "🌿 Perlahan, kamu sedang membangun koneksi.";
+
+    }
+
+    else if (completed === 4) {
+
+      progressMessage.textContent =
+        "Hubungan tumbuh dari langkah-langkah kecil.";
+
+      completionMessage.textContent =
+        "🌿 Sedikit lagi. Terus lakukan dengan caramu sendiri.";
+
+    }
+
+    else if (
+      completed >= 5 &&
+      completed < 8
+    ) {
+
+      progressMessage.textContent =
+        "Clover-mu mulai lengkap! Terima kasih sudah berani terhubung. 🍀";
+
+      completionMessage.textContent =
+        "🍀 Kamu sudah mengumpulkan 5 daun. Setiap koneksi kecil memiliki arti.";
+
+    }
+
+    else {
+
+      progressMessage.textContent =
+        "Clover-mu lengkap! Kamu sudah menyelesaikan semua tantangan. 🍀";
+
+      completionMessage.textContent =
+        "🌳 Hebat! Kamu telah menyelesaikan seluruh Clover Challenge.";
+
+    }
+
+  }
+
+
+  function initializeChallenges() {
+
+    const challenges =
+      loadChallenges();
+
+
+    checkboxes.forEach(
+      (checkbox, index) => {
+
+        checkbox.checked =
+          challenges[index] || false;
+
+
+        checkbox
+          .closest("label")
+          .classList.toggle(
+            "task-done",
+            checkbox.checked
+          );
+
+
+        checkbox.addEventListener(
+          "change",
+          () => {
+
+            const currentChallenges =
+              loadChallenges();
+
+
+            currentChallenges[index] =
+              checkbox.checked;
+
+
+            saveChallenges(
+              currentChallenges
+            );
+
+
+            checkbox
+              .closest("label")
+              .classList.toggle(
+                "task-done",
+                checkbox.checked
+              );
+
+
+            updateChallengeProgress();
+
+          }
+        );
+
+      }
+    );
+
 
     updateChallengeProgress();
 
-    renderMessages();
+  }
 
-  </script>
 
-</body>
-    </html>
+  /* =====================================================
+     FOOTER
+  ===================================================== */
+
+  document.getElementById(
+    "year"
+  ).textContent =
+    new Date().getFullYear();
+
+
+  /* =====================================================
+     INITIALIZE
+  ===================================================== */
+
+  initializeChallenges();
+
+</script>
