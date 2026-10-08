@@ -1,2165 +1,445 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-    <meta name="description"
-        content="Clover Admin Dashboard">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Clover Admin Dashboard">
+    <meta name="theme-color" content="#10b981">
 
     <title>Clover — Admin Dashboard</title>
 
-    <style>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, Helvetica, sans-serif;
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background: #f5f7f2;
-            color: #26352d;
-            min-height: 100vh;
+            font-family: "Plus Jakarta Sans", sans-serif;
+            overflow-x: hidden;
         }
 
-
-        /* =========================
-           LOGIN
-        ========================= */
-
-        #loginPage {
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            padding: 20px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #e7f1e8,
-                    #f7f2e7
-                );
+        /* Floating Clovers Background Animation */
+        @keyframes float-up {
+            0% { transform: translateY(110vh) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.15; }
+            90% { opacity: 0.15; }
+            100% { transform: translateY(-10vh) rotate(360deg) scale(1.2); opacity: 0; }
+        }
+        .bg-clover {
+            position: fixed;
+            color: #10b981;
+            animation: float-up linear infinite;
+            z-index: -1;
+            pointer-events: none;
         }
 
-        .login-box {
-            width: 100%;
-            max-width: 400px;
-
-            background: white;
-
-            padding: 35px;
-
-            border-radius: 22px;
-
-            box-shadow:
-                0 15px 40px rgba(0, 0, 0, .10);
+        /* Glassmorphism utilities */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.05);
         }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .logo-icon {
-            width: 70px;
-            height: 70px;
-
-            margin: auto;
-            margin-bottom: 12px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: #5f8f68;
-
-            border-radius: 50%;
-
-            color: white;
-            font-size: 34px;
-        }
-
-        .logo h1 {
-            color: #477453;
-            margin-bottom: 5px;
-        }
-
-        .logo p {
-            color: #777;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            display: block;
-
-            margin-bottom: 7px;
-
-            font-size: 14px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: 100%;
-
-            padding: 13px 14px;
-
-            border: 1px solid #d5ddd5;
-            border-radius: 10px;
-
-            outline: none;
-
-            font-size: 15px;
-        }
-
-        .form-group input:focus {
-            border-color: #5f8f68;
-
-            box-shadow:
-                0 0 0 3px
-                rgba(95, 143, 104, .12);
-        }
-
-        .login-button {
-            width: 100%;
-
-            padding: 13px;
-
-            border: none;
-            border-radius: 10px;
-
-            background: #5f8f68;
-            color: white;
-
-            font-size: 16px;
-            font-weight: bold;
-
-            cursor: pointer;
-        }
-
-        .login-button:hover {
-            background: #4d7c57;
-        }
-
-        .login-error {
-            min-height: 20px;
-
-            margin-top: 12px;
-
-            text-align: center;
-
-            color: #d9534f;
-
-            font-size: 14px;
-        }
-
-
-        /* =========================
-           DASHBOARD
-        ========================= */
-
-        #dashboard {
-            display: none;
-            min-height: 100vh;
-        }
-
-        .navbar {
-            background: white;
-
-            padding: 17px 30px;
-
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            box-shadow:
-                0 2px 12px rgba(0, 0, 0, .07);
-
-            position: sticky;
-            top: 0;
-
-            z-index: 10;
-        }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-
-            gap: 12px;
-        }
-
-        .navbar-icon {
-            width: 43px;
-            height: 43px;
-
-            border-radius: 50%;
-
-            background: #5f8f68;
-            color: white;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            font-size: 22px;
-        }
-
-        .navbar-brand h2 {
-            color: #477453;
-            font-size: 21px;
-        }
-
-        .navbar-brand span {
-            display: block;
-
-            margin-top: 2px;
-
-            color: #888;
-
-            font-size: 12px;
-        }
-
-        .logout-button {
-            border: none;
-
-            background: #f2dddd;
-            color: #a83c3c;
-
-            padding: 9px 15px;
-
-            border-radius: 9px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-        .logout-button:hover {
-            background: #ead0d0;
-        }
-
-
-        /* =========================
-           CONTENT
-        ========================= */
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-
-            margin: 30px auto;
-
-            padding: 0 20px;
-        }
-
-        .welcome {
-            margin-bottom: 25px;
-        }
-
-        .welcome h1 {
-            color: #304d38;
-
-            font-size: 28px;
-
-            margin-bottom: 5px;
-        }
-
-        .welcome p {
-            color: #777;
-        }
-
-
-        /* =========================
-           STATISTICS
-        ========================= */
-
-        .stats {
-            display: grid;
-
-            grid-template-columns:
-                repeat(3, 1fr);
-
-            gap: 18px;
-
-            margin-bottom: 25px;
-        }
-
-        .stat-card {
-            background: white;
-
-            padding: 22px;
-
-            border-radius: 16px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0, 0, 0, .06);
-        }
-
-        .stat-card p {
-            color: #777;
-
-            font-size: 14px;
-
-            margin-bottom: 8px;
-        }
-
-        .stat-card h2 {
-            color: #477453;
-
-            font-size: 30px;
-        }
-
-
-        /* =========================
-           MESSAGE SECTION
-        ========================= */
-
-        .message-section {
-            background: white;
-
-            padding: 25px;
-
-            border-radius: 18px;
-
-            box-shadow:
-                0 5px 20px
-                rgba(0, 0, 0, .06);
-        }
-
-        .section-header {
-            display: flex;
-
-            justify-content: space-between;
-            align-items: center;
-
-            gap: 15px;
-
-            margin-bottom: 20px;
-        }
-
-        .section-header h2 {
-            color: #304d38;
-        }
-
-        .delete-all-button {
-            border: none;
-
-            background: #d9534f;
-            color: white;
-
-            padding: 10px 15px;
-
-            border-radius: 9px;
-
-            cursor: pointer;
-
-            font-weight: bold;
-        }
-
-        .delete-all-button:hover {
-            background: #bd4541;
-        }
-
-
-        /* =========================
-           MESSAGE LIST
-        ========================= */
-
-        #messageList {
-            display: flex;
-
-            flex-direction: column;
-
-            gap: 15px;
-        }
-
-        .message-card {
-            background: #fbfcfa;
-
-            border: 1px solid #e2e7e2;
-
-            border-radius: 13px;
-
-            padding: 18px;
-
-            transition: .2s;
-        }
-
-        .message-card:hover {
-            box-shadow:
-                0 4px 15px
-                rgba(0, 0, 0, .05);
-        }
-
-        .message-top {
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: flex-start;
-
-            gap: 15px;
-
-            margin-bottom: 10px;
-        }
-
-        .sender {
-            color: #477453;
-
-            font-weight: bold;
-
-            font-size: 15px;
-        }
-
-        .date {
-            color: #888;
-
-            font-size: 12px;
-        }
-
-        .message-text {
-            color: #444;
-
-            line-height: 1.6;
-
-            margin-bottom: 15px;
-
-            white-space: pre-wrap;
-
-            word-break: break-word;
-        }
-
-
-        /* =========================
-           STATUS
-        ========================= */
-
-        .status-row {
-            margin-bottom: 15px;
-        }
-
-        .status-badge {
-            display: inline-block;
-
-            padding: 5px 10px;
-
-            border-radius: 20px;
-
-            font-size: 12px;
-
-            font-weight: bold;
-        }
-
-        .status-pending {
-            background: #fff1c7;
-            color: #9b7100;
-        }
-
-        .status-approved {
-            background: #dff2e2;
-            color: #397347;
-        }
-
-        .status-rejected {
-            background: #f7dddd;
-            color: #a83c3c;
-        }
-
-
-        /* =========================
-           BUTTONS
-        ========================= */
-
-        .action-buttons {
-            display: flex;
-
-            flex-wrap: wrap;
-
-            gap: 8px;
-        }
-
-        .action-button {
-            border: none;
-
-            padding: 8px 13px;
-
-            border-radius: 8px;
-
-            cursor: pointer;
-
-            font-size: 12px;
-
-            font-weight: bold;
-
-            transition: .2s;
-        }
-
-        .approve-button {
-            background: #dff2e2;
-            color: #397347;
-        }
-
-        .approve-button:hover {
-            background: #c9e8cf;
-        }
-
-        .reject-button {
-            background: #f7dddd;
-            color: #a83c3c;
-        }
-
-        .reject-button:hover {
-            background: #eccaca;
-        }
-
-        .pending-button {
-            background: #fff1c7;
-            color: #9b7100;
-        }
-
-        .pending-button:hover {
-            background: #f8e7b3;
-        }
-
-        .delete-button {
-            background: #eeeeee;
-            color: #666;
-        }
-
-        .delete-button:hover {
-            background: #dddddd;
-        }
-
-
-        /* =========================
-           FOOTER MESSAGE
-        ========================= */
-
-        .message-footer {
-            display: flex;
-
-            justify-content: space-between;
-
-            align-items: center;
-
-            gap: 10px;
-
-            margin-top: 12px;
-
-            padding-top: 12px;
-
-            border-top: 1px solid #eeeeee;
-        }
-
-        .message-id {
-            color: #aaa;
-
-            font-size: 10px;
-
-            overflow: hidden;
-
-            text-overflow: ellipsis;
-
-            white-space: nowrap;
-        }
-
-
-        /* =========================
-           EMPTY / LOADING
-        ========================= */
-
-        .empty,
-        .loading {
-            padding: 50px 20px;
-
-            text-align: center;
-
-            color: #888;
-        }
-
-        .empty-icon {
-            font-size: 45px;
-
-            margin-bottom: 12px;
-        }
-
-
-        /* =========================
-           RESPONSIVE
-        ========================= */
-
-        @media (max-width: 700px) {
-
-            .navbar {
-                padding: 15px;
-            }
-
-            .navbar-brand h2 {
-                font-size: 18px;
-            }
-
-            .container {
-                margin-top: 20px;
-
-                padding: 0 15px;
-            }
-
-            .welcome h1 {
-                font-size: 23px;
-            }
-
-            .stats {
-                grid-template-columns: 1fr;
-            }
-
-            .message-section {
-                padding: 18px;
-            }
-
-            .section-header {
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-            .delete-all-button {
-                width: 100%;
-            }
-
-            .message-top {
-                flex-direction: column;
-
-                gap: 5px;
-            }
-
-            .message-footer {
-                flex-direction: column;
-
-                align-items: stretch;
-            }
-
-            .action-buttons {
-                display: grid;
-
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .action-button {
-                width: 100%;
-            }
-        }
-
     </style>
-
 </head>
 
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col relative">
 
-<body>
-
-
-<!-- =====================================================
-     LOGIN PAGE
-====================================================== -->
-
-<div id="loginPage">
-
-    <div class="login-box">
-
-        <div class="logo">
-
-            <div class="logo-icon">
-                🍀
-            </div>
-
-            <h1>
-                Clover
-            </h1>
-
-            <p>
-                Admin Dashboard
-            </p>
-
-        </div>
-
-
-        <form id="loginForm">
-
-            <div class="form-group">
-
-                <label for="email">
-                    Email Admin
-                </label>
-
-                <input
-                    type="email"
-                    id="email"
-                    placeholder="admin@email.com"
-                    autocomplete="username"
-                    required>
-
-            </div>
-
-
-            <div class="form-group">
-
-                <label for="password">
-                    Password
-                </label>
-
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Masukkan password"
-                    autocomplete="current-password"
-                    required>
-
-            </div>
-
-
-            <button
-                type="submit"
-                class="login-button">
-
-                Masuk ke Dashboard
-
-            </button>
-
-
-            <div
-                id="loginError"
-                class="login-error">
-            </div>
-
-        </form>
-
-    </div>
-
+<!-- Background Floating Clovers -->
+<div id="floating-backgrounds">
+    <i class="fa-solid fa-clover bg-clover text-2xl" style="left: 10%; animation-duration: 18s; animation-delay: 0s;"></i>
+    <i class="fa-solid fa-clover bg-clover text-4xl" style="left: 35%; animation-duration: 25s; animation-delay: 4s;"></i>
+    <i class="fa-solid fa-clover bg-clover text-xl"  style="left: 60%; animation-duration: 20s; animation-delay: 2s;"></i>
+    <i class="fa-solid fa-clover bg-clover text-3xl" style="left: 85%; animation-duration: 22s; animation-delay: 7s;"></i>
+    <i class="fa-solid fa-clover bg-clover text-2xl" style="left: 20%; animation-duration: 19s; animation-delay: 10s;"></i>
+    <i class="fa-solid fa-clover bg-clover text-xl"  style="left: 75%; animation-duration: 24s; animation-delay: 12s;"></i>
 </div>
 
-
-
 <!-- =====================================================
-     DASHBOARD
-====================================================== -->
+     LOGIN PAGE (Wajib login sebelum dashboard muncul)
+===================================================== -->
+<div id="loginPage" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-100">
+    <div class="w-full max-w-md glass-card rounded-[2.5rem] p-8 md:p-10 shadow-2xl border border-white">
+        
+        <div class="text-center mb-8">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white text-2xl shadow-lg shadow-emerald-500/30 mx-auto mb-4">
+                <i class="fa-solid fa-clover"></i>
+            </div>
+            <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">Clover Admin</h1>
+            <p class="text-xs font-semibold text-emerald-600 mt-1">Masuk untuk mengelola pesan kehangatan</p>
+        </div>
 
-<div id="dashboard">
-
-
-    <!-- NAVBAR -->
-
-    <nav class="navbar">
-
-        <div class="navbar-brand">
-
-            <div class="navbar-icon">
-                🍀
+        <form id="loginForm" class="space-y-5">
+            <div>
+                <label for="email" class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Email Admin</label>
+                <input type="email" id="email" placeholder="admin@email.com" autocomplete="username" required
+                       class="w-full p-4 bg-white/80 rounded-2xl border border-slate-200 focus:outline-none focus:border-emerald-500 text-slate-800 text-sm font-medium shadow-inner transition-all">
             </div>
 
             <div>
-
-                <h2>
-                    Clover Admin
-                </h2>
-
-                <span>
-                    Monitoring Pesan Kehangatan
-                </span>
-
+                <label for="password" class="block text-xs font-extrabold text-slate-700 uppercase tracking-wider mb-2">Password</label>
+                <input type="password" id="password" placeholder="Masukkan password" autocomplete="current-password" required
+                       class="w-full p-4 bg-white/80 rounded-2xl border border-slate-200 focus:outline-none focus:border-emerald-500 text-slate-800 text-sm font-medium shadow-inner transition-all">
             </div>
 
-        </div>
-
-
-        <button
-            id="logoutButton"
-            class="logout-button">
-
-            Logout
-
-        </button>
-
-    </nav>
-
-
-
-    <!-- CONTENT -->
-
-    <main class="container">
-
-
-        <div class="welcome">
-
-            <h1>
-                Dashboard Admin
-            </h1>
-
-            <p>
-                Pantau dan moderasi pesan kehangatan Clover.
-            </p>
-
-        </div>
-
-
-
-        <!-- STATISTICS -->
-
-        <div class="stats">
-
-
-            <div class="stat-card">
-
-                <p>
-                    Total Pesan
-                </p>
-
-                <h2 id="totalMessages">
-                    0
-                </h2>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <p>
-                    Pesan Hari Ini
-                </p>
-
-                <h2 id="todayMessages">
-                    0
-                </h2>
-
-            </div>
-
-
-            <div class="stat-card">
-
-                <p>
-                    Status Database
-                </p>
-
-                <h2
-                    id="databaseStatus"
-                    style="font-size:20px;">
-
-                    Menunggu...
-
-                </h2>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- MESSAGE SECTION -->
-
-        <section class="message-section">
-
-
-            <div class="section-header">
-
-                <h2>
-                    💚 Pesan Kehangatan
-                </h2>
-
-
-                <button
-                    id="deleteAllButton"
-                    class="delete-all-button">
-
-                    Hapus Semua
-
-                </button>
-
-            </div>
-
-
-            <div id="messageList">
-
-                <div class="loading">
-
-                    Silakan login untuk melihat pesan.
-
-                </div>
-
-            </div>
-
-
-        </section>
-
-
-    </main>
-
-</div>
-
-
-
-<!-- =====================================================
-     FIREBASE
-====================================================== -->
-
-<script type="module">
-
-
-    /* =====================================================
-       IMPORT FIREBASE
-    ===================================================== */
-
-    import {
-        initializeApp
-    }
-    from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-
-    import {
-        getAuth,
-        signInWithEmailAndPassword,
-        signOut,
-        onAuthStateChanged
-    }
-    from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-    import {
-        getDatabase,
-        ref,
-        onValue,
-        update,
-        remove
-    }
-    from
-    "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-
-
-    /* =====================================================
-       FIREBASE CONFIG
-    ===================================================== */
-
-    const firebaseConfig = {
-
-        apiKey:
-            "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
-
-        authDomain:
-            "aplikasi-d862d.firebaseapp.com",
-
-        databaseURL:
-            "https://aplikasi-d862d-default-rtdb.asia-southeast1.firebasedatabase.app",
-
-        projectId:
-            "aplikasi-d862d",
-
-        storageBucket:
-            "aplikasi-d862d.firebasestorage.app",
-
-        messagingSenderId:
-            "491134919372",
-
-        appId:
-            "1:491134919372:web:63fde8d8d32eb8820e1869",
-
-        measurementId:
-            "G-3TK6ZQGMDP"
-
-    };
-
-
-
-    /* =====================================================
-       ADMIN UID
-    ===================================================== */
-
-    const ADMIN_UID =
-        "B5hS7tiFB7Q291pToua9CituJug2";
-
-
-
-    /* =====================================================
-       INITIALIZE FIREBASE
-    ===================================================== */
-
-    const app =
-        initializeApp(firebaseConfig);
-
-
-    const auth =
-        getAuth(app);
-
-
-    const database =
-        getDatabase(app);
-
-
-
-    /* =====================================================
-       ELEMENT
-    ===================================================== */
-
-    const loginPage =
-        document.getElementById(
-            "loginPage"
-        );
-
-
-    const dashboard =
-        document.getElementById(
-            "dashboard"
-        );
-
-
-    const loginForm =
-        document.getElementById(
-            "loginForm"
-        );
-
-
-    const emailInput =
-        document.getElementById(
-            "email"
-        );
-
-
-    const passwordInput =
-        document.getElementById(
-            "password"
-        );
-
-
-    const loginError =
-        document.getElementById(
-            "loginError"
-        );
-
-
-    const logoutButton =
-        document.getElementById(
-            "logoutButton"
-        );
-
-
-    const messageList =
-        document.getElementById(
-            "messageList"
-        );
-
-
-    const totalMessages =
-        document.getElementById(
-            "totalMessages"
-        );
-
-
-    const todayMessages =
-        document.getElementById(
-            "todayMessages"
-        );
-
-
-    const databaseStatus =
-        document.getElementById(
-            "databaseStatus"
-        );
-
-
-    const deleteAllButton =
-        document.getElementById(
-            "deleteAllButton"
-        );
-
-
-
-    /* =====================================================
-       LOGIN
-    ===================================================== */
-
-    loginForm.addEventListener(
-        "submit",
-        async function(event) {
-
-            event.preventDefault();
-
-            loginError.textContent = "";
-
-            const email =
-                emailInput.value.trim();
-
-            const password =
-                passwordInput.value;
-
-
-            try {
-
-                const result =
-                    await signInWithEmailAndPassword(
-                        auth,
-                        email,
-                        password
-                    );
-
-
-                /*
-                 * Pastikan akun yang login
-                 * benar-benar akun admin.
-                 */
-
-                if (
-                    result.user.uid !==
-                    ADMIN_UID
-                ) {
-
-                    await signOut(auth);
-
-                    throw new Error(
-                        "Akun ini bukan akun admin Clover."
-                    );
-
-                }
-
-
-            } catch(error) {
-
-                console.error(
-                    error
-                );
-
-
-                if (
-                    error.message ===
-                    "Akun ini bukan akun admin Clover."
-                ) {
-
-                    loginError.textContent =
-                        "Akun tersebut bukan akun admin Clover.";
-
-                }
-
-                else {
-
-                    switch(error.code) {
-
-                        case "auth/invalid-credential":
-
-                            loginError.textContent =
-                                "Email atau password salah.";
-
-                            break;
-
-
-                        case "auth/user-not-found":
-
-                            loginError.textContent =
-                                "Akun tidak ditemukan.";
-
-                            break;
-
-
-                        case "auth/wrong-password":
-
-                            loginError.textContent =
-                                "Password salah.";
-
-                            break;
-
-
-                        case "auth/invalid-email":
-
-                            loginError.textContent =
-                                "Format email tidak valid.";
-
-                            break;
-
-
-                        default:
-
-                            loginError.textContent =
-                                "Login gagal. Silakan coba lagi.";
-
-                    }
-
-                }
-
-            }
-
-        }
-    );
-
-
-
-    /* =====================================================
-       AUTH STATE
-    ===================================================== */
-
-    onAuthStateChanged(
-        auth,
-        function(user) {
-
-
-            if(user) {
-
-
-                /*
-                 * Jika bukan admin,
-                 * langsung logout.
-                 */
-
-                if(
-                    user.uid !==
-                    ADMIN_UID
-                ) {
-
-                    signOut(auth);
-
-                    loginPage.style.display =
-                        "flex";
-
-                    dashboard.style.display =
-                        "none";
-
-                    loginError.textContent =
-                        "Akun ini bukan akun admin.";
-
-                    return;
-
-                }
-
-
-                loginPage.style.display =
-                    "none";
-
-
-                dashboard.style.display =
-                    "block";
-
-
-                loginError.textContent =
-                    "";
-
-
-                loadMessages();
-
-
-            }
-
-            else {
-
-
-                loginPage.style.display =
-                    "flex";
-
-
-                dashboard.style.display =
-                    "none";
-
-
-                messageList.innerHTML = `
-
-                    <div class="loading">
-
-                        Silakan login untuk melihat pesan.
-
-                    </div>
-
-                `;
-
-            }
-
-        }
-    );
-
-
-
-    /* =====================================================
-       LOGOUT
-    ===================================================== */
-
-    logoutButton.addEventListener(
-        "click",
-        async function() {
-
-            try {
-
-                await signOut(auth);
-
-                emailInput.value = "";
-
-                passwordInput.value = "";
-
-            }
-
-            catch(error) {
-
-                console.error(
-                    error
-                );
-
-            }
-
-        }
-    );
-
-
-
-    /* =====================================================
-       LOAD MESSAGES
-    ===================================================== */
-
-    function loadMessages() {
-
-
-        const messagesRef =
-            ref(
-                database,
-                "clover/messages"
-            );
-
-
-        onValue(
-
-            messagesRef,
-
-            function(snapshot) {
-
-
-                const data =
-                    snapshot.val();
-
-
-                databaseStatus.textContent =
-                    "Online";
-
-
-                databaseStatus.style.fontSize =
-                    "20px";
-
-
-                messageList.innerHTML =
-                    "";
-
-
-                if(!data) {
-
-
-                    totalMessages.textContent =
-                        "0";
-
-
-                    todayMessages.textContent =
-                        "0";
-
-
-                    messageList.innerHTML = `
-
-                        <div class="empty">
-
-                            <div class="empty-icon">
-                                💚
-                            </div>
-
-                            <p>
-                                Belum ada pesan kehangatan.
-                            </p>
-
-                        </div>
-
-                    `;
-
-                    return;
-
-                }
-
-
-
-                /* =========================
-                   UBAH OBJECT MENJADI ARRAY
-                ========================= */
-
-                const messages =
-                    Object.entries(data)
-                    .map(
-                        ([id, message]) => ({
-                            id,
-                            ...message
-                        })
-                    );
-
-
-
-                /* =========================
-                   PESAN TERBARU DI ATAS
-                ========================= */
-
-                messages.sort(
-                    (a, b) =>
-                        Number(
-                            b.createdAt || 0
-                        )
-                        -
-                        Number(
-                            a.createdAt || 0
-                        )
-                );
-
-
-
-                /* =========================
-                   TOTAL PESAN
-                ========================= */
-
-                totalMessages.textContent =
-                    messages.length;
-
-
-
-                /* =========================
-                   PESAN HARI INI
-                ========================= */
-
-                const today =
-                    new Date().toDateString();
-
-
-                const todayCount =
-                    messages.filter(
-                        message => {
-
-                            if(
-                                !message.createdAt
-                            ) {
-
-                                return false;
-
-                            }
-
-
-                            return new Date(
-                                Number(
-                                    message.createdAt
-                                )
-                            ).toDateString()
-                            === today;
-
-                        }
-                    ).length;
-
-
-                todayMessages.textContent =
-                    todayCount;
-
-
-
-                /* =========================
-                   TAMPILKAN PESAN
-                ========================= */
-
-                messages.forEach(
-                    message => {
-
-                        createMessageCard(
-                            message
-                        );
-
-                    }
-                );
-
-            },
-
-
-            function(error) {
-
-
-                console.error(
-                    error
-                );
-
-
-                databaseStatus.textContent =
-                    "Error";
-
-
-                databaseStatus.style.fontSize =
-                    "20px";
-
-
-                messageList.innerHTML = `
-
-                    <div class="empty">
-
-                        <div class="empty-icon">
-                            ⚠️
-                        </div>
-
-                        <p>
-                            Tidak dapat mengambil data Firebase.
-                        </p>
-
-                    </div>
-
-                `;
-
-            }
-
-        );
-
-    }
-
-
-
-    /* =====================================================
-       CREATE MESSAGE CARD
-    ===================================================== */
-
-    function createMessageCard(
-        message
-    ) {
-
-
-        const card =
-            document.createElement(
-                "div"
-            );
-
-
-        card.className =
-            "message-card";
-
-
-
-        const sender =
-            message.sender ||
-            "Anonim";
-
-
-        const text =
-            message.text ||
-            "(Pesan kosong)";
-
-
-        const status =
-            message.status ||
-            "pending";
-
-
-
-        /* =========================
-           TANGGAL
-        ========================= */
-
-        let dateText =
-            "Tanggal tidak tersedia";
-
-
-        if(
-            message.createdAt
-        ) {
-
-            dateText =
-                new Date(
-                    Number(
-                        message.createdAt
-                    )
-                ).toLocaleString(
-                    "id-ID",
-                    {
-                        day: "2-digit",
-                        month: "long",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                );
-
-        }
-
-
-
-        /* =========================
-           STATUS
-        ========================= */
-
-        let statusHTML = "";
-
-
-        if(
-            status === "approved"
-        ) {
-
-            statusHTML = `
-
-                <span
-                    class="status-badge status-approved">
-
-                    🟢 Approved
-
-                </span>
-
-            `;
-
-        }
-
-        else if(
-            status === "rejected"
-        ) {
-
-            statusHTML = `
-
-                <span
-                    class="status-badge status-rejected">
-
-                    🔴 Rejected
-
-                </span>
-
-            `;
-
-        }
-
-        else {
-
-            statusHTML = `
-
-                <span
-                    class="status-badge status-pending">
-
-                    🟡 Pending
-
-                </span>
-
-            `;
-
-        }
-
-
-
-        /* =========================
-           BUTTON
-        ========================= */
-
-        let buttonsHTML = "";
-
-
-
-        if(
-            status === "pending"
-        ) {
-
-            buttonsHTML = `
-
-                <button
-                    class="action-button approve-button"
-                    data-action="approve">
-
-                    ✓ Approve
-
-                </button>
-
-
-                <button
-                    class="action-button reject-button"
-                    data-action="reject">
-
-                    ✕ Reject
-
-                </button>
-
-            `;
-
-        }
-
-
-
-        else if(
-            status === "approved"
-        ) {
-
-            buttonsHTML = `
-
-                <button
-                    class="action-button pending-button"
-                    data-action="pending">
-
-                    ↩ Pending
-
-                </button>
-
-
-                <button
-                    class="action-button reject-button"
-                    data-action="reject">
-
-                    ✕ Reject
-
-                </button>
-
-            `;
-
-        }
-
-
-
-        else if(
-            status === "rejected"
-        ) {
-
-            buttonsHTML = `
-
-                <button
-                    class="action-button approve-button"
-                    data-action="approve">
-
-                    ✓ Approve
-
-                </button>
-
-
-                <button
-                    class="action-button pending-button"
-                    data-action="pending">
-
-                    ↩ Pending
-
-                </button>
-
-            `;
-
-        }
-
-
-
-        buttonsHTML += `
-
-            <button
-                class="action-button delete-button"
-                data-action="delete">
-
-                🗑 Hapus
-
+            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold p-4 rounded-2xl transition-all shadow-lg shadow-slate-900/20 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-arrow-right-to-bracket text-xs"></i> Masuk ke Dashboard
             </button>
 
-        `;
+            <div id="loginError" class="min-h-[20px] text-center text-rose-600 text-xs font-bold"></div>
+        </form>
+    </div>
+</div>
 
+<!-- =====================================================
+     DASHBOARD (Tersembunyi secara default sebelum login sukses)
+===================================================== -->
+<div id="dashboard" class="hidden min-h-screen flex flex-col">
 
+    <!-- NAVBAR -->
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40 transition-all">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
+            
+            <div class="flex items-center gap-3 shrink-0">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-lg shadow-md shadow-emerald-500/20">
+                    <i class="fa-solid fa-clover"></i>
+                </div>
+                <div>
+                    <h2 class="font-extrabold text-base text-slate-900 leading-tight tracking-tight">Clover Admin</h2>
+                    <span class="text-[10px] font-semibold text-emerald-600">Monitoring Pesan Kehangatan</span>
+                </div>
+            </div>
 
-        /* =========================
-           HTML CARD
-        ========================= */
+            <button id="logoutButton" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs px-4 py-2.5 rounded-2xl transition-colors flex items-center gap-2 border border-rose-100 shadow-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- CONTENT -->
+    <main class="max-w-5xl mx-auto px-4 py-12 flex-1 space-y-10 w-full relative z-10">
+
+        <div class="welcome">
+            <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Dashboard Admin</h1>
+            <p class="text-sm font-medium text-slate-500">Pantau dan moderasi pesan kehangatan yang dikirim oleh pengguna Clover.</p>
+        </div>
+
+        <!-- STATISTICS -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Total Pesan</p>
+                <h2 id="totalMessages" class="text-3xl font-extrabold text-emerald-600">0</h2>
+            </div>
+
+            <div class="bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Pesan Hari Ini</p>
+                <h2 id="todayMessages" class="text-3xl font-extrabold text-teal-600">0</h2>
+            </div>
+
+            <div class="bg-white p-7 rounded-[2rem] border border-slate-100 shadow-sm">
+                <p class="text-xs font-black uppercase tracking-wider text-slate-400 mb-2">Status Database</p>
+                <h2 id="databaseStatus" class="text-xl font-extrabold text-slate-700">Menunggu...</h2>
+            </div>
+        </div>
+
+        <!-- MESSAGE SECTION -->
+        <section class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-100">
+                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-envelope-open-text text-emerald-500"></i> Pesan Kehangatan Masuk
+                </h2>
+                <button id="deleteAllButton" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-5 py-3 rounded-2xl transition-all shadow-md shadow-rose-500/20 flex items-center gap-2">
+                    <i class="fa-solid fa-trash-can"></i> Hapus Semua Pesan
+                </button>
+            </div>
+
+            <div id="messageList" class="space-y-4">
+                <div class="py-16 text-center text-slate-400 font-medium text-sm">
+                    Memuat data pesan...
+                </div>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- =====================================================
+     FIREBASE + JAVASCRIPT
+===================================================== -->
+<script type="module">
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase, ref, onValue, update, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
+        authDomain: "aplikasi-d862d.firebaseapp.com",
+        databaseURL: "https://aplikasi-d862d-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "aplikasi-d862d",
+        storageBucket: "aplikasi-d862d.firebasestorage.app",
+        messagingSenderId: "491134919372",
+        appId: "1:491134919372:web:63fde8d8d32eb8820e1869",
+        measurementId: "G-3TK6ZQGMDP"
+    };
+
+    const ADMIN_UID = "B5hS7tiFB7Q291pToua9CituJug2";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+
+    const loginPage = document.getElementById("loginPage");
+    const dashboard = document.getElementById("dashboard");
+    const loginForm = document.getElementById("loginForm");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginError = document.getElementById("loginError");
+    const logoutButton = document.getElementById("logoutButton");
+    const messageList = document.getElementById("messageList");
+    const totalMessages = document.getElementById("totalMessages");
+    const todayMessages = document.getElementById("todayMessages");
+    const databaseStatus = document.getElementById("databaseStatus");
+    const deleteAllButton = document.getElementById("deleteAllButton");
+
+    loginForm.addEventListener("submit", async function(event) {
+        event.preventDefault();
+        loginError.textContent = "";
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            if (result.user.uid !== ADMIN_UID) {
+                await signOut(auth);
+                throw new Error("Akun ini bukan akun admin Clover.");
+            }
+        } catch(error) {
+            console.error(error);
+            if (error.message === "Akun ini bukan akun admin Clover.") {
+                loginError.textContent = "Akun tersebut bukan akun admin Clover.";
+            } else {
+                switch(error.code) {
+                    case "auth/invalid-credential":
+                    case "auth/wrong-password":
+                    case "auth/user-not-found":
+                        loginError.textContent = "Email atau password salah.";
+                        break;
+                    case "auth/invalid-email":
+                        loginError.textContent = "Format email tidak valid.";
+                        break;
+                    default:
+                        loginError.textContent = "Login gagal. Silakan coba lagi.";
+                }
+            }
+        }
+    });
+
+    onAuthStateChanged(auth, function(user) {
+        if (user) {
+            if (user.uid !== ADMIN_UID) {
+                signOut(auth);
+                loginPage.classList.remove("hidden");
+                dashboard.classList.add("hidden");
+                loginError.textContent = "Akun ini bukan akun admin.";
+                return;
+            }
+
+            // Sembunyikan halaman login, tampilkan dashboard
+            loginPage.classList.add("hidden");
+            dashboard.classList.remove("hidden");
+            loginError.textContent = "";
+            loadMessages();
+        } else {
+            // Paksa tampilkan halaman login, sembunyikan dashboard
+            loginPage.classList.remove("hidden");
+            dashboard.classList.add("hidden");
+            messageList.innerHTML = `<div class="py-16 text-center text-slate-400 font-medium text-sm">Silakan login untuk melihat pesan.</div>`;
+        }
+    });
+
+    logoutButton.addEventListener("click", async function() {
+        try {
+            await signOut(auth);
+            emailInput.value = "";
+            passwordInput.value = "";
+        } catch(error) {
+            console.error(error);
+        }
+    });
+
+    function loadMessages() {
+        const messagesRef = ref(database, "clover/messages");
+
+        onValue(messagesRef, function(snapshot) {
+            const data = snapshot.val();
+            databaseStatus.textContent = "Online";
+            databaseStatus.className = "text-xl font-extrabold text-emerald-600";
+            messageList.innerHTML = "";
+
+            if (!data) {
+                totalMessages.textContent = "0";
+                todayMessages.textContent = "0";
+                messageList.innerHTML = `
+                    <div class="py-16 text-center text-slate-400">
+                        <div class="text-4xl text-emerald-200 mb-3"><i class="fa-solid fa-leaf"></i></div>
+                        <p class="text-sm font-bold">Belum ada pesan kehangatan.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const messages = Object.entries(data).map(([id, message]) => ({ id, ...message }));
+            messages.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+
+            totalMessages.textContent = messages.length;
+
+            const today = new Date().toDateString();
+            const todayCount = messages.filter(message => {
+                if (!message.createdAt) return false;
+                return new Date(Number(message.createdAt)).toDateString() === today;
+            }).length;
+
+            todayMessages.textContent = todayCount;
+
+            messages.forEach(message => createMessageCard(message));
+
+        }, function(error) {
+            console.error(error);
+            databaseStatus.textContent = "Error";
+            databaseStatus.className = "text-xl font-extrabold text-rose-500";
+            messageList.innerHTML = `
+                <div class="py-16 text-center text-rose-400">
+                    <div class="text-4xl mb-3"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <p class="text-sm font-bold">Tidak dapat mengambil data Firebase.</p>
+                </div>
+            `;
+        });
+    }
+
+    function createMessageCard(message) {
+        const card = document.createElement("div");
+        card.className = "bg-slate-50 p-6 rounded-3xl border border-slate-200/80 shadow-sm transition-all hover:shadow-md";
+
+        const sender = message.sender || "Anonim";
+        const text = message.text || "(Pesan kosong)";
+        const status = message.status || "pending";
+
+        let dateText = "Tanggal tidak tersedia";
+        if (message.createdAt) {
+            dateText = new Date(Number(message.createdAt)).toLocaleString("id-ID", {
+                day: "2-digit", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit"
+            });
+        }
+
+        let statusHTML = "";
+        if (status === "approved") {
+            statusHTML = `<span class="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5"><i class="fa-solid fa-circle-check"></i> Approved</span>`;
+        } else if (status === "rejected") {
+            statusHTML = `<span class="bg-rose-100 text-rose-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5"><i class="fa-solid fa-circle-xmark"></i> Rejected</span>`;
+        } else {
+            statusHTML = `<span class="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-bold inline-flex items-center gap-1.5"><i class="fa-solid fa-clock"></i> Pending</span>`;
+        }
+
+        let buttonsHTML = "";
+        if (status === "pending") {
+            buttonsHTML = `
+                <button class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-xs font-bold px-4 py-2 rounded-xl transition-all" data-action="approve">✓ Approve</button>
+                <button class="bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-bold px-4 py-2 rounded-xl transition-all" data-action="reject">✕ Reject</button>
+            `;
+        } else if (status === "approved") {
+            buttonsHTML = `
+                <button class="bg-amber-100 hover:bg-amber-200 text-amber-700 text-xs font-bold px-4 py-2 rounded-xl transition-all" data-action="pending">↩ Pending</button>
+                <button class="bg-rose-100 hover:bg-rose-200 text-rose-700 text-xs font-bold px-4 py-2 rounded-xl transition-all" data-action="reject">✕ Reject</button>
+            `;
+        } else if (status === "rejected") {
+            buttonsHTML = `
+                <button class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 text-xs font-bold px-4 py-2 rounded-xl transition-all" data-action="approve">✓ Approve</button>
+                <button class="bg-amber-100 hover:bg-amber-200 text-amber-700 text-xs font-bold px-4 py-2 rounded-xl transition-all" data-action="pending">↩ Pending</button>
+            `;
+        }
+        buttonsHTML += `<button class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold px-4 py-2 rounded-xl transition-all ml-auto" data-action="delete">🗑 Hapus</button>`;
 
         card.innerHTML = `
-
-            <div class="message-top">
-
-                <div class="sender">
-
-                    💚 ${escapeHTML(sender)}
-
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
+                <div class="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">${escapeHTML(sender.charAt(0).toUpperCase())}</span>
+                    ${escapeHTML(sender)}
                 </div>
-
-
-                <div class="date">
-
-                    ${dateText}
-
-                </div>
-
+                <div class="text-xs font-bold text-slate-400">${dateText}</div>
             </div>
-
-
-            <div class="message-text">
-
-                ${escapeHTML(text)}
-
+            <p class="text-sm text-slate-700 font-medium leading-relaxed italic mb-4 whitespace-pre-wrap break-words">"${escapeHTML(text)}"</p>
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-200/60">
+                <div>${statusHTML}</div>
+                <div class="flex flex-wrap gap-2 w-full sm:w-auto">${buttonsHTML}</div>
             </div>
-
-
-            <div class="status-row">
-
-                ${statusHTML}
-
-            </div>
-
-
-            <div class="action-buttons">
-
-                ${buttonsHTML}
-
-            </div>
-
-
-            <div class="message-footer">
-
-                <div class="message-id">
-
-                    ID:
-                    ${escapeHTML(message.id)}
-
-                </div>
-
-            </div>
-
         `;
 
+        card.querySelectorAll("[data-action]").forEach(button => {
+            button.addEventListener("click", function() {
+                const action = this.dataset.action;
+                if (action === "approve") changeStatus(message.id, "approved");
+                else if (action === "reject") changeStatus(message.id, "rejected");
+                else if (action === "pending") changeStatus(message.id, "pending");
+                else if (action === "delete") deleteMessage(message.id);
+            });
+        });
 
-
-        /* =========================
-           BUTTON EVENTS
-        ========================= */
-
-        const buttons =
-            card.querySelectorAll(
-                "[data-action]"
-            );
-
-
-        buttons.forEach(
-            button => {
-
-                button.addEventListener(
-                    "click",
-                    function() {
-
-                        const action =
-                            this.dataset.action;
-
-
-                        if(
-                            action ===
-                            "approve"
-                        ) {
-
-                            changeStatus(
-                                message.id,
-                                "approved"
-                            );
-
-                        }
-
-
-                        else if(
-                            action ===
-                            "reject"
-                        ) {
-
-                            changeStatus(
-                                message.id,
-                                "rejected"
-                            );
-
-                        }
-
-
-                        else if(
-                            action ===
-                            "pending"
-                        ) {
-
-                            changeStatus(
-                                message.id,
-                                "pending"
-                            );
-
-                        }
-
-
-                        else if(
-                            action ===
-                            "delete"
-                        ) {
-
-                            deleteMessage(
-                                message.id
-                            );
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-
-        messageList.appendChild(
-            card
-        );
-
+        messageList.appendChild(card);
     }
 
-
-
-    /* =====================================================
-       CHANGE STATUS
-    ===================================================== */
-
-    async function changeStatus(
-        id,
-        newStatus
-    ) {
-
-
-        let confirmationMessage =
-            "";
-
-
-        if(
-            newStatus ===
-            "approved"
-        ) {
-
-            confirmationMessage =
-                "Setujui pesan ini?";
-
-        }
-
-        else if(
-            newStatus ===
-            "rejected"
-        ) {
-
-            confirmationMessage =
-                "Tolak pesan ini?";
-
-        }
-
-        else {
-
-            confirmationMessage =
-                "Kembalikan pesan menjadi pending?";
-
-        }
-
-
-
-        const confirmation =
-            confirm(
-                confirmationMessage
-            );
-
-
-        if(
-            !confirmation
-        ) {
-
-            return;
-
-        }
-
-
-
+    async function changeStatus(id, newStatus) {
+        const msg = newStatus === "approved" ? "Setujui pesan ini?" : newStatus === "rejected" ? "Tolak pesan ini?" : "Kembalikan pesan menjadi pending?";
+        if (!confirm(msg)) return;
         try {
-
-
-            const messageRef =
-                ref(
-                    database,
-                    "clover/messages/" + id
-                );
-
-
-            await update(
-                messageRef,
-                {
-                    status:
-                        newStatus
-                }
-            );
-
-
+            await update(ref(database, "clover/messages/" + id), { status: newStatus });
+        } catch (error) {
+            console.error(error);
+            alert("Gagal mengubah status pesan.");
         }
-
-        catch(error) {
-
-
-            console.error(
-                error
-            );
-
-
-            alert(
-                "Gagal mengubah status pesan."
-            );
-
-
-        }
-
     }
 
-
-
-    /* =====================================================
-       DELETE MESSAGE
-    ===================================================== */
-
-    async function deleteMessage(
-        id
-    ) {
-
-
-        const confirmation =
-            confirm(
-                "Yakin ingin menghapus pesan ini?"
-            );
-
-
-        if(
-            !confirmation
-        ) {
-
-            return;
-
-        }
-
-
-
+    async function deleteMessage(id) {
+        if (!confirm("Yakin ingin menghapus pesan ini?")) return;
         try {
-
-
-            await remove(
-                ref(
-                    database,
-                    "clover/messages/" + id
-                )
-            );
-
-
+            await remove(ref(database, "clover/messages/" + id));
+        } catch (error) {
+            console.error(error);
+            alert("Gagal menghapus pesan.");
         }
-
-        catch(error) {
-
-
-            console.error(
-                error
-            );
-
-
-            alert(
-                "Gagal menghapus pesan."
-            );
-
-
-        }
-
     }
 
-
-
-    /* =====================================================
-       DELETE ALL
-    ===================================================== */
-
-    deleteAllButton.addEventListener(
-        "click",
-        async function() {
-
-
-            const confirmation =
-                confirm(
-                    "Yakin ingin menghapus SEMUA pesan?\n\nTindakan ini tidak dapat dibatalkan."
-                );
-
-
-            if(
-                !confirmation
-            ) {
-
-                return;
-
-            }
-
-
-
-            try {
-
-
-                await remove(
-                    ref(
-                        database,
-                        "clover/messages"
-                    )
-                );
-
-
-                alert(
-                    "Semua pesan berhasil dihapus."
-                );
-
-
-            }
-
-            catch(error) {
-
-
-                console.error(
-                    error
-                );
-
-
-                alert(
-                    "Gagal menghapus semua pesan."
-                );
-
-
-            }
-
+    deleteAllButton.addEventListener("click", async function() {
+        if (!confirm("Yakin ingin menghapus SEMUA pesan?\n\nTindakan ini tidak dapat dibatalkan.")) return;
+        try {
+            await remove(ref(database, "clover/messages"));
+            alert("Semua pesan berhasil dihapus.");
+        } catch (error) {
+            console.error(error);
+            alert("Gagal menghapus semua pesan.");
         }
-    );
+    });
 
-
-
-    /* =====================================================
-       ESCAPE HTML
-    ===================================================== */
-
-    function escapeHTML(
-        value
-    ) {
-
+    function escapeHTML(value) {
         return String(value)
-
-            .replaceAll(
-                "&",
-                "&amp;"
-            )
-
-            .replaceAll(
-                "<",
-                "&lt;"
-            )
-
-            .replaceAll(
-                ">",
-                "&gt;"
-            )
-
-            .replaceAll(
-                '"',
-                "&quot;"
-            )
-
-            .replaceAll(
-                "'",
-                "&#039;"
-            );
-
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#039;");
     }
 
 </script>
-
 </body>
-
-    </html>
+</html>
