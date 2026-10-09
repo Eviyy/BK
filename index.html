@@ -912,6 +912,7 @@
     const STREAK_KEY = "clover_challenge_streak_v2";
     const BEST_STREAK_KEY = "clover_best_streak_v2";
     const LAST_ACTIVE_DATE_KEY = "clover_last_challenge_date_v2";
+    const LAST_VISIT_DATE_KEY = "clover_last_visit_date_v2"; // <-- Variabel baru untuk reset harian otomatis
 
     const challengeCheckboxes = Array.from(document.querySelectorAll(".challenge-checkbox"));
     const challengeItems = Array.from(document.querySelectorAll(".challenge-item"));
@@ -944,7 +945,21 @@
         return Math.round((newer.getTime() - older.getTime()) / oneDay);
     }
 
+    // <-- Fungsi loadTaskState yang sudah diperbarui dengan logika reset harian otomatis
     function loadTaskState() {
+        const today = getLocalDateKey();
+        const lastVisitDate = localStorage.getItem(LAST_VISIT_DATE_KEY);
+
+        // Jika hari sudah berganti (tanggal kunjungan terakhir beda dengan hari ini)
+        if (lastVisitDate !== today) {
+            // Hapus progress hari sebelumnya
+            localStorage.removeItem(STORAGE_TASKS);
+            // Simpan tanggal hari ini
+            localStorage.setItem(LAST_VISIT_DATE_KEY, today);
+            // Kembalikan status checkbox semua menjadi false
+            return challengeCheckboxes.map(() => false);
+        }
+
         try {
             const saved = JSON.parse(localStorage.getItem(STORAGE_TASKS));
             if (Array.isArray(saved) && saved.length === challengeCheckboxes.length) {
