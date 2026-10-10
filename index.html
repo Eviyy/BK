@@ -510,8 +510,8 @@
             </p>
         </form>
 
-        <div id="messages-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6">
-            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-[2rem] p-12 border border-slate-100 shadow-sm flex flex-col items-center justify-center">
+        <div id="messages-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 max-w-3xl mx-auto">
+            <div class="md:col-span-2 bg-white rounded-[2rem] p-12 border border-slate-100 shadow-sm flex flex-col items-center justify-center">
                 <div class="loading-spinner mb-4"></div>
                 <p class="text-sm font-bold text-slate-400">Memuat pesan kehangatan...</p>
             </div>
@@ -682,7 +682,7 @@
 
         if (!data) {
             messagesContainer.innerHTML = `
-                <div class="md:col-span-2 lg:col-span-3 bg-white rounded-3xl p-12 border-2 border-dashed border-emerald-100 text-center">
+                <div class="md:col-span-2 bg-white rounded-3xl p-12 border-2 border-dashed border-emerald-100 text-center">
                     <div class="text-5xl text-emerald-200 mb-4"><i class="fa-solid fa-leaf"></i></div>
                     <h4 class="font-extrabold text-slate-800 mb-2">Belum ada pesan yang disetujui.</h4>
                     <p class="text-sm font-medium text-slate-400">Jadilah orang pertama yang memberikan kehangatan di sini.</p>
@@ -698,8 +698,8 @@
         startIndex = 0;
         renderRotatingBatch();
 
-        // Jika jumlah pesan lebih dari 3, jalankan rotasi otomatis setiap 5 detik
-        if (approvedMessagesCache.length > 3) {
+        // Jika jumlah pesan lebih dari 2, jalankan rotasi otomatis setiap 5 detik
+        if (approvedMessagesCache.length > 2) {
             rotationTimer = setInterval(() => {
                 startIndex = (startIndex + 1) % approvedMessagesCache.length; // Bergeser 1 pesan ke depan secara looping
                 renderRotatingBatch();
@@ -709,7 +709,7 @@
     }, (error) => {
         console.error("Firebase read error:", error);
         messagesContainer.innerHTML = `
-            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-3xl p-12 border border-rose-100 shadow-sm text-center">
+            <div class="md:col-span-2 bg-white rounded-3xl p-12 border border-rose-100 shadow-sm text-center">
                 <div class="text-4xl text-rose-300 mb-4"><i class="fa-solid fa-triangle-exclamation"></i></div>
                 <h4 class="font-extrabold text-slate-800 mb-2">Tidak dapat membaca pesan.</h4>
                 <p class="text-xs font-medium text-slate-500 leading-5">Pastikan koneksi internet stabil atau cek Rules Realtime Database.</p>
@@ -718,13 +718,13 @@
         showFirebaseStatus("Koneksi ke database gagal. Tidak dapat memuat pesan.", "error");
     });
 
-    // Fungsi untuk merender tepat 3 kartu yang sedang aktif berputar
+    // Fungsi untuk merender tepat 2 kartu yang sedang aktif berputar
     function renderRotatingBatch() {
         messagesContainer.innerHTML = "";
-        messagesContainer.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6";
+        messagesContainer.className = "grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 max-w-3xl mx-auto";
 
         const total = approvedMessagesCache.length;
-        const countToDisplay = Math.min(3, total); // Maksimal 3 kartu
+        const countToDisplay = Math.min(2, total); // Maksimal 2 kartu
 
         for (let i = 0; i < countToDisplay; i++) {
             const msgIndex = (startIndex + i) % total;
