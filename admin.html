@@ -66,7 +66,26 @@
 </div>
 
 <!-- =====================================================
-     LOGIN PAGE (Wajib login sebelum dashboard muncul)
+     TOAST CONTAINER & CUSTOM CONFIRM MODAL
+===================================================== -->
+<div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+<div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm hidden transition-all">
+    <div class="bg-white rounded-[2rem] p-6 max-w-sm w-full shadow-2xl border border-slate-100 transform scale-95 transition-all">
+        <div id="confirmIconContainer" class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg font-bold mb-4">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <h3 id="confirmTitle" class="text-lg font-extrabold text-slate-900 mb-2">Konfirmasi</h3>
+        <p id="confirmMessage" class="text-sm font-medium text-slate-500 mb-6">Apakah Anda yakin?</p>
+        <div class="flex gap-3">
+            <button id="confirmCancelBtn" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs py-3 rounded-2xl transition-all">Batal</button>
+            <button id="confirmYesBtn" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-2xl transition-all shadow-md shadow-emerald-600/20">Ya, Lanjutkan</button>
+        </div>
+    </div>
+</div>
+
+<!-- =====================================================
+     LOGIN PAGE
 ===================================================== -->
 <div id="loginPage" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gradient-to-br from-emerald-50 via-teal-50 to-slate-100">
     <div class="w-full max-w-md glass-card rounded-[2.5rem] p-8 md:p-10 shadow-2xl border border-white">
@@ -102,7 +121,7 @@
 </div>
 
 <!-- =====================================================
-     DASHBOARD (Tersembunyi secara default sebelum login sukses)
+     DASHBOARD
 ===================================================== -->
 <div id="dashboard" class="hidden min-h-screen flex flex-col">
 
@@ -166,13 +185,27 @@
 
         <!-- MESSAGE SECTION -->
         <section class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-100">
-                <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                    <i class="fa-solid fa-envelope-open-text text-emerald-500"></i> Pesan Kehangatan Masuk
-                </h2>
-                <button id="deleteAllButton" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-5 py-3 rounded-2xl transition-all shadow-md shadow-rose-500/20 flex items-center gap-2">
-                    <i class="fa-solid fa-trash-can"></i> Hapus Semua Pesan
-                </button>
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" id="selectAllCheckbox" class="w-5 h-5 rounded-lg text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer">
+                    <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-envelope-open-text text-emerald-500"></i> Pesan Masuk <span class="text-xs font-semibold text-slate-400">(50 terbaru)</span>
+                    </h2>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
+                    <!-- Bulk Actions Container (Hidden by default until messages are selected) -->
+                    <div id="bulkActionsContainer" class="hidden flex items-center gap-2 flex-wrap">
+                        <span id="selectedCountBadge" class="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-3 py-2 rounded-2xl border border-emerald-100">0 dipilih</span>
+                        <button id="bulkApproveBtn" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs px-4 py-3 rounded-2xl transition-all">✓ Approve</button>
+                        <button id="bulkRejectBtn" class="bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold text-xs px-4 py-3 rounded-2xl transition-all">✕ Reject</button>
+                        <button id="bulkDeleteBtn" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-4 py-3 rounded-2xl transition-all shadow-md shadow-rose-500/20">🗑 Hapus</button>
+                    </div>
+
+                    <button id="deleteAllButton" class="bg-slate-100 hover:bg-rose-500 hover:text-white text-slate-700 font-bold text-xs px-5 py-3 rounded-2xl transition-all shadow-sm flex items-center gap-2 ml-auto lg:ml-0">
+                        <i class="fa-solid fa-trash-can"></i> Hapus Semua
+                    </button>
+                </div>
             </div>
 
             <div id="messageList" class="space-y-4">
@@ -192,7 +225,7 @@
 
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase, ref, onValue, update, remove, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getDatabase, ref, onValue, update, remove, get, query, limitToLast, orderByChild } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
     const firebaseConfig = {
         apiKey: "AIzaSyDToak9j8PnMZ2Jflm9dqY5EQbBth8wqHk",
@@ -227,6 +260,79 @@
     const todayMessages = document.getElementById("todayMessages");
     const databaseStatus = document.getElementById("databaseStatus");
     const deleteAllButton = document.getElementById("deleteAllButton");
+    
+    // Elemen Multi-Select & Bulk Actions
+    const selectAllCheckbox = document.getElementById("selectAllCheckbox");
+    const bulkActionsContainer = document.getElementById("bulkActionsContainer");
+    const selectedCountBadge = document.getElementById("selectedCountBadge");
+    const bulkApproveBtn = document.getElementById("bulkApproveBtn");
+    const bulkRejectBtn = document.getElementById("bulkRejectBtn");
+    const bulkDeleteBtn = document.getElementById("bulkDeleteBtn");
+
+    let currentMessages = [];
+    let selectedMessageIds = new Set();
+
+    // Sistem Toast Notifikasi
+    function showToast(message, type = "success") {
+        const container = document.getElementById("toastContainer");
+        const toast = document.createElement("div");
+        
+        let bgClass = "bg-emerald-600 text-white shadow-emerald-600/20";
+        let icon = "fa-circle-check";
+        if (type === "error") {
+            bgClass = "bg-rose-600 text-white shadow-rose-600/20";
+            icon = "fa-circle-xmark";
+        } else if (type === "info") {
+            bgClass = "bg-slate-900 text-white shadow-slate-900/20";
+            icon = "fa-circle-info";
+        }
+
+        toast.className = `pointer-events-auto px-5 py-3.5 rounded-2xl shadow-xl flex items-center gap-3 text-xs font-bold transform translate-y-2 opacity-0 transition-all duration-300 ${bgClass}`;
+        toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i> <span>${escapeHTML(message)}</span>`;
+        
+        container.appendChild(toast);
+        setTimeout(() => toast.classList.remove("translate-y-2", "opacity-0"), 10);
+        setTimeout(() => {
+            toast.classList.add("translate-y-2", "opacity-0");
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Sistem Modal Konfirmasi Kustom
+    let confirmCallback = null;
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmTitleEl = document.getElementById("confirmTitle");
+    const confirmMessageEl = document.getElementById("confirmMessage");
+    const confirmYesBtn = document.getElementById("confirmYesBtn");
+    const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+    const confirmIconContainer = document.getElementById("confirmIconContainer");
+
+    confirmCancelBtn.addEventListener("click", () => {
+        confirmModal.classList.add("hidden");
+        confirmCallback = null;
+    });
+
+    confirmYesBtn.addEventListener("click", () => {
+        confirmModal.classList.add("hidden");
+        if (confirmCallback) confirmCallback();
+        confirmCallback = null;
+    });
+
+    function showConfirm(title, message, callback, isDanger = false) {
+        confirmTitleEl.textContent = title;
+        confirmMessageEl.textContent = message;
+        confirmCallback = callback;
+        
+        if (isDanger) {
+            confirmIconContainer.className = "w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg font-bold mb-4";
+            confirmYesBtn.className = "flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs py-3 rounded-2xl transition-all shadow-md shadow-rose-600/20";
+        } else {
+            confirmIconContainer.className = "w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg font-bold mb-4";
+            confirmYesBtn.className = "flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3 rounded-2xl transition-all shadow-md shadow-emerald-600/20";
+        }
+
+        confirmModal.classList.remove("hidden");
+    }
 
     loginForm.addEventListener("submit", async function(event) {
         event.preventDefault();
@@ -241,6 +347,7 @@
                 await signOut(auth);
                 throw new Error("Akun ini bukan akun admin Clover.");
             }
+            showToast("Berhasil masuk ke dashboard!", "success");
         } catch(error) {
             console.error(error);
             if (error.message === "Akun ini bukan akun admin Clover.") {
@@ -288,13 +395,14 @@
             await signOut(auth);
             emailInput.value = "";
             passwordInput.value = "";
+            showToast("Berhasil keluar dari akun.", "info");
         } catch(error) {
             console.error(error);
         }
     });
 
     function loadDashboardData() {
-        // 1. Pantau Pengunjung Aktif (Online Saat Ini)
+        // 1. Pantau Pengunjung Aktif
         const activeRef = ref(database, "clover/active_users");
         onValue(activeRef, function(snapshot) {
             const data = snapshot.val();
@@ -302,25 +410,46 @@
             activeUsers.textContent = count;
         });
 
-        // 2. Pantau Total Kunjungan (Visitor Counter)
+        // 2. Pantau Total Kunjungan
         const visitsRef = ref(database, "clover/stats/totalVisits");
         onValue(visitsRef, function(snapshot) {
             const count = snapshot.val() || 0;
             totalVisits.textContent = count;
         });
 
-        // 3. Pantau Pesan Kehangatan Masuk
+        // 3. Pantau Total Pesan Keseluruhan
         const messagesRef = ref(database, "clover/messages");
-
         onValue(messagesRef, function(snapshot) {
+            const data = snapshot.val();
+            if (!data) {
+                totalMessages.textContent = "0";
+                todayMessages.textContent = "0";
+                return;
+            }
+            const messages = Object.values(data);
+            totalMessages.textContent = messages.length;
+
+            const today = new Date().toDateString();
+            const todayCount = messages.filter(msg => {
+                if (!msg.createdAt) return false;
+                return new Date(Number(msg.createdAt)).toDateString() === today;
+            }).length;
+            todayMessages.textContent = todayCount;
+        });
+
+        // 4. Pantau & Render Pesan dengan limit 50 pesan terakhir
+        const limitedMessagesQuery = query(messagesRef, orderByChild("createdAt"), limitToLast(50));
+
+        onValue(limitedMessagesQuery, function(snapshot) {
             const data = snapshot.val();
             databaseStatus.textContent = "Online";
             databaseStatus.className = "text-lg font-extrabold text-emerald-600";
             messageList.innerHTML = "";
 
             if (!data) {
-                totalMessages.textContent = "0";
-                todayMessages.textContent = "0";
+                currentMessages = [];
+                selectedMessageIds.clear();
+                updateBulkUI();
                 messageList.innerHTML = `
                     <div class="py-16 text-center text-slate-400">
                         <div class="text-4xl text-emerald-200 mb-3"><i class="fa-solid fa-leaf"></i></div>
@@ -330,20 +459,17 @@
                 return;
             }
 
-            const messages = Object.entries(data).map(([id, message]) => ({ id, ...message }));
-            messages.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+            currentMessages = Object.entries(data).map(([id, message]) => ({ id, ...message }));
+            currentMessages.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
 
-            totalMessages.textContent = messages.length;
+            // Bersihkan ID terpilih yang sudah tidak ada di data saat ini
+            const currentIds = new Set(currentMessages.map(m => m.id));
+            for (let id of selectedMessageIds) {
+                if (!currentIds.has(id)) selectedMessageIds.delete(id);
+            }
 
-            const today = new Date().toDateString();
-            const todayCount = messages.filter(message => {
-                if (!message.createdAt) return false;
-                return new Date(Number(message.createdAt)).toDateString() === today;
-            }).length;
-
-            todayMessages.textContent = todayCount;
-
-            messages.forEach(message => createMessageCard(message));
+            currentMessages.forEach(message => createMessageCard(message));
+            updateBulkUI();
 
         }, function(error) {
             console.error(error);
@@ -365,6 +491,7 @@
         const sender = message.sender || "Anonim";
         const text = message.text || "(Pesan kosong)";
         const status = message.status || "pending";
+        const isChecked = selectedMessageIds.has(message.id) ? "checked" : "";
 
         let dateText = "Tanggal tidak tersedia";
         if (message.createdAt) {
@@ -403,7 +530,8 @@
 
         card.innerHTML = `
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-3">
-                <div class="font-extrabold text-slate-800 text-sm flex items-center gap-2">
+                <div class="font-extrabold text-slate-800 text-sm flex items-center gap-3">
+                    <input type="checkbox" class="message-checkbox w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer" data-id="${message.id}" ${isChecked}>
                     <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">${escapeHTML(sender.charAt(0).toUpperCase())}</span>
                     ${escapeHTML(sender)}
                 </div>
@@ -415,6 +543,17 @@
                 <div class="flex flex-wrap gap-2 w-full sm:w-auto">${buttonsHTML}</div>
             </div>
         `;
+
+        // Event listener untuk checkbox per kartu
+        const checkbox = card.querySelector(".message-checkbox");
+        checkbox.addEventListener("change", function() {
+            if (this.checked) {
+                selectedMessageIds.add(message.id);
+            } else {
+                selectedMessageIds.delete(message.id);
+            }
+            updateBulkUI();
+        });
 
         card.querySelectorAll("[data-action]").forEach(button => {
             button.addEventListener("click", function() {
@@ -429,47 +568,134 @@
         messageList.appendChild(card);
     }
 
+    // Fungsi Update Status & Hapus Individual
     async function changeStatus(id, newStatus) {
         const msg = newStatus === "approved" ? "Setujui pesan ini?" : newStatus === "rejected" ? "Tolak pesan ini?" : "Kembalikan pesan menjadi pending?";
-        if (!confirm(msg)) return;
-        try {
-            await update(ref(database, "clover/messages/" + id), { status: newStatus });
-        } catch (error) {
-            console.error("Gagal update:", error);
-            alert("Gagal mengubah status pesan.");
-        }
+        showConfirm("Konfirmasi Status", msg, async () => {
+            try {
+                await update(ref(database, "clover/messages/" + id), { status: newStatus });
+                showToast("Status pesan berhasil diperbarui.", "success");
+            } catch (error) {
+                console.error("Gagal update:", error);
+                showToast("Gagal mengubah status pesan.", "error");
+            }
+        });
     }
 
     async function deleteMessage(id) {
-        if (!confirm("Yakin ingin menghapus pesan ini?")) return;
-        try {
-            await remove(ref(database, "clover/messages/" + id));
-        } catch (error) {
-            console.error("Gagal hapus:", error);
-            alert("Gagal menghapus pesan.");
+        showConfirm("Hapus Pesan", "Yakin ingin menghapus pesan ini?", async () => {
+            try {
+                await remove(ref(database, "clover/messages/" + id));
+                showToast("Pesan berhasil dihapus.", "success");
+            } catch (error) {
+                console.error("Gagal hapus:", error);
+                showToast("Gagal menghapus pesan.", "error");
+            }
+        }, true);
+    }
+
+    // Logika Select All Master Checkbox
+    selectAllCheckbox.addEventListener("change", function() {
+        if (this.checked) {
+            currentMessages.forEach(m => selectedMessageIds.add(m.id));
+        } else {
+            selectedMessageIds.clear();
+        }
+        // Perbarui semua checkbox kartu di DOM
+        document.querySelectorAll(".message-checkbox").forEach(cb => {
+            cb.checked = selectAllCheckbox.checked;
+        });
+        updateBulkUI();
+    });
+
+    function updateBulkUI() {
+        const count = selectedMessageIds.size;
+        selectedCountBadge.textContent = `${count} dipilih`;
+
+        if (count > 0) {
+            bulkActionsContainer.classList.remove("hidden");
+        } else {
+            bulkActionsContainer.classList.add("hidden");
+        }
+
+        // Sinkronisasi status master checkbox
+        if (currentMessages.length > 0 && count === currentMessages.length) {
+            selectAllCheckbox.checked = true;
+            selectAllCheckbox.indeterminate = false;
+        } else if (count > 0 && count < currentMessages.length) {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = true;
+        } else {
+            selectAllCheckbox.checked = false;
+            selectAllCheckbox.indeterminate = false;
         }
     }
 
-    deleteAllButton.addEventListener("click", async function() {
-        if (!confirm("Yakin ingin menghapus SEMUA pesan?\n\nTindakan ini tidak dapat dibatalkan.")) return;
-        try {
-            const messagesRef = ref(database, "clover/messages");
-            const snapshot = await get(messagesRef);
-            
-            if (snapshot.exists()) {
+    // Aksi Massal (Bulk Actions)
+    bulkApproveBtn.addEventListener("click", () => executeBulkStatus("approved", "Setujui"));
+    bulkRejectBtn.addEventListener("click", () => executeBulkStatus("rejected", "Tolak"));
+    
+    function executeBulkStatus(newStatus, actionName) {
+        if (selectedMessageIds.size === 0) return;
+        showConfirm(`Konfirmasi ${actionName} Massal`, `${actionName} ${selectedMessageIds.size} pesan terpilih?`, async () => {
+            try {
                 const updates = {};
-                snapshot.forEach((childSnapshot) => {
-                    updates[childSnapshot.key] = null;
+                selectedMessageIds.forEach(id => {
+                    updates[`clover/messages/${id}/status`] = newStatus;
                 });
-                await update(messagesRef, updates);
-                alert("Semua pesan berhasil dihapus.");
-            } else {
-                alert("Tidak ada pesan untuk dihapus.");
+                await update(ref(database), updates);
+                showToast(`Berhasil memperbarui ${selectedMessageIds.size} pesan.`, "success");
+                selectedMessageIds.clear();
+                updateBulkUI();
+            } catch (error) {
+                console.error("Gagal aksi massal:", error);
+                showToast("Gagal memproses aksi massal.", "error");
             }
-        } catch (error) {
-            console.error("Gagal hapus semua:", error);
-            alert("Gagal menghapus semua pesan.");
-        }
+        });
+    }
+
+    bulkDeleteBtn.addEventListener("click", () => {
+        if (selectedMessageIds.size === 0) return;
+        showConfirm("Hapus Pesan Terpilih", `Yakin ingin menghapus ${selectedMessageIds.size} pesan yang dipilih?\n\nTindakan ini tidak dapat dibatalkan.`, async () => {
+            try {
+                const updates = {};
+                selectedMessageIds.forEach(id => {
+                    updates[`clover/messages/${id}`] = null;
+                });
+                await update(ref(database), updates);
+                showToast(`${selectedMessageIds.size} pesan berhasil dihapus.`, "success");
+                selectedMessageIds.clear();
+                updateBulkUI();
+            } catch (error) {
+                console.error("Gagal hapus massal:", error);
+                showToast("Gagal menghapus pesan terpilih.", "error");
+            }
+        }, true);
+    });
+
+    deleteAllButton.addEventListener("click", function() {
+        showConfirm("Hapus Semua Pesan", "Yakin ingin menghapus SEMUA pesan?\n\nTindakan ini tidak dapat dibatalkan.", async () => {
+            try {
+                const messagesRef = ref(database, "clover/messages");
+                const snapshot = await get(messagesRef);
+                
+                if (snapshot.exists()) {
+                    const updates = {};
+                    snapshot.forEach((childSnapshot) => {
+                        updates[childSnapshot.key] = null;
+                    });
+                    await update(messagesRef, updates);
+                    showToast("Semua pesan berhasil dihapus.", "success");
+                    selectedMessageIds.clear();
+                    updateBulkUI();
+                } else {
+                    showToast("Tidak ada pesan untuk dihapus.", "info");
+                }
+            } catch (error) {
+                console.error("Gagal hapus semua:", error);
+                showToast("Gagal menghapus semua pesan.", "error");
+            }
+        }, true);
     });
 
     function escapeHTML(value) {
