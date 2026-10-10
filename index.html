@@ -107,7 +107,7 @@
 <!-- =====================================================
      NAVBAR
 ===================================================== -->
-<header class="bg-white/90 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50 transition-all">
+<header class="bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-50 transition-all">
     <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between gap-4">
         
         <!-- Logo -->
@@ -231,7 +231,7 @@
     </section>
 
     <!-- =================================================
-         KELUHAN HARI INI
+         KELUHAN HARI INI + VOICE NOTE
     ================================================== -->
     <section id="keluhan" class="relative rounded-[2.5rem] p-6 md:p-10 lg:p-14 shadow-2xl border border-white overflow-hidden">
         
@@ -253,8 +253,8 @@
                         Ceritakan apa yang kamu rasakan hari ini
                     </h3>
                     <p class="text-sm text-slate-600 leading-relaxed font-medium">
-                        Tuliskan keluhan, beban pikiran, atau rasa sepi yang mengganggu. 
-                        <strong>Catatan ini 100% rahasia</strong> dan hanya tersimpan di perangkatmu sendiri.
+                        Tuliskan keluhan, beban pikiran, atau rekam suara isi hatimu. 
+                        <strong>Catatan & rekaman ini 100% rahasia</strong> dan hanya tersimpan di perangkatmu sendiri.
                     </p>
                 </div>
 
@@ -275,8 +275,18 @@
                                     <i class="fa-solid fa-pen-to-square"></i> Edit Catatan
                                 </button>
                             </div>
-                            <div class="bg-white/60 p-5 rounded-2xl border border-white/50 shadow-inner mb-4">
+                            
+                            <!-- Saved Text Container -->
+                            <div id="savedTextWrapper" class="bg-white/60 p-5 rounded-2xl border border-white/50 shadow-inner mb-4">
                                 <p id="savedComplaintText" class="text-sm text-slate-700 font-medium leading-relaxed italic whitespace-pre-wrap"></p>
+                            </div>
+
+                            <!-- Saved Audio Player -->
+                            <div id="savedAudioContainer" class="hidden mb-4 p-3.5 bg-white/80 rounded-2xl border border-emerald-200 flex items-center gap-3 shadow-sm">
+                                <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
+                                    <i class="fa-solid fa-microphone text-xs"></i>
+                                </div>
+                                <audio id="savedAudioPlayback" controls class="w-full h-9"></audio>
                             </div>
 
                             <!-- RANDOM ENCOURAGEMENT BOX -->
@@ -293,13 +303,30 @@
                     </div>
 
                     <!-- TEXTAREA INPUT -->
-                    <div class="bg-white/80 rounded-3xl p-3 border border-slate-100 shadow-inner">
-                        <textarea id="complaintInput" rows="5" maxlength="1000" 
+                    <div class="bg-white/80 rounded-3xl p-3 border border-slate-100 shadow-inner mb-4">
+                        <textarea id="complaintInput" rows="4" maxlength="1000" 
                                   placeholder="Contoh: Hari ini terasa berat dan sepi, aku merasa..."
                                   class="w-full p-4 bg-transparent text-sm text-slate-700 font-medium resize-none focus:outline-none placeholder:text-slate-400"></textarea>
                     </div>
                     
-                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-5 px-2">
+                    <!-- VOICE RECORDER PANEL -->
+                    <div class="bg-white/80 p-4 rounded-3xl border border-slate-100 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            <button id="recordVoiceBtn" type="button" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold text-xs px-4 py-2.5 rounded-2xl border border-emerald-200 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-microphone"></i> <span id="recordBtnText">Rekam Suara</span>
+                            </button>
+                            <span id="voiceTimer" class="text-xs font-bold text-slate-400 hidden">00:00</span>
+                        </div>
+                        
+                        <div id="audioPreviewWrapper" class="hidden flex items-center gap-3 w-full sm:w-auto">
+                            <audio id="audioPlayback" controls class="h-9 w-full sm:w-44"></audio>
+                            <button id="deleteVoiceBtn" type="button" title="Hapus rekaman" class="text-rose-500 hover:text-rose-700 p-2 text-sm transition-colors">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mt-2 px-2">
                         <div class="flex items-center gap-2">
                             <span id="complaintStatus" class="text-xs font-bold text-emerald-600"></span>
                         </div>
@@ -309,7 +336,7 @@
                     <div class="flex flex-wrap gap-3 mt-6">
                         <button id="saveComplaintButton" type="button" 
                                 class="flex-1 bg-slate-800 hover:bg-slate-900 text-white text-sm font-bold px-6 py-3.5 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-lock text-xs"></i> Simpan Catatan
+                            <i class="fa-solid fa-lock text-xs"></i> Simpan Catatan & Suara
                         </button>
                         <button id="clearComplaintButton" type="button" title="Hapus catatan"
                                 class="bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-rose-600 text-sm font-bold px-6 py-3.5 rounded-2xl transition-all flex items-center gap-2">
@@ -556,7 +583,7 @@
     </section>
 
     <!-- =================================================
-         MASUKAN & SARAN WEB (BAGIAN BARU)
+         MASUKAN & SARAN WEB
     ================================================== -->
     <section id="masukan" class="bg-white rounded-[2.5rem] p-6 md:p-10 lg:p-14 border border-slate-100 shadow-xl shadow-slate-200/40 max-w-3xl mx-auto">
         <div class="text-center max-w-xl mx-auto mb-8">
@@ -642,8 +669,6 @@
     // =====================================================
     // 1. TRACKING: Total Kunjungan & Pengunjung Aktif (Online)
     // =====================================================
-    
-    // Total Kunjungan (Visitor Counter)
     if (!sessionStorage.getItem("clover_visited")) {
         sessionStorage.setItem("clover_visited", "true");
         const visitRef = ref(database, "clover/stats/totalVisits");
@@ -654,7 +679,6 @@
         });
     }
 
-    // Pengunjung Aktif (Online Presence)
     const activeUsersRef = ref(database, "clover/active_users");
     const userSessionRef = push(activeUsersRef);
     set(userSessionRef, {
@@ -861,7 +885,7 @@
     });
 
     // =====================================================
-    // 3. FITUR MASUKAN & SARAN WEB (KIRIM KE ADMIN)
+    // 3. FITUR MASUKAN & SARAN WEB
     // =====================================================
     const feedbackForm = document.getElementById("feedback-form");
     const feedbackInput = document.getElementById("feedback-input");
@@ -938,7 +962,7 @@
     });
 
     // =====================================================
-    // 4. KELUHAN PRIBADI (LOKAL) & TANTANGAN HARIAN
+    // 4. KELUHAN PRIBADI (LOKAL) & VOICE NOTE RECORDER
     // =====================================================
 
     const complaintInput = document.getElementById("complaintInput");
@@ -948,15 +972,33 @@
     const clearComplaintButton = document.getElementById("clearComplaintButton");
     
     const savedComplaintCard = document.getElementById("savedComplaintCard");
+    const savedTextWrapper = document.getElementById("savedTextWrapper");
     const savedComplaintText = document.getElementById("savedComplaintText");
     const editComplaintButton = document.getElementById("editComplaintButton");
     
     const randomEncouragementContainer = document.getElementById("randomEncouragementContainer");
     const randomEncouragementText = document.getElementById("randomEncouragementText");
 
+    // Voice Recorder DOM Elements
+    const recordVoiceBtn = document.getElementById("recordVoiceBtn");
+    const recordBtnText = document.getElementById("recordBtnText");
+    const voiceTimer = document.getElementById("voiceTimer");
+    const audioPreviewWrapper = document.getElementById("audioPreviewWrapper");
+    const audioPlayback = document.getElementById("audioPlayback");
+    const deleteVoiceBtn = document.getElementById("deleteVoiceBtn");
+    const savedAudioContainer = document.getElementById("savedAudioContainer");
+    const savedAudioPlayback = document.getElementById("savedAudioPlayback");
+
     const COMPLAINT_KEY = "clover_daily_complaint";
+    const AUDIO_KEY = "clover_daily_audio";
     const COMPLAINT_DATE_KEY = "clover_daily_complaint_date";
     const ENCOURAGEMENT_KEY = "clover_daily_encouragement";
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordedAudioBase64 = null;
+    let recordingTimer = null;
+    let recordingSeconds = 0;
 
     const encouragingQuotes = [
         "Hebat sudah jujur pada perasaanmu hari ini. Tarik napas dalam-dalam, kamu sudah melakukan yang terbaik. 🍀",
@@ -976,15 +1018,94 @@
         return `${year}-${month}-${day}`;
     }
 
+    function formatTime(secs) {
+        const mins = Math.floor(secs / 60);
+        const remSecs = secs % 60;
+        return `${String(mins).padStart(2, '0')}:${String(remSecs).padStart(2, '0')}`;
+    }
+
+    // Voice Recorder Handlers
+    recordVoiceBtn.addEventListener("click", async () => {
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+            return;
+        }
+
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) audioChunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                stream.getTracks().forEach(track => track.stop());
+                clearInterval(recordingTimer);
+
+                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                reader.readAsDataURL(audioBlob);
+                reader.onloadend = () => {
+                    recordedAudioBase64 = reader.result;
+                    audioPlayback.src = recordedAudioBase64;
+                    audioPreviewWrapper.classList.remove("hidden");
+                };
+
+                recordVoiceBtn.classList.remove("bg-rose-50", "text-rose-700", "border-rose-200", "animate-pulse");
+                recordVoiceBtn.classList.add("bg-emerald-50", "text-emerald-700", "border-emerald-200");
+                recordBtnText.textContent = "Rekam Ulang";
+                voiceTimer.classList.add("hidden");
+            };
+
+            mediaRecorder.onstart = () => {
+                recordingSeconds = 0;
+                voiceTimer.textContent = "00:00";
+                voiceTimer.classList.remove("hidden");
+                recordVoiceBtn.classList.remove("bg-emerald-50", "text-emerald-700", "border-emerald-200");
+                recordVoiceBtn.classList.add("bg-rose-50", "text-rose-700", "border-rose-200", "animate-pulse");
+                recordBtnText.textContent = "Berhenti Rekam";
+
+                recordingTimer = setInterval(() => {
+                    recordingSeconds++;
+                    voiceTimer.textContent = formatTime(recordingSeconds);
+                    if (recordingSeconds >= 120) { // Batas 2 menit untuk keamanan localStorage
+                        mediaRecorder.stop();
+                    }
+                }, 1000);
+            };
+
+            mediaRecorder.start();
+
+        } catch (err) {
+            console.error("Gagal mengakses mikrofon:", err);
+            alert("Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan di browser.");
+        }
+    });
+
+    deleteVoiceBtn.addEventListener("click", () => {
+        recordedAudioBase64 = null;
+        audioPlayback.src = "";
+        audioPreviewWrapper.classList.add("hidden");
+        recordBtnText.textContent = "Rekam Suara";
+    });
+
     function loadComplaint() {
         const savedDate = localStorage.getItem(COMPLAINT_DATE_KEY);
         const today = getTodayKey();
 
         if (savedDate !== today) {
             localStorage.removeItem(COMPLAINT_KEY);
+            localStorage.removeItem(AUDIO_KEY);
             localStorage.removeItem(ENCOURAGEMENT_KEY);
             localStorage.setItem(COMPLAINT_DATE_KEY, today);
+            
             complaintInput.value = "";
+            recordedAudioBase64 = null;
+            audioPreviewWrapper.classList.add("hidden");
+            recordBtnText.textContent = "Rekam Suara";
+
             complaintStatus.innerHTML = "<i class='fa-regular fa-clock mr-1'></i> Belum ada catatan hari ini.";
             complaintStatus.className = "text-xs font-bold text-slate-400";
             complaintCount.textContent = "0/1000";
@@ -993,11 +1114,25 @@
             return;
         }
 
-        const saved = localStorage.getItem(COMPLAINT_KEY);
+        const savedText = localStorage.getItem(COMPLAINT_KEY);
+        const savedAudio = localStorage.getItem(AUDIO_KEY);
         const savedEncouragement = localStorage.getItem(ENCOURAGEMENT_KEY);
 
-        if (saved) {
-            savedComplaintText.textContent = saved;
+        if (savedText || savedAudio) {
+            if (savedText) {
+                savedComplaintText.textContent = savedText;
+                savedTextWrapper.classList.remove("hidden");
+            } else {
+                savedTextWrapper.classList.add("hidden");
+            }
+
+            if (savedAudio) {
+                savedAudioPlayback.src = savedAudio;
+                savedAudioContainer.classList.remove("hidden");
+            } else {
+                savedAudioContainer.classList.add("hidden");
+            }
+
             savedComplaintCard.classList.remove("hidden");
             
             if (savedEncouragement) {
@@ -1007,8 +1142,11 @@
 
             complaintInput.value = "";
             complaintCount.textContent = "0/1000";
+            recordedAudioBase64 = null;
+            audioPreviewWrapper.classList.add("hidden");
+            recordBtnText.textContent = "Rekam Suara";
             
-            complaintStatus.innerHTML = "<i class='fa-solid fa-check-double mr-1'></i> Tersimpan di perangkat.";
+            complaintStatus.innerHTML = "<i class='fa-solid fa-check-double mr-1'></i> Tersimpan aman di perangkat.";
             complaintStatus.className = "text-xs font-bold text-emerald-600";
         } else {
             complaintStatus.innerHTML = "<i class='fa-regular fa-clock mr-1'></i> Belum ada catatan hari ini.";
@@ -1023,16 +1161,21 @@
     });
 
     saveComplaintButton.addEventListener("click", () => {
-        const value = complaintInput.value.trim();
-        if (!value) {
-            complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-orange-500'></i> Catatan kosong.";
+        const textValue = complaintInput.value.trim();
+        
+        if (!textValue && !recordedAudioBase64) {
+            complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-orange-500'></i> Catatan teks atau suara masih kosong.";
             complaintStatus.className = "text-xs font-bold text-orange-600";
             return;
         }
         
         const randomQuote = encouragingQuotes[Math.floor(Math.random() * encouragingQuotes.length)];
         
-        localStorage.setItem(COMPLAINT_KEY, value);
+        if (textValue) localStorage.setItem(COMPLAINT_KEY, textValue);
+        else localStorage.removeItem(COMPLAINT_KEY);
+
+        if (recordedAudioBase64) localStorage.setItem(AUDIO_KEY, recordedAudioBase64);
+        
         localStorage.setItem(ENCOURAGEMENT_KEY, randomQuote);
         localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
         
@@ -1040,9 +1183,17 @@
     });
 
     editComplaintButton.addEventListener("click", () => {
-        const currentText = savedComplaintText.textContent;
+        const currentText = savedTextWrapper.classList.contains("hidden") ? "" : savedComplaintText.textContent;
         complaintInput.value = currentText;
         complaintCount.textContent = `${currentText.length}/1000`;
+        
+        const existingAudio = localStorage.getItem(AUDIO_KEY);
+        if (existingAudio) {
+            recordedAudioBase64 = existingAudio;
+            audioPlayback.src = recordedAudioBase64;
+            audioPreviewWrapper.classList.remove("hidden");
+            recordBtnText.textContent = "Rekam Ulang";
+        }
         
         savedComplaintCard.classList.add("hidden");
         randomEncouragementContainer.classList.add("hidden");
@@ -1055,10 +1206,16 @@
 
     clearComplaintButton.addEventListener("click", () => {
         localStorage.removeItem(COMPLAINT_KEY);
+        localStorage.removeItem(AUDIO_KEY);
         localStorage.removeItem(ENCOURAGEMENT_KEY);
         localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
+        
         complaintInput.value = "";
         complaintCount.textContent = "0/1000";
+        recordedAudioBase64 = null;
+        audioPreviewWrapper.classList.add("hidden");
+        recordBtnText.textContent = "Rekam Suara";
+
         complaintStatus.innerHTML = "<i class='fa-regular fa-trash-can mr-1'></i> Catatan dihapus.";
         complaintStatus.className = "text-xs font-bold text-rose-500";
         
@@ -1068,6 +1225,9 @@
 
     loadComplaint();
 
+    // =====================================================
+    // 5. TANTANGAN HARIAN & STREAK
+    // =====================================================
     const STORAGE_TASKS = "clover_challenges_v2";
     const STREAK_KEY = "clover_challenge_streak_v2";
     const BEST_STREAK_KEY = "clover_best_streak_v2";
