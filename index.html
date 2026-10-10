@@ -985,7 +985,7 @@
     });
 
     // =====================================================
-    // 4. KELUHAN PRIBADI & VOICE NOTE (DENGAN KATA SEMANGAT BERSERAK)
+    // 4. KELUHAN PRIBADI & VOICE NOTE (DENGAN SAFE CHECK & MULTI-MIME)
     // =====================================================
 
     const complaintInput = document.getElementById("complaintInput");
@@ -1022,7 +1022,6 @@
     const TEXT_ENC_KEY = "clover_daily_text_enc";
     const AUDIO_ENC_KEY = "clover_daily_audio_enc";
 
-    // Kumpulan Kata Penyemangat Khusus Teks (Lebih Beragam)
     const textEncouragingQuotes = [
         "Menuliskan isi hati adalah langkah awal yang sangat berani. Kamu hebat sudah mau jujur pada dirimu sendiri hari ini. 🍀",
         "Setiap coretan kata di sini adalah bukti bahwa kamu terus berjuang, meskipun di dalam diam. Teruslah bernapas dengan tenang ya.",
@@ -1033,7 +1032,6 @@
         "Ingatlah, matahari selalu terbit kembali setelah malam yang gelap. Begitu juga dengan bahagiamu yang sedang berproses."
     ];
 
-    // Kumpulan Kata Penyemangat Khusus Suara (Lebih Beragam)
     const audioEncouragingQuotes = [
         "Mendengar suara hatimu lewat rekaman ini mengingatkan betapa berharganya ceritamu. Terima kasih sudah bersuara. 🎙️",
         "Suaramu punya kekuatan besar untuk melepas beban di dada. Tarik napas dalam-dalam, lepaskan semua penatnya.",
@@ -1058,6 +1056,12 @@
         return `${String(mins).padStart(2, '0')}:${String(remSecs).padStart(2, '0')}`;
     }
 
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordedAudioBase64 = null;
+    let recordingTimer = null;
+    let recordingSeconds = 0;
+
     // Voice Recorder Handlers
     recordVoiceBtn.addEventListener("click", async () => {
         if (mediaRecorder && mediaRecorder.state === "recording") {
@@ -1065,9 +1069,25 @@
             return;
         }
 
+        // Cek dukungan browser & protokol (HTTPS / Localhost)
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-orange-500'></i> Browser memblokir mikrofon (Gunakan HTTPS / Local Server).";
+            complaintStatus.className = "text-xs font-bold text-orange-600";
+            alert("Fitur rekaman suara memerlukan HTTPS atau Local Server (Localhost). Jika Anda membuka file HTML ini secara langsung (file://), browser akan memblokir akses mikrofon.");
+            return;
+        }
+
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
+            
+            let options = {};
+            if (MediaRecorder.isTypeSupported('audio/webm')) {
+                options = { mimeType: 'audio/webm' };
+            } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+                options = { mimeType: 'audio/mp4' };
+            }
+
+            mediaRecorder = new MediaRecorder(stream, options);
             audioChunks = [];
 
             mediaRecorder.ondataavailable = (e) => {
@@ -1078,7 +1098,7 @@
                 stream.getTracks().forEach(track => track.stop());
                 clearInterval(recordingTimer);
 
-                const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
                 const reader = new FileReader();
                 reader.readAsDataURL(audioBlob);
                 reader.onloadend = () => {
@@ -1114,7 +1134,9 @@
 
         } catch (err) {
             console.error("Gagal mengakses mikrofon:", err);
-            alert("Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan.");
+            complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-rose-500'></i> Gagal mengakses mikrofon. Periksa izin browser.";
+            complaintStatus.className = "text-xs font-bold text-rose-500";
+            alert("Tidak dapat mengakses mikrofon. Pastikan Anda telah mengizinkan akses mikrofon pada pengaturan browser.");
         }
     });
 
@@ -1124,10 +1146,6 @@
         audioPreviewWrapper.classList.add("hidden");
         recordBtnText.textContent = "Rekam Suara";
     });
-
-    let recordedAudioBase64 = null;
-    let recordingTimer = null;
-    let recordingSeconds = 0;
 
     function loadComplaint() {
         const savedDate = localStorage.getItem(COMPLAINT_DATE_KEY);
