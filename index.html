@@ -131,6 +131,7 @@
             <a href="#keluhan" class="hover:text-emerald-600 transition-colors">Ruang Keluh</a>
             <a href="#tantangan" class="hover:text-emerald-600 transition-colors">Tantangan</a>
             <a href="#papan" class="hover:text-emerald-600 transition-colors">Papan Kehangatan</a>
+            <a href="#masukan" class="hover:text-emerald-600 transition-colors">Masukan Web</a>
         </nav>
 
         <!-- Bantuan Button -->
@@ -553,6 +554,50 @@
             </div>
         </div>
     </section>
+
+    <!-- =================================================
+         MASUKAN & SARAN WEB (BAGIAN BARU)
+    ================================================== -->
+    <section id="masukan" class="bg-white rounded-[2.5rem] p-6 md:p-10 lg:p-14 border border-slate-100 shadow-xl shadow-slate-200/40 max-w-3xl mx-auto">
+        <div class="text-center max-w-xl mx-auto mb-8">
+            <span class="text-emerald-600 text-xs font-black uppercase tracking-widest flex items-center justify-center gap-2 mb-3">
+                <i class="fa-solid fa-comment-dots"></i> Masukan & Saran Web
+            </span>
+            <h3 class="text-2xl md:text-3xl font-extrabold text-slate-900 mb-3">
+                Bantu Kami Menjadi Lebih Baik
+            </h3>
+            <p class="text-xs md:text-sm text-slate-500 font-medium leading-relaxed">
+                Punya ide fitur baru, menemukan kendala, atau ingin memberikan kritik/saran? Sampaikan di sini untuk ditinjau oleh admin.
+            </p>
+        </div>
+
+        <div id="feedback-status" class="hidden rounded-2xl px-5 py-4 text-sm font-bold text-center mb-6 shadow-sm"></div>
+
+        <form id="feedback-form" class="space-y-5">
+            <div>
+                <label for="feedback-input" class="block text-sm font-extrabold text-slate-700 mb-2">Pesan Masukan <span class="text-rose-500">*</span></label>
+                <textarea id="feedback-input" rows="4" maxlength="500" required placeholder="Contoh: Fitur X sangat membantu, mungkin ke depannya bisa ditambahkan..." 
+                          class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 focus:outline-none focus:border-emerald-400 focus:bg-white text-slate-800 text-sm font-medium resize-none transition-all shadow-inner"></textarea>
+                <div class="flex justify-between mt-2 px-1">
+                    <span class="text-[10px] font-bold text-slate-400">Maksimal 500 karakter</span>
+                    <span id="feedback-char-count" class="text-[10px] font-bold text-slate-400">0/500</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="feedback-sender-input" class="block text-sm font-extrabold text-slate-700 mb-2">
+                    Nama / Kontak <span class="font-medium text-slate-400">(opsional)</span>
+                </label>
+                <input type="text" id="feedback-sender-input" maxlength="40" placeholder="Nama atau email kamu" 
+                       class="w-full p-4 bg-slate-50 rounded-2xl border-2 border-slate-100 focus:outline-none focus:border-emerald-400 focus:bg-white text-slate-800 text-sm font-medium transition-all shadow-inner">
+            </div>
+
+            <button type="submit" id="submit-feedback-button" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-5 py-4 rounded-2xl transition-all shadow-lg shadow-slate-900/15">
+                <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Masukan
+            </button>
+        </form>
+    </section>
+
 </main>
 
 <!-- =====================================================
@@ -653,7 +698,6 @@
         return div.innerHTML;
     }
 
-    // Diperbarui: Hanya menampilkan Tanggal, Bulan, dan Tahun (tanpa jam & menit)
     function formatDate(timestamp) {
         if (!timestamp) return "";
         const date = new Date(Number(timestamp));
@@ -815,6 +859,87 @@
         const length = messageInput.value.length;
         charCount.textContent = `${length}/300`;
     });
+
+    // =====================================================
+    // 3. FITUR MASUKAN & SARAN WEB (KIRIM KE ADMIN)
+    // =====================================================
+    const feedbackForm = document.getElementById("feedback-form");
+    const feedbackInput = document.getElementById("feedback-input");
+    const feedbackSenderInput = document.getElementById("feedback-sender-input");
+    const submitFeedbackButton = document.getElementById("submit-feedback-button");
+    const feedbackStatus = document.getElementById("feedback-status");
+    const feedbackCharCount = document.getElementById("feedback-char-count");
+
+    function showFeedbackStatus(message, type = "info") {
+        feedbackStatus.classList.remove("hidden", "bg-rose-50", "text-rose-700", "border-rose-200", "bg-emerald-50", "text-emerald-700", "border-emerald-200", "bg-amber-50", "text-amber-700", "border-amber-200");
+        feedbackStatus.classList.add("border-2");
+
+        if (type === "error") {
+            feedbackStatus.classList.add("bg-rose-50", "text-rose-700", "border-rose-200");
+        } else if (type === "success") {
+            feedbackStatus.classList.add("bg-emerald-50", "text-emerald-700", "border-emerald-200");
+        } else {
+            feedbackStatus.classList.add("bg-amber-50", "text-amber-700", "border-amber-200");
+        }
+        feedbackStatus.textContent = message;
+    }
+
+    function hideFeedbackStatus() {
+        feedbackStatus.classList.add("hidden");
+    }
+
+    feedbackInput.addEventListener("input", () => {
+        const length = feedbackInput.value.length;
+        feedbackCharCount.textContent = `${length}/500`;
+    });
+
+    feedbackForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const text = feedbackInput.value.trim();
+        const sender = feedbackSenderInput.value.trim() || "Pengguna Anonim";
+
+        if (!text) {
+            showFeedbackStatus("Tulis masukan terlebih dahulu.", "error");
+            return;
+        }
+
+        if (text.length > 500) {
+            showFeedbackStatus("Masukan maksimal 500 karakter.", "error");
+            return;
+        }
+
+        submitFeedbackButton.disabled = true;
+        submitFeedbackButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Mengirim...`;
+
+        try {
+            const feedbackRef = ref(database, "clover/feedback");
+            const newFeedbackRef = push(feedbackRef);
+
+            await set(newFeedbackRef, {
+                text: text,
+                sender: sender,
+                createdAt: Date.now(),
+                status: "pending"
+            });
+
+            feedbackForm.reset();
+            feedbackCharCount.textContent = "0/500";
+            showFeedbackStatus("Terima kasih! Masukan berhasil dikirim ke admin 🍀", "success");
+            setTimeout(hideFeedbackStatus, 6000);
+
+        } catch (error) {
+            console.error("Firebase feedback write error:", error);
+            showFeedbackStatus("Gagal mengirim masukan. Periksa koneksi internet.", "error");
+        } finally {
+            submitFeedbackButton.disabled = false;
+            submitFeedbackButton.innerHTML = `<i class="fa-solid fa-paper-plane mr-2"></i> Kirim Masukan`;
+        }
+    });
+
+    // =====================================================
+    // 4. KELUHAN PRIBADI (LOKAL) & TANTANGAN HARIAN
+    // =====================================================
 
     const complaintInput = document.getElementById("complaintInput");
     const complaintStatus = document.getElementById("complaintStatus");
