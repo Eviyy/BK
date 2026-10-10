@@ -260,46 +260,69 @@
 
                 <div class="flex-[1.5] w-full">
 
-                    <!-- SAVED COMPLAINT CARD -->
-                    <div id="savedComplaintCard" class="hidden mb-6 bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 rounded-3xl border border-emerald-200 shadow-sm relative overflow-hidden">
-                        <div class="absolute -top-6 -right-6 text-emerald-500/10 text-8xl pointer-events-none">
-                            <i class="fa-solid fa-book-open"></i>
-                        </div>
+                    <!-- SAVED COMPLAINT CARDS CONTAINER -->
+                    <div id="savedComplaintCard" class="hidden space-y-4 mb-6">
                         
-                        <div class="relative z-10">
-                            <div class="flex items-center justify-between mb-3">
-                                <h4 class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
-                                    <i class="fa-solid fa-lock"></i> Tersimpan Aman di Perangkat
-                                </h4>
-                                <button id="editComplaintButton" type="button" class="bg-white hover:bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-200 shadow-sm transition-all flex items-center gap-1.5">
-                                    <i class="fa-solid fa-pen-to-square"></i> Edit Catatan
-                                </button>
+                        <!-- Saved Text Card -->
+                        <div id="savedTextCardWrapper" class="hidden bg-gradient-to-br from-emerald-50 to-teal-50/50 p-6 rounded-3xl border border-emerald-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute -top-6 -right-6 text-emerald-500/10 text-8xl pointer-events-none">
+                                <i class="fa-solid fa-book-open"></i>
                             </div>
-                            
-                            <!-- Saved Text Container -->
-                            <div id="savedTextWrapper" class="bg-white/60 p-5 rounded-2xl border border-white/50 shadow-inner mb-4">
-                                <p id="savedComplaintText" class="text-sm text-slate-700 font-medium leading-relaxed italic whitespace-pre-wrap"></p>
-                            </div>
-
-                            <!-- Saved Audio Player -->
-                            <div id="savedAudioContainer" class="hidden mb-4 p-3.5 bg-white/80 rounded-2xl border border-emerald-200 flex items-center gap-3 shadow-sm">
-                                <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
-                                    <i class="fa-solid fa-microphone text-xs"></i>
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="text-[10px] font-black text-emerald-600 uppercase tracking-widest flex items-center gap-1.5">
+                                        <i class="fa-solid fa-lock"></i> Catatan Teks Tersimpan
+                                    </h4>
+                                    <button id="editComplaintButton" type="button" class="bg-white hover:bg-emerald-100 text-emerald-700 text-xs font-bold px-3 py-1.5 rounded-xl border border-emerald-200 shadow-sm transition-all flex items-center gap-1.5">
+                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                    </button>
                                 </div>
-                                <audio id="savedAudioPlayback" controls class="w-full h-9"></audio>
-                            </div>
-
-                            <!-- RANDOM ENCOURAGEMENT BOX -->
-                            <div id="randomEncouragementContainer" class="hidden p-4 rounded-2xl bg-white/80 border border-emerald-200 text-xs text-emerald-900 font-medium flex items-start gap-3 shadow-sm">
-                                <div class="w-7 h-7 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5">
-                                    <i class="fa-solid fa-seedling text-xs"></i>
+                                <div class="bg-white/70 p-4 rounded-2xl border border-white/50 shadow-inner">
+                                    <p id="savedComplaintText" class="text-sm text-slate-700 font-medium leading-relaxed italic whitespace-pre-wrap"></p>
                                 </div>
-                                <div>
-                                    <span class="font-extrabold block text-emerald-700 mb-0.5">Pesan Penyemangat untukmu:</span>
-                                    <p id="randomEncouragementText" class="italic leading-relaxed text-slate-700"></p>
+                                <!-- Text Encouragement Box -->
+                                <div id="textEncouragementContainer" class="hidden mt-3 p-3.5 rounded-2xl bg-white/90 border border-emerald-200 text-xs text-emerald-900 font-medium flex items-start gap-3 shadow-sm">
+                                    <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-seedling text-[10px]"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-extrabold block text-emerald-700 mb-0.5">Pesan Penyemangat Teks:</span>
+                                        <p id="textEncouragementText" class="italic leading-relaxed text-slate-700"></p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Saved Audio Card -->
+                        <div id="savedAudioCardWrapper" class="hidden bg-gradient-to-br from-teal-50 to-cyan-50/50 p-6 rounded-3xl border border-teal-200 shadow-sm relative overflow-hidden">
+                            <div class="absolute -top-6 -right-6 text-teal-500/10 text-8xl pointer-events-none">
+                                <i class="fa-solid fa-microphone-lines"></i>
+                            </div>
+                            <div class="relative z-10">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h4 class="text-[10px] font-black text-teal-600 uppercase tracking-widest flex items-center gap-1.5">
+                                        <i class="fa-solid fa-microphone"></i> Rekaman Suara Tersimpan
+                                    </h4>
+                                    <button id="deleteAudioOnlyButton" type="button" class="bg-white hover:bg-rose-50 text-rose-600 text-xs font-bold px-3 py-1.5 rounded-xl border border-rose-100 shadow-sm transition-all flex items-center gap-1.5" title="Hapus rekaman saja">
+                                        <i class="fa-solid fa-trash-can"></i> Hapus Suara
+                                    </button>
+                                </div>
+                                <div class="bg-white/70 p-4 rounded-2xl border border-white/50 shadow-inner flex items-center gap-3">
+                                    <audio id="savedAudioPlayback" controls class="w-full h-9"></audio>
+                                </div>
+                                <!-- Audio Encouragement Box -->
+                                <div id="audioEncouragementContainer" class="hidden mt-3 p-3.5 rounded-2xl bg-white/90 border border-teal-200 text-xs text-teal-900 font-medium flex items-start gap-3 shadow-sm">
+                                    <div class="w-6 h-6 rounded-full bg-teal-500 text-white flex items-center justify-center shrink-0 mt-0.5">
+                                        <i class="fa-solid fa-music text-[10px]"></i>
+                                    </div>
+                                    <div>
+                                        <span class="font-extrabold block text-teal-700 mb-0.5">Pesan Penyemangat Suara:</span>
+                                        <p id="audioEncouragementText" class="italic leading-relaxed text-slate-700"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
 
                     <!-- TEXTAREA INPUT -->
@@ -338,7 +361,7 @@
                                 class="flex-1 bg-slate-800 hover:bg-slate-900 text-white text-sm font-bold px-6 py-3.5 rounded-2xl transition-all shadow-md flex items-center justify-center gap-2">
                             <i class="fa-solid fa-lock text-xs"></i> Simpan Catatan & Suara
                         </button>
-                        <button id="clearComplaintButton" type="button" title="Hapus catatan"
+                        <button id="clearComplaintButton" type="button" title="Hapus semua"
                                 class="bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-rose-600 text-sm font-bold px-6 py-3.5 rounded-2xl transition-all flex items-center gap-2">
                             <i class="fa-solid fa-trash-can"></i>
                         </button>
@@ -962,7 +985,7 @@
     });
 
     // =====================================================
-    // 4. KELUHAN PRIBADI (LOKAL) & VOICE NOTE RECORDER
+    // 4. KELUHAN PRIBADI & VOICE NOTE (DENGAN KATA SEMANGAT BERSERAK)
     // =====================================================
 
     const complaintInput = document.getElementById("complaintInput");
@@ -972,12 +995,18 @@
     const clearComplaintButton = document.getElementById("clearComplaintButton");
     
     const savedComplaintCard = document.getElementById("savedComplaintCard");
-    const savedTextWrapper = document.getElementById("savedTextWrapper");
+    const savedTextCardWrapper = document.getElementById("savedTextCardWrapper");
     const savedComplaintText = document.getElementById("savedComplaintText");
     const editComplaintButton = document.getElementById("editComplaintButton");
     
-    const randomEncouragementContainer = document.getElementById("randomEncouragementContainer");
-    const randomEncouragementText = document.getElementById("randomEncouragementText");
+    const savedAudioCardWrapper = document.getElementById("savedAudioCardWrapper");
+    const savedAudioPlayback = document.getElementById("savedAudioPlayback");
+    const deleteAudioOnlyButton = document.getElementById("deleteAudioOnlyButton");
+
+    const textEncouragementContainer = document.getElementById("textEncouragementContainer");
+    const textEncouragementText = document.getElementById("textEncouragementText");
+    const audioEncouragementContainer = document.getElementById("audioEncouragementContainer");
+    const audioEncouragementText = document.getElementById("audioEncouragementText");
 
     // Voice Recorder DOM Elements
     const recordVoiceBtn = document.getElementById("recordVoiceBtn");
@@ -986,28 +1015,33 @@
     const audioPreviewWrapper = document.getElementById("audioPreviewWrapper");
     const audioPlayback = document.getElementById("audioPlayback");
     const deleteVoiceBtn = document.getElementById("deleteVoiceBtn");
-    const savedAudioContainer = document.getElementById("savedAudioContainer");
-    const savedAudioPlayback = document.getElementById("savedAudioPlayback");
 
     const COMPLAINT_KEY = "clover_daily_complaint";
     const AUDIO_KEY = "clover_daily_audio";
     const COMPLAINT_DATE_KEY = "clover_daily_complaint_date";
-    const ENCOURAGEMENT_KEY = "clover_daily_encouragement";
+    const TEXT_ENC_KEY = "clover_daily_text_enc";
+    const AUDIO_ENC_KEY = "clover_daily_audio_enc";
 
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let recordedAudioBase64 = null;
-    let recordingTimer = null;
-    let recordingSeconds = 0;
+    // Kumpulan Kata Penyemangat Khusus Teks (Lebih Beragam)
+    const textEncouragingQuotes = [
+        "Menuliskan isi hati adalah langkah awal yang sangat berani. Kamu hebat sudah mau jujur pada dirimu sendiri hari ini. 🍀",
+        "Setiap coretan kata di sini adalah bukti bahwa kamu terus berjuang, meskipun di dalam diam. Teruslah bernapas dengan tenang ya.",
+        "Badai emosi ini tidak akan berlangsung selamanya. Kamu jauh lebih kuat dari apa yang kamu tuliskan sekarang.",
+        "Peluk hangat untuk dirimu yang luar biasa tangguh. Tidak apa-apa untuk merasa lelah, asal jangan menyerah pada mimpimu.",
+        "Perasaan sedih atau lelah ini valid. Terima dan rangkul dirimu sendiri malam ini, kamu sudah bekerja keras.",
+        "Halaman privat ini selalu ada kapan pun kamu butuh tempat untuk menuangkan isi kepala. Istirahatlah dengan tenang. ✨",
+        "Ingatlah, matahari selalu terbit kembali setelah malam yang gelap. Begitu juga dengan bahagiamu yang sedang berproses."
+    ];
 
-    const encouragingQuotes = [
-        "Hebat sudah jujur pada perasaanmu hari ini. Tarik napas dalam-dalam, kamu sudah melakukan yang terbaik. 🍀",
-        "Perasaan berat ini valid, tapi itu tidak mendefinisikan seluruh hidupmu. Peluk jauh untukmu!",
-        "Terima kasih sudah bertahan sampai detik ini. Besok adalah lembaran baru yang segar.",
-        "Tidak apa-apa merasa lelah. Yang penting kamu tidak menyerah pada dirimu sendiri.",
-        "Kamu berharga, dan kehadiranmu di dunia ini berarti. Istirahatlah dengan tenang malam ini.",
-        "Setiap badai pasti berlalu, dan kamu semakin tangguh dari yang kamu sadari.",
-        "Beri dirimu apresiasi kecil karena telah berjuang melewati hari ini. Semangat! ✨"
+    // Kumpulan Kata Penyemangat Khusus Suara (Lebih Beragam)
+    const audioEncouragingQuotes = [
+        "Mendengar suara hatimu lewat rekaman ini mengingatkan betapa berharganya ceritamu. Terima kasih sudah bersuara. 🎙️",
+        "Suaramu punya kekuatan besar untuk melepas beban di dada. Tarik napas dalam-dalam, lepaskan semua penatnya.",
+        "Terkadang berbicara jauh lebih lega daripada menulis. Bagus sekali kamu memilih mengeluarkan unek-unekmu hari ini!",
+        "Dengarkan kembali rekaman ini kapan pun kamu merasa sepi; ketahuilah bahwa kamu tidak pernah benar-benar sendiri.",
+        "Nada suaramu hari ini menceritakan perjuangan yang hebat. Berikan dirimu apresiasi dan secangkir teh hangat ya.",
+        "Suara hatimu telah tersimpan aman. Sekarang saatnya memanjakan pikiran dan raga untuk istirahat yang nyenyak. 🌙",
+        "Setiap tarikan napas dalam rekaman ini adalah bukti nyata kehidupan dan keteguhan hatimu. Hebat!"
     ];
 
     function getTodayKey() {
@@ -1070,7 +1104,7 @@
                 recordingTimer = setInterval(() => {
                     recordingSeconds++;
                     voiceTimer.textContent = formatTime(recordingSeconds);
-                    if (recordingSeconds >= 120) { // Batas 2 menit untuk keamanan localStorage
+                    if (recordingSeconds >= 120) {
                         mediaRecorder.stop();
                     }
                 }, 1000);
@@ -1080,7 +1114,7 @@
 
         } catch (err) {
             console.error("Gagal mengakses mikrofon:", err);
-            alert("Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan di browser.");
+            alert("Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan.");
         }
     });
 
@@ -1091,6 +1125,10 @@
         recordBtnText.textContent = "Rekam Suara";
     });
 
+    let recordedAudioBase64 = null;
+    let recordingTimer = null;
+    let recordingSeconds = 0;
+
     function loadComplaint() {
         const savedDate = localStorage.getItem(COMPLAINT_DATE_KEY);
         const today = getTodayKey();
@@ -1098,7 +1136,8 @@
         if (savedDate !== today) {
             localStorage.removeItem(COMPLAINT_KEY);
             localStorage.removeItem(AUDIO_KEY);
-            localStorage.removeItem(ENCOURAGEMENT_KEY);
+            localStorage.removeItem(TEXT_ENC_KEY);
+            localStorage.removeItem(AUDIO_ENC_KEY);
             localStorage.setItem(COMPLAINT_DATE_KEY, today);
             
             complaintInput.value = "";
@@ -1110,36 +1149,44 @@
             complaintStatus.className = "text-xs font-bold text-slate-400";
             complaintCount.textContent = "0/1000";
             savedComplaintCard.classList.add("hidden");
-            randomEncouragementContainer.classList.add("hidden");
+            savedTextCardWrapper.classList.add("hidden");
+            savedAudioCardWrapper.classList.add("hidden");
             return;
         }
 
         const savedText = localStorage.getItem(COMPLAINT_KEY);
         const savedAudio = localStorage.getItem(AUDIO_KEY);
-        const savedEncouragement = localStorage.getItem(ENCOURAGEMENT_KEY);
+        const savedTextEnc = localStorage.getItem(TEXT_ENC_KEY);
+        const savedAudioEnc = localStorage.getItem(AUDIO_ENC_KEY);
 
-        if (savedText || savedAudio) {
-            if (savedText) {
-                savedComplaintText.textContent = savedText;
-                savedTextWrapper.classList.remove("hidden");
-            } else {
-                savedTextWrapper.classList.add("hidden");
+        let hasData = false;
+
+        if (savedText) {
+            savedComplaintText.textContent = savedText;
+            savedTextCardWrapper.classList.remove("hidden");
+            if (savedTextEnc) {
+                textEncouragementText.textContent = savedTextEnc;
+                textEncouragementContainer.classList.remove("hidden");
             }
+            hasData = true;
+        } else {
+            savedTextCardWrapper.classList.add("hidden");
+        }
 
-            if (savedAudio) {
-                savedAudioPlayback.src = savedAudio;
-                savedAudioContainer.classList.remove("hidden");
-            } else {
-                savedAudioContainer.classList.add("hidden");
+        if (savedAudio) {
+            savedAudioPlayback.src = savedAudio;
+            savedAudioCardWrapper.classList.remove("hidden");
+            if (savedAudioEnc) {
+                audioEncouragementText.textContent = savedAudioEnc;
+                audioEncouragementContainer.classList.remove("hidden");
             }
+            hasData = true;
+        } else {
+            savedAudioCardWrapper.classList.add("hidden");
+        }
 
+        if (hasData) {
             savedComplaintCard.classList.remove("hidden");
-            
-            if (savedEncouragement) {
-                randomEncouragementText.textContent = savedEncouragement;
-                randomEncouragementContainer.classList.remove("hidden");
-            }
-
             complaintInput.value = "";
             complaintCount.textContent = "0/1000";
             recordedAudioBase64 = null;
@@ -1152,7 +1199,6 @@
             complaintStatus.innerHTML = "<i class='fa-regular fa-clock mr-1'></i> Belum ada catatan hari ini.";
             complaintStatus.className = "text-xs font-bold text-slate-400";
             savedComplaintCard.classList.add("hidden");
-            randomEncouragementContainer.classList.add("hidden");
         }
     }
 
@@ -1169,58 +1215,73 @@
             return;
         }
         
-        const randomQuote = encouragingQuotes[Math.floor(Math.random() * encouragingQuotes.length)];
-        
-        if (textValue) localStorage.setItem(COMPLAINT_KEY, textValue);
-        else localStorage.removeItem(COMPLAINT_KEY);
-
-        if (recordedAudioBase64) localStorage.setItem(AUDIO_KEY, recordedAudioBase64);
-        
-        localStorage.setItem(ENCOURAGEMENT_KEY, randomQuote);
         localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
+
+        if (textValue) {
+            localStorage.setItem(COMPLAINT_KEY, textValue);
+            const randomTextQuote = textEncouragingQuotes[Math.floor(Math.random() * textEncouragingQuotes.length)];
+            localStorage.setItem(TEXT_ENC_KEY, randomTextQuote);
+        }
+
+        if (recordedAudioBase64) {
+            localStorage.setItem(AUDIO_KEY, recordedAudioBase64);
+            const randomAudioQuote = audioEncouragingQuotes[Math.floor(Math.random() * audioEncouragingQuotes.length)];
+            localStorage.setItem(AUDIO_ENC_KEY, randomAudioQuote);
+        }
         
         loadComplaint(); 
     });
 
     editComplaintButton.addEventListener("click", () => {
-        const currentText = savedTextWrapper.classList.contains("hidden") ? "" : savedComplaintText.textContent;
+        const currentText = savedComplaintText.textContent;
         complaintInput.value = currentText;
         complaintCount.textContent = `${currentText.length}/1000`;
         
-        const existingAudio = localStorage.getItem(AUDIO_KEY);
-        if (existingAudio) {
-            recordedAudioBase64 = existingAudio;
-            audioPlayback.src = recordedAudioBase64;
-            audioPreviewWrapper.classList.remove("hidden");
-            recordBtnText.textContent = "Rekam Ulang";
+        savedTextCardWrapper.classList.add("hidden");
+        if (savedAudioCardWrapper.classList.contains("hidden")) {
+            savedComplaintCard.classList.add("hidden");
         }
         
-        savedComplaintCard.classList.add("hidden");
-        randomEncouragementContainer.classList.add("hidden");
-        
-        complaintStatus.innerHTML = "<i class='fa-solid fa-pen-to-square mr-1 text-teal-600'></i> Sedang mengedit catatan...";
+        complaintStatus.innerHTML = "<i class='fa-solid fa-pen-to-square mr-1 text-teal-600'></i> Sedang mengedit catatan teks...";
         complaintStatus.className = "text-xs font-bold text-teal-600";
         
         complaintInput.focus();
     });
 
-    clearComplaintButton.addEventListener("click", () => {
-        localStorage.removeItem(COMPLAINT_KEY);
-        localStorage.removeItem(AUDIO_KEY);
-        localStorage.removeItem(ENCOURAGEMENT_KEY);
-        localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
-        
-        complaintInput.value = "";
-        complaintCount.textContent = "0/1000";
-        recordedAudioBase64 = null;
-        audioPreviewWrapper.classList.add("hidden");
-        recordBtnText.textContent = "Rekam Suara";
+    deleteAudioOnlyButton.addEventListener("click", () => {
+        if (confirm("Hapus rekaman suara ini?")) {
+            localStorage.removeItem(AUDIO_KEY);
+            localStorage.removeItem(AUDIO_ENC_KEY);
+            savedAudioCardWrapper.classList.add("hidden");
+            if (savedTextCardWrapper.classList.contains("hidden")) {
+                savedComplaintCard.classList.add("hidden");
+            }
+            complaintStatus.innerHTML = "<i class='fa-regular fa-trash-can mr-1'></i> Rekaman suara dihapus.";
+            complaintStatus.className = "text-xs font-bold text-rose-500";
+        }
+    });
 
-        complaintStatus.innerHTML = "<i class='fa-regular fa-trash-can mr-1'></i> Catatan dihapus.";
-        complaintStatus.className = "text-xs font-bold text-rose-500";
-        
-        savedComplaintCard.classList.add("hidden");
-        randomEncouragementContainer.classList.add("hidden");
+    clearComplaintButton.addEventListener("click", () => {
+        if (confirm("Hapus seluruh catatan teks dan suara hari ini?")) {
+            localStorage.removeItem(COMPLAINT_KEY);
+            localStorage.removeItem(AUDIO_KEY);
+            localStorage.removeItem(TEXT_ENC_KEY);
+            localStorage.removeItem(AUDIO_ENC_KEY);
+            localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
+            
+            complaintInput.value = "";
+            complaintCount.textContent = "0/1000";
+            recordedAudioBase64 = null;
+            audioPreviewWrapper.classList.add("hidden");
+            recordBtnText.textContent = "Rekam Suara";
+
+            complaintStatus.innerHTML = "<i class='fa-regular fa-trash-can mr-1'></i> Semua catatan dihapus.";
+            complaintStatus.className = "text-xs font-bold text-rose-500";
+            
+            savedComplaintCard.classList.add("hidden");
+            savedTextCardWrapper.classList.add("hidden");
+            savedAudioCardWrapper.classList.add("hidden");
+        }
     });
 
     loadComplaint();
