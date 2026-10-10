@@ -985,7 +985,7 @@
     });
 
     // =====================================================
-    // 4. KELUHAN PRIBADI & VOICE NOTE (DENGAN SAFE CHECK & MULTI-MIME)
+    // 4. KELUHAN PRIBADI & VOICE NOTE (FIXED ASYNC RACE CONDITION)
     // =====================================================
 
     const complaintInput = document.getElementById("complaintInput");
@@ -1058,7 +1058,7 @@
 
     let mediaRecorder = null;
     let audioChunks = [];
-    let recordedAudioBase64 = null;
+    let recordedAudioBlob = null;
     let recordingTimer = null;
     let recordingSeconds = 0;
 
@@ -1069,11 +1069,10 @@
             return;
         }
 
-        // Cek dukungan browser & protokol (HTTPS / Localhost)
         if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
             complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-orange-500'></i> Browser memblokir mikrofon (Gunakan HTTPS / Local Server).";
             complaintStatus.className = "text-xs font-bold text-orange-600";
-            alert("Fitur rekaman suara memerlukan HTTPS atau Local Server (Localhost). Jika Anda membuka file HTML ini secara langsung (file://), browser akan memblokir akses mikrofon.");
+            alert("Fitur rekaman suara memerlukan HTTPS atau Local Server (Localhost).");
             return;
         }
 
@@ -1098,14 +1097,9 @@
                 stream.getTracks().forEach(track => track.stop());
                 clearInterval(recordingTimer);
 
-                const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
-                const reader = new FileReader();
-                reader.readAsDataURL(audioBlob);
-                reader.onloadend = () => {
-                    recordedAudioBase64 = reader.result;
-                    audioPlayback.src = recordedAudioBase64;
-                    audioPreviewWrapper.classList.remove("hidden");
-                };
+                recordedAudioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+                audioPlayback.src = URL.createObjectURL(recordedAudioBlob);
+                audioPreviewWrapper.classList.remove("hidden");
 
                 recordVoiceBtn.classList.remove("bg-rose-50", "text-rose-700", "border-rose-200", "animate-pulse");
                 recordVoiceBtn.classList.add("bg-emerald-50", "text-emerald-700", "border-emerald-200");
@@ -1134,18 +1128,27 @@
 
         } catch (err) {
             console.error("Gagal mengakses mikrofon:", err);
-            complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-rose-500'></i> Gagal mengakses mikrofon. Periksa izin browser.";
+            complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-rose-500'></i> Gagal mengakses mikrofon.";
             complaintStatus.className = "text-xs font-bold text-rose-500";
-            alert("Tidak dapat mengakses mikrofon. Pastikan Anda telah mengizinkan akses mikrofon pada pengaturan browser.");
+            alert("Tidak dapat mengakses mikrofon. Pastikan izin mikrofon telah diberikan.");
         }
     });
 
     deleteVoiceBtn.addEventListener("click", () => {
-        recordedAudioBase64 = null;
+        recordedAudioBlob = null;
         audioPlayback.src = "";
         audioPreviewWrapper.classList.add("hidden");
         recordBtnText.textContent = "Rekam Suara";
     });
+
+    function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    }
 
     function loadComplaint() {
         const savedDate = localStorage.getItem(COMPLAINT_DATE_KEY);
@@ -1159,7 +1162,7 @@
             localStorage.setItem(COMPLAINT_DATE_KEY, today);
             
             complaintInput.value = "";
-            recordedAudioBase64 = null;
+            recordedAudioBlob = null;
             audioPreviewWrapper.classList.add("hidden");
             recordBtnText.textContent = "Rekam Suara";
 
@@ -1207,7 +1210,7 @@
             savedComplaintCard.classList.remove("hidden");
             complaintInput.value = "";
             complaintCount.textContent = "0/1000";
-            recordedAudioBase64 = null;
+            recordedAudioBlob = null;
             audioPreviewWrapper.classList.add("hidden");
             recordBtnText.textContent = "Rekam Suara";
             
@@ -1224,30 +1227,44 @@
         complaintCount.textContent = `${complaintInput.value.length}/1000`;
     });
 
-    saveComplaintButton.addEventListener("click", () => {
+    saveComplaintButton.addEventListener("click", async () => {
         const textValue = complaintInput.value.trim();
         
-        if (!textValue && !recordedAudioBase64) {
+        if (!textValue && !recordedAudioBlob) {
             complaintStatus.innerHTML = "<i class='fa-solid fa-triangle-exclamation mr-1 text-orange-500'></i> Catatan teks atau suara masih kosong.";
             complaintStatus.className = "text-xs font-bold text-orange-600";
             return;
         }
         
-        localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
+        saveComplaintButton.disabled = true;
+        saveComplaintButton.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-1"></i> Menyimpan...`;
 
-        if (textValue) {
-            localStorage.setItem(COMPLAINT_KEY, textValue);
-            const randomTextQuote = textEncouragingQuotes[Math.floor(Math.random() * textEncouragingQuotes.length)];
-            localStorage.setItem(TEXT_ENC_KEY, randomTextQuote);
-        }
+        try {
+            localStorage.setItem(COMPLAINT_DATE_KEY, getTodayKey());
 
-        if (recordedAudioBase64) {
-            localStorage.setItem(AUDIO_KEY, recordedAudioBase64);
-            const randomAudioQuote = audioEncouragingQuotes[Math.floor(Math.random() * audioEncouragingQuotes.length)];
-            localStorage.setItem(AUDIO_ENC_KEY, randomAudioQuote);
+            if (textValue) {
+                localStorage.setItem(COMPLAINT_KEY, textValue);
+                const randomTextQuote = textEncouragingQuotes[Math.floor(Math.random() * textEncouragingQuotes.length)];
+                localStorage.setItem(TEXT_ENC_KEY, randomTextQuote);
+            }
+
+            if (recordedAudioBlob) {
+                const base64Audio = await blobToBase64(recordedAudioBlob);
+                localStorage.setItem(AUDIO_KEY, base64Audio);
+                const randomAudioQuote = audioEncouragingQuotes[Math.floor(Math.random() * audioEncouragingQuotes.length)];
+                localStorage.setItem(AUDIO_ENC_KEY, randomAudioQuote);
+            }
+            
+            loadComplaint();
+            complaintStatus.innerHTML = "<i class='fa-solid fa-check-double mr-1'></i> Catatan & suara berhasil disimpan!";
+            complaintStatus.className = "text-xs font-bold text-emerald-600";
+        } catch (err) {
+            console.error("Gagal menyimpan:", err);
+            alert("Gagal menyimpan rekaman. Ukuran file mungkin terlalu besar untuk LocalStorage.");
+        } finally {
+            saveComplaintButton.disabled = false;
+            saveComplaintButton.innerHTML = `<i class="fa-solid fa-lock text-xs"></i> Simpan Catatan & Suara`;
         }
-        
-        loadComplaint(); 
     });
 
     editComplaintButton.addEventListener("click", () => {
@@ -1289,7 +1306,7 @@
             
             complaintInput.value = "";
             complaintCount.textContent = "0/1000";
-            recordedAudioBase64 = null;
+            recordedAudioBlob = null;
             audioPreviewWrapper.classList.add("hidden");
             recordBtnText.textContent = "Rekam Suara";
 
