@@ -664,9 +664,20 @@
 
     const approvedMessagesQuery = query(ref(database, "clover/messages"), orderByChild("status"), equalTo("approved"));
 
+    let approvedMessagesCache = [];
+    let rotationTimer = null;
+    let startIndex = 0;
+
     onValue(approvedMessagesQuery, (snapshot) => {
         hideFirebaseStatus();
         const data = snapshot.val();
+
+        // Bersihkan timer rotasi sebelumnya jika ada
+        if (rotationTimer) {
+            clearInterval(rotationTimer);
+            rotationTimer = null;
+        }
+
         messagesContainer.innerHTML = "";
 
         if (!data) {
@@ -680,10 +691,20 @@
             return;
         }
 
-        const messages = Object.entries(data).map(([id, message]) => ({ id, ...message }));
-        messages.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
+        // Simpan semua pesan ke dalam cache array dan urutkan dari yang terbaru
+        approvedMessagesCache = Object.entries(data).map(([id, message]) => ({ id, ...message }));
+        approvedMessagesCache.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
 
-        messages.forEach(message => renderMessage(message));
+        startIndex = 0;
+        renderRotatingBatch();
+
+        // Jika jumlah pesan lebih dari 3, jalankan rotasi otomatis setiap 5 detik
+        if (approvedMessagesCache.length > 3) {
+            rotationTimer = setInterval(() => {
+                startIndex = (startIndex + 1) % approvedMessagesCache.length; // Bergeser 1 pesan ke depan secara looping
+                renderRotatingBatch();
+            }, 5000); // 5000ms = 5 detik perputaran
+        }
 
     }, (error) => {
         console.error("Firebase read error:", error);
@@ -696,6 +717,23 @@
         `;
         showFirebaseStatus("Koneksi ke database gagal. Tidak dapat memuat pesan.", "error");
     });
+
+    // Fungsi untuk merender tepat 3 kartu yang sedang aktif berputar
+    function renderRotatingBatch() {
+        messagesContainer.innerHTML = "";
+        messagesContainer.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-6";
+
+        const total = approvedMessagesCache.length;
+        const countToDisplay = Math.min(3, total); // Maksimal 3 kartu
+
+        for (let i = 0; i < countToDisplay; i++) {
+            const msgIndex = (startIndex + i) % total;
+            const message = approvedMessagesCache[msgIndex];
+            if (message) {
+                renderMessage(message);
+            }
+        }
+    }
 
     function renderMessage(message) {
         const card = document.createElement("article");
@@ -912,7 +950,7 @@
     const STREAK_KEY = "clover_challenge_streak_v2";
     const BEST_STREAK_KEY = "clover_best_streak_v2";
     const LAST_ACTIVE_DATE_KEY = "clover_last_challenge_date_v2";
-    const LAST_VISIT_DATE_KEY = "clover_last_visit_date_v2"; // <-- Variabel baru untuk reset harian otomatis
+    const LAST_VISIT_DATE_KEY = "clover_last_visit_date_v2";
 
     const challengeCheckboxes = Array.from(document.querySelectorAll(".challenge-checkbox"));
     const challengeItems = Array.from(document.querySelectorAll(".challenge-item"));
@@ -945,18 +983,13 @@
         return Math.round((newer.getTime() - older.getTime()) / oneDay);
     }
 
-    // <-- Fungsi loadTaskState yang sudah diperbarui dengan logika reset harian otomatis
     function loadTaskState() {
         const today = getLocalDateKey();
         const lastVisitDate = localStorage.getItem(LAST_VISIT_DATE_KEY);
 
-        // Jika hari sudah berganti (tanggal kunjungan terakhir beda dengan hari ini)
         if (lastVisitDate !== today) {
-            // Hapus progress hari sebelumnya
             localStorage.removeItem(STORAGE_TASKS);
-            // Simpan tanggal hari ini
             localStorage.setItem(LAST_VISIT_DATE_KEY, today);
-            // Kembalikan status checkbox semua menjadi false
             return challengeCheckboxes.map(() => false);
         }
 
