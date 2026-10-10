@@ -185,24 +185,34 @@
 
         <!-- MESSAGE SECTION -->
         <section class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6">
+            <!-- Header Kontrol Pesan & Filter Tanggal -->
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-slate-100">
                 <div class="flex items-center gap-3">
                     <input type="checkbox" id="selectAllCheckbox" class="w-5 h-5 rounded-lg text-emerald-600 focus:ring-emerald-500 border-slate-300 cursor-pointer">
                     <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
-                        <i class="fa-solid fa-envelope-open-text text-emerald-500"></i> Pesan Masuk <span class="text-xs font-semibold text-slate-400">(50 terbaru)</span>
+                        <i class="fa-solid fa-envelope-open-text text-emerald-500"></i> Pesan Masuk
                     </h2>
                 </div>
 
+                <!-- Bagian Filter Tanggal & Aksi Massal -->
                 <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-                    <!-- Bulk Actions Container (Hidden by default until messages are selected) -->
-                    <div id="bulkActionsContainer" class="hidden flex items-center gap-2 flex-wrap">
-                        <span id="selectedCountBadge" class="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-3 py-2 rounded-2xl border border-emerald-100">0 dipilih</span>
-                        <button id="bulkApproveBtn" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs px-4 py-3 rounded-2xl transition-all">✓ Approve</button>
-                        <button id="bulkRejectBtn" class="bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold text-xs px-4 py-3 rounded-2xl transition-all">✕ Reject</button>
-                        <button id="bulkDeleteBtn" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-4 py-3 rounded-2xl transition-all shadow-md shadow-rose-500/20">🗑 Hapus</button>
+                    
+                    <!-- Date Filter Input -->
+                    <div class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-2xl px-3 py-2 shadow-inner">
+                        <i class="fa-solid fa-calendar-days text-slate-400 text-xs"></i>
+                        <input type="date" id="filterDateInput" class="bg-transparent text-xs font-bold text-slate-700 focus:outline-none cursor-pointer">
+                        <button id="clearDateBtn" class="hidden text-xs text-rose-500 font-extrabold hover:text-rose-600 px-1" title="Reset Filter Tanggal">✕</button>
                     </div>
 
-                    <button id="deleteAllButton" class="bg-slate-100 hover:bg-rose-500 hover:text-white text-slate-700 font-bold text-xs px-5 py-3 rounded-2xl transition-all shadow-sm flex items-center gap-2 ml-auto lg:ml-0">
+                    <!-- Bulk Actions Container -->
+                    <div id="bulkActionsContainer" class="hidden flex items-center gap-2 flex-wrap">
+                        <span id="selectedCountBadge" class="bg-emerald-50 text-emerald-700 text-xs font-extrabold px-3 py-2 rounded-2xl border border-emerald-100">0 dipilih</span>
+                        <button id="bulkApproveBtn" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-bold text-xs px-4 py-2.5 rounded-2xl transition-all">✓ Approve</button>
+                        <button id="bulkRejectBtn" class="bg-amber-100 hover:bg-amber-200 text-amber-700 font-bold text-xs px-4 py-2.5 rounded-2xl transition-all">✕ Reject</button>
+                        <button id="bulkDeleteBtn" class="bg-rose-500 hover:bg-rose-600 text-white font-bold text-xs px-4 py-2.5 rounded-2xl transition-all shadow-md shadow-rose-500/20">🗑 Hapus</button>
+                    </div>
+
+                    <button id="deleteAllButton" class="bg-slate-100 hover:bg-rose-500 hover:text-white text-slate-700 font-bold text-xs px-4 py-2.5 rounded-2xl transition-all shadow-sm flex items-center gap-2 ml-auto lg:ml-0">
                         <i class="fa-solid fa-trash-can"></i> Hapus Semua
                     </button>
                 </div>
@@ -261,16 +271,19 @@
     const databaseStatus = document.getElementById("databaseStatus");
     const deleteAllButton = document.getElementById("deleteAllButton");
     
-    // Elemen Multi-Select & Bulk Actions
+    // Elemen Multi-Select, Bulk Actions & Filter Tanggal
     const selectAllCheckbox = document.getElementById("selectAllCheckbox");
     const bulkActionsContainer = document.getElementById("bulkActionsContainer");
     const selectedCountBadge = document.getElementById("selectedCountBadge");
     const bulkApproveBtn = document.getElementById("bulkApproveBtn");
     const bulkRejectBtn = document.getElementById("bulkRejectBtn");
     const bulkDeleteBtn = document.getElementById("bulkDeleteBtn");
+    const filterDateInput = document.getElementById("filterDateInput");
+    const clearDateBtn = document.getElementById("clearDateBtn");
 
     let currentMessages = [];
     let selectedMessageIds = new Set();
+    let selectedFilterDate = "";
 
     // Sistem Toast Notifikasi
     function showToast(message, type = "success") {
@@ -444,32 +457,17 @@
             const data = snapshot.val();
             databaseStatus.textContent = "Online";
             databaseStatus.className = "text-lg font-extrabold text-emerald-600";
-            messageList.innerHTML = "";
 
             if (!data) {
                 currentMessages = [];
-                selectedMessageIds.clear();
-                updateBulkUI();
-                messageList.innerHTML = `
-                    <div class="py-16 text-center text-slate-400">
-                        <div class="text-4xl text-emerald-200 mb-3"><i class="fa-solid fa-leaf"></i></div>
-                        <p class="text-sm font-bold">Belum ada pesan kehangatan.</p>
-                    </div>
-                `;
+                renderMessages();
                 return;
             }
 
             currentMessages = Object.entries(data).map(([id, message]) => ({ id, ...message }));
             currentMessages.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
 
-            // Bersihkan ID terpilih yang sudah tidak ada di data saat ini
-            const currentIds = new Set(currentMessages.map(m => m.id));
-            for (let id of selectedMessageIds) {
-                if (!currentIds.has(id)) selectedMessageIds.delete(id);
-            }
-
-            currentMessages.forEach(message => createMessageCard(message));
-            updateBulkUI();
+            renderMessages();
 
         }, function(error) {
             console.error(error);
@@ -482,6 +480,34 @@
                 </div>
             `;
         });
+    }
+
+    // Fungsi Render Daftar Pesan (termasuk filter tanggal & multi-select)
+    function renderMessages() {
+        messageList.innerHTML = "";
+
+        let filteredMessages = currentMessages;
+        if (selectedFilterDate) {
+            filteredMessages = currentMessages.filter(msg => {
+                if (!msg.createdAt) return false;
+                const msgDate = new Date(Number(msg.createdAt)).toISOString().split("T")[0];
+                return msgDate === selectedFilterDate;
+            });
+        }
+
+        if (filteredMessages.length === 0) {
+            messageList.innerHTML = `
+                <div class="py-16 text-center text-slate-400">
+                    <div class="text-4xl text-emerald-200 mb-3"><i class="fa-solid fa-calendar-xmark"></i></div>
+                    <p class="text-sm font-bold">${selectedFilterDate ? 'Tidak ada pesan pada tanggal tersebut.' : 'Belum ada pesan kehangatan.'}</p>
+                </div>
+            `;
+            updateBulkUI();
+            return;
+        }
+
+        filteredMessages.forEach(message => createMessageCard(message));
+        updateBulkUI();
     }
 
     function createMessageCard(message) {
@@ -544,7 +570,6 @@
             </div>
         `;
 
-        // Event listener untuk checkbox per kartu
         const checkbox = card.querySelector(".message-checkbox");
         checkbox.addEventListener("change", function() {
             if (this.checked) {
@@ -567,6 +592,24 @@
 
         messageList.appendChild(card);
     }
+
+    // Listener Filter Tanggal
+    filterDateInput.addEventListener("change", function() {
+        selectedFilterDate = this.value;
+        if (selectedFilterDate) {
+            clearDateBtn.classList.remove("hidden");
+        } else {
+            clearDateBtn.classList.add("hidden");
+        }
+        renderMessages();
+    });
+
+    clearDateBtn.addEventListener("click", function() {
+        filterDateInput.value = "";
+        selectedFilterDate = "";
+        clearDateBtn.classList.add("hidden");
+        renderMessages();
+    });
 
     // Fungsi Update Status & Hapus Individual
     async function changeStatus(id, newStatus) {
@@ -596,15 +639,17 @@
 
     // Logika Select All Master Checkbox
     selectAllCheckbox.addEventListener("change", function() {
+        // Ambil elemen checkbox yang tampil saat ini (sesuai filter aktif)
+        const visibleCheckboxes = document.querySelectorAll(".message-checkbox");
         if (this.checked) {
-            currentMessages.forEach(m => selectedMessageIds.add(m.id));
+            visibleCheckboxes.forEach(cb => {
+                cb.checked = true;
+                selectedMessageIds.add(cb.dataset.id);
+            });
         } else {
+            visibleCheckboxes.forEach(cb => cb.checked = false);
             selectedMessageIds.clear();
         }
-        // Perbarui semua checkbox kartu di DOM
-        document.querySelectorAll(".message-checkbox").forEach(cb => {
-            cb.checked = selectAllCheckbox.checked;
-        });
         updateBulkUI();
     });
 
@@ -618,11 +663,13 @@
             bulkActionsContainer.classList.add("hidden");
         }
 
-        // Sinkronisasi status master checkbox
-        if (currentMessages.length > 0 && count === currentMessages.length) {
+        const visibleCheckboxes = document.querySelectorAll(".message-checkbox");
+        const checkedVisibleCount = Array.from(visibleCheckboxes).filter(cb => cb.checked).length;
+
+        if (visibleCheckboxes.length > 0 && checkedVisibleCount === visibleCheckboxes.length) {
             selectAllCheckbox.checked = true;
             selectAllCheckbox.indeterminate = false;
-        } else if (count > 0 && count < currentMessages.length) {
+        } else if (checkedVisibleCount > 0 && checkedVisibleCount < visibleCheckboxes.length) {
             selectAllCheckbox.checked = false;
             selectAllCheckbox.indeterminate = true;
         } else {
