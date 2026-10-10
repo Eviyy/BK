@@ -139,19 +139,14 @@
                 </div>
             </div>
 
-            <div class="flex items-center gap-3">
-                <a href="#masukanSection" class="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-emerald-600 bg-slate-100 hover:bg-emerald-50 px-3.5 py-2.5 rounded-2xl transition-colors">
-                    <i class="fa-solid fa-comment-dots"></i> Masukan Web
-                </a>
-                <button id="logoutButton" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs px-4 py-2.5 rounded-2xl transition-colors flex items-center gap-2 border border-rose-100 shadow-sm">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout
-                </button>
-            </div>
+            <button id="logoutButton" class="bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs px-4 py-2.5 rounded-2xl transition-colors flex items-center gap-2 border border-rose-100 shadow-sm">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
         </div>
     </header>
 
     <!-- CONTENT -->
-    <main class="max-w-6xl mx-auto px-4 py-12 flex-1 space-y-12 w-full relative z-10">
+    <main class="max-w-6xl mx-auto px-4 py-12 flex-1 space-y-8 w-full relative z-10">
 
         <div class="welcome">
             <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Dashboard Admin</h1>
@@ -188,8 +183,20 @@
             </div>
         </div>
 
-        <!-- MESSAGE SECTION -->
-        <section class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6">
+        <!-- TAB BUTTONS NAVIGATION -->
+        <div class="flex flex-wrap items-center gap-3 bg-white p-2.5 rounded-3xl border border-slate-100 shadow-sm w-fit">
+            <button id="tabMessagesBtn" class="px-6 py-3 rounded-2xl text-xs font-extrabold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-600/25 flex items-center gap-2">
+                <i class="fa-solid fa-envelope-open-text"></i> Pesan Kehangatan
+            </button>
+            <button id="tabFeedbackBtn" class="px-6 py-3 rounded-2xl text-xs font-extrabold transition-all text-slate-600 hover:bg-slate-100 flex items-center gap-2">
+                <i class="fa-solid fa-comment-dots"></i> Masukan Web <span id="feedbackNavBadge" class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded-full text-[10px]">0</span>
+            </button>
+        </div>
+
+        <!-- =================================================
+             MESSAGE SECTION (DEFAULT TAB)
+        ================================================== -->
+        <section id="messagesSection" class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6">
             <!-- Header Kontrol Pesan & Filter Tanggal -->
             <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 pb-6 border-b border-slate-100">
                 <div class="flex items-center gap-3">
@@ -231,9 +238,9 @@
         </section>
 
         <!-- =================================================
-             MASUKAN WEB SECTION (BAGIAN BARU)
+             MASUKAN WEB SECTION (HIDDEN BY DEFAULT)
         ================================================== -->
-        <section id="masukanSection" class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6">
+        <section id="feedbackSection" class="bg-white p-6 md:p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 space-y-6 hidden">
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b border-slate-100">
                 <h2 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
                     <i class="fa-solid fa-comment-dots text-teal-500"></i> Masukan & Saran Pengguna Web
@@ -285,6 +292,13 @@
     const loginError = document.getElementById("loginError");
     const logoutButton = document.getElementById("logoutButton");
     
+    // Tab Elements
+    const tabMessagesBtn = document.getElementById("tabMessagesBtn");
+    const tabFeedbackBtn = document.getElementById("tabFeedbackBtn");
+    const messagesSection = document.getElementById("messagesSection");
+    const feedbackSection = document.getElementById("feedbackSection");
+    const feedbackNavBadge = document.getElementById("feedbackNavBadge");
+
     // Elemen Statistik & Konten
     const activeUsers = document.getElementById("activeUsers");
     const totalVisits = document.getElementById("totalVisits");
@@ -311,6 +325,23 @@
     let currentMessages = [];
     let selectedMessageIds = new Set();
     let selectedFilterDate = "";
+
+    // Tab Switching Logic
+    tabMessagesBtn.addEventListener("click", () => {
+        messagesSection.classList.remove("hidden");
+        feedbackSection.classList.add("hidden");
+
+        tabMessagesBtn.className = "px-6 py-3 rounded-2xl text-xs font-extrabold transition-all bg-emerald-600 text-white shadow-md shadow-emerald-600/25 flex items-center gap-2";
+        tabFeedbackBtn.className = "px-6 py-3 rounded-2xl text-xs font-extrabold transition-all text-slate-600 hover:bg-slate-100 flex items-center gap-2";
+    });
+
+    tabFeedbackBtn.addEventListener("click", () => {
+        feedbackSection.classList.remove("hidden");
+        messagesSection.classList.add("hidden");
+
+        tabFeedbackBtn.className = "px-6 py-3 rounded-2xl text-xs font-extrabold transition-all bg-teal-600 text-white shadow-md shadow-teal-600/25 flex items-center gap-2";
+        tabMessagesBtn.className = "px-6 py-3 rounded-2xl text-xs font-extrabold transition-all text-slate-600 hover:bg-slate-100 flex items-center gap-2";
+    });
 
     // Sistem Toast Notifikasi
     function showToast(message, type = "success") {
@@ -517,6 +548,7 @@
 
             if (!data) {
                 feedbackCountBadge.textContent = "0 Masukan";
+                feedbackNavBadge.textContent = "0";
                 feedbackList.innerHTML = `
                     <div class="py-12 text-center text-slate-400">
                         <div class="text-4xl text-teal-200 mb-2"><i class="fa-solid fa-inbox"></i></div>
@@ -530,6 +562,7 @@
             feedbacks.sort((a, b) => Number(b.createdAt || 0) - Number(a.createdAt || 0));
 
             feedbackCountBadge.textContent = `${feedbacks.length} Masukan`;
+            feedbackNavBadge.textContent = feedbacks.length;
 
             feedbacks.forEach(fb => {
                 const card = document.createElement("div");
