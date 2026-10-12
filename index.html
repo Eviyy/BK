@@ -65,7 +65,7 @@
                 Clover Pindah Rumah Baru!
             </h1>
             <p class="text-xs md:text-sm text-slate-500 font-medium leading-relaxed pt-2">
-                Halo! Ruang hangat Clover kini berpindah alamat agar menjadi lebih baik dan nyaman. Anda akan diarahkan secara otomatis dalam <span id="countdown" class="font-extrabold text-emerald-600">5</span> detik.
+                Halo! Ruang hangat Clover kini berpindah alamat agar menjadi lebih baik dan nyaman. Anda akan diarahkan secara otomatis dalam <span id="countdown" class="font-extrabold text-emerald-600" aria-live="polite">5</span> detik.
             </p>
         </div>
 
@@ -93,7 +93,7 @@
             }
             if (timeLeft <= 0) {
                 clearInterval(timer);
-                window.location.href = "https://eviyy.github.io/CloverKTS/";
+                window.location.replace("https://eviyy.github.io/CloverKTS/");
             }
         }, 1000);
     </script>
