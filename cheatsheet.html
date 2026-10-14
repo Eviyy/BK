@@ -6,7 +6,7 @@
     <style>
         @page {
             size: A4 landscape;
-            margin: 6mm;
+            margin: 5mm;
         }
         body {
             font-family: Arial, sans-serif;
@@ -15,33 +15,37 @@
             color: #000;
             margin: 0;
             padding: 0;
-            column-count: 2;
-            column-gap: 10px;
-            column-rule: 0.5px solid #bbb;
         }
         h1 {
-            font-size: 10px;
+            font-size: 9.5px;
             text-align: center;
             margin: 0 0 4px 0;
-            column-span: all;
             background: #f0f0f0;
             padding: 2px;
             border: 1px solid #ccc;
         }
+        .container {
+            display: flex;
+            gap: 10px;
+        }
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
         h2 {
-            font-size: 8.5px;
-            margin: 4px 0 2px 0;
+            font-size: 8px;
+            margin: 3px 0 1px 0;
             color: #000;
             background: #e6e6e6;
             padding: 1px 3px;
-            break-after: avoid;
             font-weight: bold;
         }
         h3 {
-            font-size: 8px;
-            margin: 3px 0 1px 0;
+            font-size: 7.5px;
+            margin: 2px 0 1px 0;
             color: #222;
-            break-after: avoid;
             font-weight: bold;
         }
         p, ul, li {
@@ -61,84 +65,102 @@
 
     <h1>CHEAT SHEET RANGKUMAN FISIKA (HUKUM NEWTON, GERAK, DOPPLER, GELOMBANG & BUNYI)</h1>
 
-    <h2>KETERANGAN VARIABEL / SIMBOL UMUM FISIKA</h2>
-    <h3>Mekanika & Hukum Newton:[span_1](start_span)[span_1](end_span)</h3>
-    <ul>
-        <li>Sigma F = Resultan gaya (Newton / N)[span_2](start_span)[span_2](end_span)</li>
-        <li>m = Massa benda (kilogram / kg)[span_3](start_span)[span_3](end_span)</li>
-        <li>a = Percepatan benda (m/s^2)[span_4](start_span)[span_4](end_span)</li>
-        <li>F = Gaya yang diberikan (Newton / N)[span_5](start_span)[span_5](end_span)</li>
-        <li>v_0 = Kecepatan awal (m/s)[span_6](start_span)[span_6](end_span)</li>
-        <li>v_t = Kecepatan akhir / detik ke-t (m/s)[span_7](start_span)[span_7](end_span)</li>
-        <li>t = Waktu (sekon / s atau jam)[span_8](start_span)[span_8](end_span)</li>
-        <li>s atau h = Perpindahan, jarak, ketinggian (m)[span_9](start_span)[span_9](end_span)</li>
-        <li>g = Percepatan gravitasi bumi (m/s^2)[span_10](start_span)[span_10](end_span)</li>
-        <li>m_A, m_B = Massa balok A dan B (kg)[span_11](start_span)[span_11](end_span)</li>
-        <li>T = Gaya tegangan tali (N)[span_12](start_span)[span_12](end_span)</li>
-        <li>theta = Sudut bidang horizontal (derajat)[span_13](start_span)[span_13](end_span)</li>
-        <li>N = Gaya normal (N)[span_14](start_span)[span_14](end_span)</li>
-        <li>mu_s, mu_k = Koef. gesek statis & kinetis[span_15](start_span)[span_15](end_span)</li>
-        <li>f_s_max, f_k = Gaya gesek statis maks & kinetis (N)[span_16](start_span)[span_16](end_span)</li>
-    </ul>
-    <h3>Efek Doppler:[span_17](start_span)[span_17](end_span)</h3>
-    <ul>
-        <li>f_p = Frek. pendengar / pengamat (Hz)[span_18](start_span)[span_18](end_span)</li>
-        <li>f_s = Frek. sumber bunyi (Hz)[span_19](start_span)[span_19](end_span)</li>
-        <li>v = Cepat rambat bunyi di udara (340 m/s)[span_20](start_span)[span_20](end_span)</li>
-        <li>v_p, v_s = Kecepatan pendengar & sumber (m/s)[span_21](start_span)[span_21](end_span)</li>
-    </ul>
-    <h3>Gelombang dan Bunyi:[span_22](start_span)[span_22](end_span)</h3>
-    <ul>
-        <li>v = Cepat rambat gelombang/bunyi (m/s)[span_23](start_span)[span_23](end_span)</li>
-        <li>f = Frekuensi gelombang (Hz)[span_24](start_span)[span_24](end_span)</li>
-        <li>lambda = Panjang gelombang (m)[span_25](start_span)[span_25](end_span)</li>
-        <li>T = Periode gelombang (s)[span_26](start_span)[span_26](end_span)</li>
-        <li>s = Jarak ke dinding pemantul/tebing (m)[span_27](start_span)[span_27](end_span)</li>
-        <li>h = Kedalaman laut (m)[span_28](start_span)[span_28](end_span)</li>
-        <li>t = Waktu merambat pergi-pulang (s)[span_29](start_span)[span_29](end_span)</li>
-    </ul>
+    <div class="container">
+        <!-- Kolom Kiri -->
+        <div class="column">
+            <div>
+                <h2>KETERANGAN VARIABEL / SIMBOL UMUM FISIKA</h2>
+                <h3>Mekanika & Hukum Newton:[span_0](start_span)[span_0](end_span)</h3>
+                <ul>
+                    <li>Sigma F = Resultan gaya (Newton / N)[span_1](start_span)[span_1](end_span)</li>
+                    <li>m = Massa benda (kilogram / kg)[span_2](start_span)[span_2](end_span)</li>
+                    <li>a = Percepatan benda (m/s^2)[span_3](start_span)[span_3](end_span)</li>
+                    <li>F = Gaya yang diberikan (Newton / N)[span_4](start_span)[span_4](end_span)</li>
+                    <li>v_0 = Kecepatan awal (m/s)[span_5](start_span)[span_5](end_span)</li>
+                    <li>v_t = Kecepatan akhir / detik ke-t (m/s)[span_6](start_span)[span_6](end_span)</li>
+                    <li>t = Waktu (sekon / s atau jam)[span_7](start_span)[span_7](end_span)</li>
+                    <li>s atau h = Perpindahan, jarak, ketinggian (m)[span_8](start_span)[span_8](end_span)</li>
+                    <li>g = Percepatan gravitasi bumi (m/s^2)[span_9](start_span)[span_9](end_span)</li>
+                    <li>m_A, m_B = Massa balok A dan B (kg)[span_10](start_span)[span_10](end_span)</li>
+                    <li>T = Gaya tegangan tali (N)[span_11](start_span)[span_11](end_span)</li>
+                    <li>theta = Sudut bidang horizontal (derajat)[span_12](start_span)[span_12](end_span)</li>
+                    <li>N = Gaya normal (N)[span_13](start_span)[span_13](end_span)</li>
+                    <li>mu_s, mu_k = Koef. gesek statis & kinetis[span_14](start_span)[span_14](end_span)</li>
+                    <li>f_s_max, f_k = Gaya gesek statis maks & kinetis (N)[span_15](start_span)[span_15](end_span)</li>
+                </ul>
+                <h3>Efek Doppler:[span_16](start_span)[span_16](end_span)</h3>
+                <ul>
+                    <li>f_p = Frek. pendengar / pengamat (Hz)[span_17](start_span)[span_17](end_span)</li>
+                    <li>f_s = Frek. sumber bunyi (Hz)[span_18](start_span)[span_18](end_span)</li>
+                    <li>v = Cepat rambat bunyi di udara (340 m/s)[span_19](start_span)[span_19](end_span)</li>
+                    <li>v_p, v_s = Kecepatan pendengar & sumber (m/s)[span_20](start_span)[span_20](end_span)</li>
+                </ul>
+                <h3>Gelombang dan Bunyi:[span_21](start_span)[span_21](end_span)</h3>
+                <ul>
+                    <li>v = Cepat rambat gelombang/bunyi (m/s)[span_22](start_span)[span_22](end_span)</li>
+                    <li>f = Frekuensi gelombang (Hz)[span_23](start_span)[span_23](end_span)</li>
+                    <li>lambda = Panjang gelombang (m)[span_24](start_span)[span_24](end_span)</li>
+                    <li>T = Periode gelombang (s)[span_25](start_span)[span_25](end_span)</li>
+                    <li>s = Jarak ke dinding pemantul/tebing (m)[span_26](start_span)[span_26](end_span)</li>
+                    <li>h = Kedalaman laut (m)[span_27](start_span)[span_27](end_span)</li>
+                    <li>t = Waktu merambat pergi-pulang (s)[span_28](start_span)[span_28](end_span)</li>
+                </ul>
+            </div>
 
-    <h2>I. TUGAS HUKUM NEWTON</h2>
-    <ul>
-        <li><strong>Soal 1:</strong> Rumus: Sigma F = m * a => a = F / m[span_30](start_span)[span_30](end_span). Diketahui m = 10 kg, F = 10 N[span_31](start_span)[span_31](end_span). a = 10 / 10 = 1 m/s^2[span_32](start_span)[span_32](end_span).</li>
-        <li><strong>Soal 2:</strong> Rumus: s = v_0 * t + 0.5 * a * t^2, v_t = v_0 + a * t, F = m * a[span_33](start_span)[span_33](end_span). Diketahui v_0 = 0, t = 5 s, s = 5 m, m = 10 kg[span_34](start_span)[span_34](end_span). Hasil: a = 0.4 m/s^2[span_35](start_span)[span_35](end_span), v_t = 2 m/s[span_36](start_span)[span_36](end_span), F = 4 N[span_37](start_span)[span_37](end_span).</li>
-        <li><strong>Soal 3:</strong> Rumus: a = (m_B * g) / (m_A + m_B), T = m_A * a[span_38](start_span)[span_38](end_span). Diketahui m_A = 3 kg, m_B = 5 kg, g = 10 m/s^2[span_39](start_span)[span_39](end_span). Hasil: a = 6.25 m/s^2[span_40](start_span)[span_40](end_span), T = 18.75 N[span_41](start_span)[span_41](end_span).</li>
-        <li><strong>Soal 4:</strong> Rumus: a = (F * cos theta) / m, s = v_0 * t + 0.5 * a * t^2[span_42](start_span)[span_42](end_span). Diketahui F = 40 N, theta = 60 derajat, t = 6 s[span_43](start_span)[span_43](end_span). Hasil: a = 2 m/s^2[span_44](start_span)[span_44](end_span), s = 36 m[span_45](start_span)[span_45](end_span).</li>
-        <li><strong>Soal 5 (Lift):</strong> Rumus: N = m * (g + a)[span_46](start_span)[span_46](end_span). Diketahui m = 50 kg, a = 4 m/s^2[span_47](start_span)[span_47](end_span). Hasil: N = 700 N[span_48](start_span)[span_48](end_span).</li>
-        <li><strong>Soal 6 (Bidang Miring):</strong> Rumus: f_k = mu_k * N = mu_k * m * g * cos theta[span_49](start_span)[span_49](end_span). Hasil: f_k = 5 N[span_50](start_span)[span_50](end_span).</li>
-        <li><strong>Soal 7 (Gesekan):</strong> N = m * g = 100 N[span_51](start_span)[span_51](end_span), f_s_max = 20 N[span_52](start_span)[span_52](end_span). F = 10 N (diam)[span_53](start_span)[span_53](end_span), F = 20 N (tepat gerak)[span_54](start_span)[span_54](end_span), F = 50 N (bergerak, a = 4 m/s^2[span_55](start_span)[span_55](end_span), s = 50 m[span_56](start_span)[span_56](end_span)).</li>
-    </ul>
+            <div>
+                <h2>I. TUGAS HUKUM NEWTON</h2>
+                <ul>
+                    <li><strong>Soal 1:</strong> Rumus: Sigma F = m * a => a = F / m[span_29](start_span)[span_29](end_span). Diketahui m = 10 kg, F = 10 N[span_30](start_span)[span_30](end_span). a = 10 / 10 = 1 m/s^2[span_31](start_span)[span_31](end_span).</li>
+                    <li><strong>Soal 2:</strong> Rumus: s = v_0 * t + 0.5 * a * t^2, v_t = v_0 + a * t, F = m * a[span_32](start_span)[span_32](end_span). Diketahui v_0 = 0, t = 5 s, s = 5 m, m = 10 kg[span_33](start_span)[span_33](end_span). Hasil: a = 0.4 m/s^2[span_34](start_span)[span_34](end_span), v_t = 2 m/s[span_35](start_span)[span_35](end_span), F = 4 N[span_36](start_span)[span_36](end_span).</li>
+                    <li><strong>Soal 3:</strong> Rumus: a = (m_B * g) / (m_A + m_B), T = m_A * a[span_37](start_span)[span_37](end_span). Diketahui m_A = 3 kg, m_B = 5 kg, g = 10 m/s^2[span_38](start_span)[span_38](end_span). Hasil: a = 6.25 m/s^2[span_39](start_span)[span_39](end_span), T = 18.75 N[span_40](start_span)[span_40](end_span).</li>
+                    <li><strong>Soal 4:</strong> Rumus: a = (F * cos theta) / m, s = v_0 * t + 0.5 * a * t^2[span_41](start_span)[span_41](end_span). Diketahui F = 40 N, theta = 60 derajat, t = 6 s[span_42](start_span)[span_42](end_span). Hasil: a = 2 m/s^2[span_43](start_span)[span_43](end_span), s = 36 m[span_44](start_span)[span_44](end_span).</li>
+                    <li><strong>Soal 5 (Lift):</strong> Rumus: N = m * (g + a)[span_45](start_span)[span_45](end_span). Diketahui m = 50 kg, a = 4 m/s^2[span_46](start_span)[span_46](end_span). Hasil: N = 700 N[span_47](start_span)[span_47](end_span).</li>
+                    <li><strong>Soal 6 (Bidang Miring):</strong> Rumus: f_k = mu_k * N = mu_k * m * g * cos theta[span_48](start_span)[span_48](end_span). Hasil: f_k = 5 N[span_49](start_span)[span_49](end_span).</li>
+                    <li><strong>Soal 7 (Gesekan):</strong> N = m * g = 100 N[span_50](start_span)[span_50](end_span), f_s_max = 20 N[span_51](start_span)[span_51](end_span). F = 10 N (diam)[span_52](start_span)[span_52](end_span), F = 20 N (tepat gerak)[span_53](start_span)[span_53](end_span), F = 50 N (bergerak, a = 4 m/s^2[span_54](start_span)[span_54](end_span), s = 50 m[span_55](start_span)[span_55](end_span)).</li>
+                </ul>
+            </div>
+        </div>
 
-    <h2>II. TUGAS MATERI GERAK</h2>
-    <ul>
-        <li><strong>Soal 1 (Berpapasan):</strong> Rumus: t = s_total / (v_A + v_B), s_A = v_A * t[span_57](start_span)[span_57](end_span). Hasil: t = 75 s[span_58](start_span)[span_58](end_span), s_A = 112.5 m[span_59](start_span)[span_59](end_span).</li>
-        <li><strong>Soal 2 (Menyusul):</strong> Rumus: t_2 = s_1 / (v_2 - v_1)[span_60](start_span)[span_60](end_span). Hasil: t_2 = 1 jam[span_61](start_span)[span_61](end_span).</li>
-        <li><strong>Soal 3 (Jatuh Bebas):</strong> Rumus: t = akar((2 * h) / g), v_t = g * t[span_62](start_span)[span_62](end_span). Hasil: t = 2 s[span_63](start_span)[span_63](end_span), v_t = 20 m/s[span_64](start_span)[span_64](end_span).</li>
-        <li><strong>Soal 4 (GVA):</strong> Rumus: t_max = v_0 / g, h_max = (v_0^2) / (2 * g)[span_65](start_span)[span_65](end_span). Hasil: t = 1.2 s[span_66](start_span)[span_66](end_span), h_max = 7.2 m[span_67](start_span)[span_67](end_span).</li>
-        <li><strong>Soal 5 (Gedung):</strong> Rumus: h = v_0 * t + 0.5 * g * t^2 => h = 30 m[span_68](start_span)[span_68](end_span).</li>
-        <li><strong>Soal 6 (Kereta):</strong> Rumus: s = v_0 * t + 0.5 * a * t^2 => s = 84 m[span_69](start_span)[span_69](end_span).</li>
-        <li><strong>Soal 7 (Rem):</strong> Rumus: t = v_0 / a => t = 6 s[span_70](start_span)[span_70](end_span).</li>
-    </ul>
+        <!-- Kolom Kanan -->
+        <div class="column">
+            <div>
+                <h2>II. TUGAS MATERI GERAK</h2>
+                <ul>
+                    <li><strong>Soal 1 (Berpapasan):</strong> Rumus: t = s_total / (v_A + v_B), s_A = v_A * t[span_56](start_span)[span_56](end_span). Hasil: t = 75 s[span_57](start_span)[span_57](end_span), s_A = 112.5 m[span_58](start_span)[span_58](end_span).</li>
+                    <li><strong>Soal 2 (Menyusul):</strong> Rumus: t_2 = s_1 / (v_2 - v_1)[span_59](start_span)[span_59](end_span). Hasil: t_2 = 1 jam[span_60](start_span)[span_60](end_span).</li>
+                    <li><strong>Soal 3 (Jatuh Bebas):</strong> Rumus: t = akar((2 * h) / g), v_t = g * t[span_61](start_span)[span_61](end_span). Hasil: t = 2 s[span_62](start_span)[span_62](end_span), v_t = 20 m/s[span_63](start_span)[span_63](end_span).</li>
+                    <li><strong>Soal 4 (GVA):</strong> Rumus: t_max = v_0 / g, h_max = (v_0^2) / (2 * g)[span_64](start_span)[span_64](end_span). Hasil: t = 1.2 s[span_65](start_span)[span_65](end_span), h_max = 7.2 m[span_66](start_span)[span_66](end_span).</li>
+                    <li><strong>Soal 5 (Gedung):</strong> Rumus: h = v_0 * t + 0.5 * g * t^2 => h = 30 m[span_67](start_span)[span_67](end_span).</li>
+                    <li><strong>Soal 6 (Kereta):</strong> Rumus: s = v_0 * t + 0.5 * a * t^2 => s = 84 m[span_68](start_span)[span_68](end_span).</li>
+                    <li><strong>Soal 7 (Rem):</strong> Rumus: t = v_0 / a => t = 6 s[span_69](start_span)[span_69](end_span).</li>
+                </ul>
+            </div>
 
-    <h2>III. TUGAS EFEK DOPPLER</h2>
-    <ul>
-        <li><strong>Rumus Umum:</strong> f_p = f_s * ((v +/- v_p) / (v -/+ v_s))[span_71](start_span)[span_71](end_span) (Atas: mendekati, Bawah: menjauhi, v = 340 m/s)[span_72](start_span)[span_72](end_span).</li>
-        <li>No. 1: f_p = 850 Hz[span_73](start_span)[span_73](end_span) | No. 2: f_p = 536.84 Hz[span_74](start_span)[span_74](end_span)</li>
-        <li>No. 3: f_p = 514.71 Hz[span_75](start_span)[span_75](end_span) | No. 4: f_p = 767.74 Hz[span_76](start_span)[span_76](end_span)</li>
-        <li>No. 5: f_p = 800 Hz[span_77](start_span)[span_77](end_span) | No. 6: f_p = 1030.30 Hz[span_78](start_span)[span_78](end_span)</li>
-        <li>No. 7: v_s = 30.91 m/s[span_79](start_span)[span_79](end_span)</li>
-        <li>No. 8 (Selisih): 903.125 - 802.78 = 100.345 Hz[span_80](start_span)[span_80](end_span).</li>
-    </ul>
+            <div>
+                <h2>III. TUGAS EFEK DOPPLER</h2>
+                <ul>
+                    <li><strong>Rumus Umum:</strong> f_p = f_s * ((v +/- v_p) / (v -/+ v_s))[span_70](start_span)[span_70](end_span) (Atas: mendekati, Bawah: menjauhi, v = 340 m/s)[span_71](start_span)[span_71](end_span).</li>
+                    <li>No. 1: f_p = 850 Hz[span_72](start_span)[span_72](end_span) | No. 2: f_p = 536.84 Hz[span_73](start_span)[span_73](end_span)</li>
+                    <li>No. 3: f_p = 514.71 Hz[span_74](start_span)[span_74](end_span) | No. 4: f_p = 767.74 Hz[span_75](start_span)[span_75](end_span)</li>
+                    <li>No. 5: f_p = 800 Hz[span_76](start_span)[span_76](end_span) | No. 6: f_p = 1030.30 Hz[span_77](start_span)[span_77](end_span)</li>
+                    <li>No. 7: v_s = 30.91 m/s[span_78](start_span)[span_78](end_span)</li>
+                    <li>No. 8 (Selisih): 903.125 - 802.78 = 100.345 Hz[span_79](start_span)[span_79](end_span).</li>
+                </ul>
+            </div>
 
-    <h2>IV. LATIHAN GELOMBANG & BUNYI</h2>
-    <ul>
-        <li><strong>Konsep:</strong> Simpul (titik setimbang), Amplitudo (simpangan maks), 1 lambda (1 bukit + 1 lembah)[span_81](start_span)[span_81](end_span).</li>
-        <li><strong>No. 2-3 (Tali & Danau):</strong> Rumus v = f * lambda. Hasil v = 2.5 m/s (tali)[span_82](start_span)[span_82](end_span), v = 0.8 m/s (danau)[span_83](start_span)[span_83](end_span).</li>
-        <li><strong>No. 4 (Bunyi):</strong> f = v / lambda = 34 Hz[span_84](start_span)[span_84](end_span), T = 1 / f = 0.029 s[span_85](start_span)[span_85](end_span).</li>
-        <li><strong>No. 5-6 (Tebing & Sonar):</strong> Rumus s = (v * t) / 2. Hasil s = 850 m (tebing)[span_86](start_span)[span_86](end_span), h = 1400 m (laut)[span_87](start_span)[span_87](end_span).</li>
-        <li><strong>Frekuensi Bunyi:</strong> Infrasonik (< 20 Hz), Audiosonik (20 - 20.000 Hz), Ultrasonik (> 20.000 Hz)[span_88](start_span)[span_88](end_span).</li>
-        <li><strong>Bunyi Pantul:</strong> Memperkuat bunyi asli, Gaung (kurang jelas), Gema (terdengar utuh)[span_89](start_span)[span_89](end_span).</li>
-    </ul>
+            <div>
+                <h2>IV. LATIHAN GELOMBANG & BUNYI</h2>
+                <ul>
+                    <li><strong>Konsep:</strong> Simpul (titik setimbang), Amplitudo (simpangan maks), 1 lambda (1 bukit + 1 lembah)[span_80](start_span)[span_80](end_span).</li>
+                    <li><strong>No. 2-3 (Tali & Danau):</strong> Rumus v = f * lambda. Hasil v = 2.5 m/s (tali)[span_81](start_span)[span_81](end_span), v = 0.8 m/s (danau)[span_82](start_span)[span_82](end_span).</li>
+                    <li><strong>No. 4 (Bunyi):</strong> f = v / lambda = 34 Hz[span_83](start_span)[span_83](end_span), T = 1 / f = 0.029 s[span_84](start_span)[span_84](end_span).</li>
+                    <li><strong>No. 5-6 (Tebing & Sonar):</strong> Rumus s = (v * t) / 2. Hasil s = 850 m (tebing)[span_85](start_span)[span_85](end_span), h = 1400 m (laut)[span_86](start_span)[span_86](end_span).</li>
+                    <li><strong>Frekuensi Bunyi:</strong> Infrasonik (< 20 Hz), Audiosonik (20 - 20.000 Hz), Ultrasonik (> 20.000 Hz)[span_87](start_span)[span_87](end_span).</li>
+                    <li><strong>Bunyi Pantul:</strong> Memperkuat bunyi asli, Gaung (kurang jelas), Gema (terdengar utuh)[span_88](start_span)[span_88](end_span).</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
